@@ -376,3 +376,131 @@ export function getUniqueSubjects(items: CollectionItem[]): string[] {
 	});
 	return Array.from(subjects).sort();
 }
+
+/**
+ * Build Sankey diagram data: Contributor → Project → Resource Type
+ */
+export function buildSankeyData(
+	items: CollectionItem[],
+	maxItems: number = 200
+): { nodes: { name: string }[]; links: { source: string; target: string; value: number }[] } {
+	const nodeSet = new Set<string>();
+	const linkMap = new Map<string, number>();
+
+	// Process items to build links
+	items.slice(0, maxItems).forEach((item) => {
+		const projectName = item.project?.name || item.project?.id;
+		const resourceType = item.typeOfResource;
+
+		if (!projectName || !resourceType) return;
+
+		// Add project and resource type nodes
+		nodeSet.add(projectName);
+		nodeSet.add(resourceType);
+
+		// Project → Resource Type link
+		const projectToType = `${projectName}|||${resourceType}`;
+		linkMap.set(projectToType, (linkMap.get(projectToType) || 0) + 1);
+
+		// Contributor → Project links (top contributors only)
+		item.name?.slice(0, 3).forEach((entry) => {
+			const contributor = entry.name?.label;
+			if (contributor) {
+				nodeSet.add(contributor);
+				const contribToProject = `${contributor}|||${projectName}`;
+				linkMap.set(contribToProject, (linkMap.get(contribToProject) || 0) + 1);
+			}
+		});
+	});
+
+	// Convert to arrays
+	const nodes = Array.from(nodeSet).map((name) => ({ name }));
+	const links = Array.from(linkMap.entries())
+		.map(([key, value]) => {
+			const [source, target] = key.split('|||');
+			return { source, target, value };
+		})
+		.filter((link) => link.value > 0)
+		.sort((a, b) => b.value - a.value)
+		.slice(0, 100); // Limit links for readability
+
+	return { nodes, links };
+}
+
+/**
+ * Build Sunburst data: Resource Type → Language → Subject hierarchy
+ */
+export function buildSunburstData(
+	items: CollectionItem[],
+	maxSubjects: number = 8
+): { name: string; value?: number; children?: { name: string; value?: number; children?: { name: string; value: number }[] }[] }[] {
+	// Group by resource type
+	const typeMap = new Map<string, Map<string, Map<string, number>>>();
+
+	items.forEach((item) => {
+		const resourceType = item.typeOfResource || 'Unknown';
+		const languages = item.language?.length ? item.language : ['Unknown'];
+		const subjects = item.subject?.map((s) => s.authLabel || s.origLabel).filter(Boolean) || [];
+
+		if (!typeMap.has(resourceType)) {
+			typeMap.set(resourceType, new Map());
+		}
+		const langMap = typeMap.get(resourceType)!;
+
+		languages.forEach((lang) => {
+			if (!langMap.has(lang)) {
+				langMap.set(lang, new Map());
+			}
+			const subjectMap = langMap.get(lang)!;
+
+			if (subjects.length === 0) {
+				subjectMap.set('(no subject)', (subjectMap.get('(no subject)') || 0) + 1);
+			} else {
+				subjects.forEach((subject) => {
+					subjectMap.set(subject, (subjectMap.get(subject) || 0) + 1);
+				});
+			}
+		});
+	});
+
+	// Convert to sunburst format
+	const result: { name: string; children: { name: string; children: { name: string; value: number }[] }[] }[] = [];
+
+	typeMap.forEach((langMap, resourceType) => {
+		const typeNode: { name: string; children: { name: string; children: { name: string; value: number }[] }[] } = {
+			name: resourceType,
+			children: []
+		};
+
+		langMap.forEach((subjectMap, lang) => {
+			const langNode: { name: string; children: { name: string; value: number }[] } = {
+				name: lang,
+				children: []
+			};
+
+			// Sort subjects by count and take top N
+			const sortedSubjects = Array.from(subjectMap.entries())
+				.sort((a, b) => b[1] - a[1])
+				.slice(0, maxSubjects);
+
+			sortedSubjects.forEach(([subject, count]) => {
+				langNode.children.push({ name: subject, value: count });
+			});
+
+			if (langNode.children.length > 0) {
+				typeNode.children.push(langNode);
+			}
+		});
+
+		if (typeNode.children.length > 0) {
+			result.push(typeNode);
+		}
+	});
+
+	// Sort by total count
+	return result.sort((a, b) => {
+		const aTotal = a.children.reduce((sum, lang) => sum + lang.children.reduce((s, subj) => s + subj.value, 0), 0);
+		const bTotal = b.children.reduce((sum, lang) => sum + lang.children.reduce((s, subj) => s + subj.value, 0), 0);
+		return bTotal - aTotal;
+	});
+}

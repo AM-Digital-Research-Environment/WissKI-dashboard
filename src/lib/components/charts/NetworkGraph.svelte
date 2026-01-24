@@ -36,6 +36,8 @@
 				return p.data?.name || '';
 			}
 		},
+		xAxis: { show: false },
+		yAxis: { show: false },
 		legend: {
 			data: data.categories.map((c) => c.name),
 			orient: 'vertical',

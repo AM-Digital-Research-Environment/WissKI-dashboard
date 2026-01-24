@@ -5,3 +5,5 @@ export { default as PieChart } from './PieChart.svelte';
 export { default as WordCloud } from './WordCloud.svelte';
 export { default as NetworkGraph } from './NetworkGraph.svelte';
 export { default as GeoMap } from './GeoMap.svelte';
+export { default as SankeyChart } from './SankeyChart.svelte';
+export { default as SunburstChart } from './SunburstChart.svelte';

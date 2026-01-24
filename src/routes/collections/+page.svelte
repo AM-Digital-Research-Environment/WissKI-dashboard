@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Card, CardHeader, CardTitle, CardContent, Badge, Tabs } from '$lib/components/ui';
-	import { Timeline, BarChart, PieChart, WordCloud, GeoMap } from '$lib/components/charts';
+	import { Timeline, BarChart, PieChart, WordCloud, GeoMap, SankeyChart, SunburstChart } from '$lib/components/charts';
 	import { artWorldCollection, clnckCollection } from '$lib/stores/data';
 	import {
 		groupByYear,
@@ -9,7 +9,9 @@
 		extractTags,
 		extractLocations,
 		extractLanguages,
-		countOccurrences
+		countOccurrences,
+		buildSankeyData,
+		buildSunburstData
 	} from '$lib/utils/dataTransform';
 	import type { CollectionItem } from '$lib/types';
 
@@ -44,6 +46,10 @@
 			item.name?.map((n) => n.name?.label).filter(Boolean)
 		)
 	);
+
+	// Sankey and Sunburst data
+	let sankeyData = $derived(buildSankeyData(currentCollection));
+	let sunburstData = $derived(buildSunburstData(currentCollection));
 
 	function handleTabChange(tabId: string) {
 		activeTab = tabId;
@@ -266,6 +272,54 @@
 								{:else}
 									<div class="h-full flex items-center justify-center text-muted-foreground">
 										No data available
+									</div>
+								{/if}
+							{/snippet}
+						</CardContent>
+					{/snippet}
+				</Card>
+
+				<!-- Sankey Diagram -->
+				<Card class="col-span-full">
+					{#snippet children()}
+						<CardHeader>
+							{#snippet children()}
+								<CardTitle>
+									{#snippet children()}Contributor → Project → Resource Type Flow{/snippet}
+								</CardTitle>
+							{/snippet}
+						</CardHeader>
+						<CardContent class="h-[450px]">
+							{#snippet children()}
+								{#if sankeyData.links.length > 0}
+									<SankeyChart nodes={sankeyData.nodes} links={sankeyData.links} />
+								{:else}
+									<div class="h-full flex items-center justify-center text-muted-foreground">
+										No flow data available
+									</div>
+								{/if}
+							{/snippet}
+						</CardContent>
+					{/snippet}
+				</Card>
+
+				<!-- Sunburst Chart -->
+				<Card class="col-span-full">
+					{#snippet children()}
+						<CardHeader>
+							{#snippet children()}
+								<CardTitle>
+									{#snippet children()}Resource Type → Language → Subject Hierarchy{/snippet}
+								</CardTitle>
+							{/snippet}
+						</CardHeader>
+						<CardContent class="h-[500px]">
+							{#snippet children()}
+								{#if sunburstData.length > 0}
+									<SunburstChart data={sunburstData} />
+								{:else}
+									<div class="h-full flex items-center justify-center text-muted-foreground">
+										No hierarchy data available
 									</div>
 								{/if}
 							{/snippet}
