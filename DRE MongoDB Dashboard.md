@@ -31,8 +31,6 @@ Two exports from MongoDB Compass serve as proof-of-concept:
 | **UBT_ArtWorld2019** | 182 | Image (146), Text (19), Audio (17) | 1939–2019 | Ulli & Georgina Beier art collection estate |
 | **UBT_CLnCK2019** | 105 | Text only | 1916–1966 | Colonial Letters and Contact of Knowledges |
 
-**Location:** `C:\Users\frede\Downloads\projects_metadata_ubt\`
-
 ### Schema Comparison
 
 Both exports use **identical field structure**, enabling a unified dashboard:
@@ -206,19 +204,3 @@ From the exports, some fields contain `{"$numberDouble": "NaN"}` for missing val
 - [ ] Deploy as DRE service
 - [ ] Documentation for adding new project collections
 - [ ] Template system for reusable dashboard components
-
----
-
-## Questions to Explore
-
-- What are the common data structures across other Cluster projects in MongoDB?
-- Should this be a reusable template or custom development per project?
-- How frequently is data updated? (Static export vs. live MongoDB connection)
-- Who are the target users? (Researchers, public, both?)
-
----
-
-## Related
-
-- [[Islam West Africa Dashboard]] — proof-of-concept for this approach
-- [[New projects ideas]] — DRE retreat project planning
