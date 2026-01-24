@@ -39,9 +39,9 @@
 			}
 		},
 		grid: {
-			left: horizontal ? '30%' : '3%',
+			left: horizontal ? '3%' : '3%',
 			right: '4%',
-			bottom: horizontal ? '3%' : '15%',
+			bottom: horizontal ? '3%' : '25%',
 			top: title ? '15%' : '10%',
 			containLabel: true
 		},

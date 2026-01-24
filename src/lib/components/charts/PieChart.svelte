@@ -38,6 +38,8 @@
 			trigger: 'item',
 			formatter: '{b}: {c} ({d}%)'
 		},
+		xAxis: { show: false },
+		yAxis: { show: false },
 		legend: {
 			orient: 'vertical',
 			left: 'left',
