@@ -1,0 +1,495 @@
+{
+  "countries": {
+    "Australia": {
+      "original_name": "Australia",
+      "wikidata_id": "Q408",
+      "wikidata_label": "Australia",
+      "latitude": -25.0,
+      "longitude": 133.0,
+      "country_code": "AU",
+      "geonames_id": "2077456",
+      "description": "country in Oceania",
+      "match_confidence": "exact"
+    },
+    "Nigeria": {
+      "original_name": "Nigeria",
+      "wikidata_id": "Q1033",
+      "wikidata_label": "Nigeria",
+      "latitude": 9.0,
+      "longitude": 8.0,
+      "country_code": "NG",
+      "geonames_id": "2328926",
+      "description": "sovereign state in West Africa",
+      "match_confidence": "exact"
+    },
+    "United Kingdom": {
+      "original_name": "United Kingdom",
+      "wikidata_id": "Q145",
+      "wikidata_label": "United Kingdom",
+      "latitude": 54.6,
+      "longitude": -2.0,
+      "country_code": "GB",
+      "geonames_id": "2635167",
+      "description": "island country in north-west Europe",
+      "match_confidence": "exact"
+    },
+    "Portugal": {
+      "original_name": "Portugal",
+      "wikidata_id": "Q45",
+      "wikidata_label": "Portugal",
+      "latitude": 38.7,
+      "longitude": -9.183333333,
+      "country_code": "PT",
+      "geonames_id": "2264397",
+      "description": "country in Southwestern Europe",
+      "match_confidence": "exact"
+    },
+    "Mozambique": {
+      "original_name": "Mozambique",
+      "wikidata_id": "Q1029",
+      "wikidata_label": "Mozambique",
+      "latitude": -19.0,
+      "longitude": 35.0,
+      "country_code": "MZ",
+      "geonames_id": "1036973",
+      "description": "country in Southeastern Africa; the current form of Mozambique since 1975",
+      "match_confidence": "exact"
+    },
+    "Papua New Guinea": {
+      "original_name": "Papua New Guinea",
+      "wikidata_id": "Q691",
+      "wikidata_label": "Papua New Guinea",
+      "latitude": -6.3,
+      "longitude": 147.0,
+      "country_code": "PG",
+      "geonames_id": "2088628",
+      "description": "country in Oceania",
+      "match_confidence": "exact"
+    },
+    "Cameroon": {
+      "original_name": "Cameroon",
+      "wikidata_id": "Q1009",
+      "wikidata_label": "Cameroon",
+      "latitude": 5.133333333,
+      "longitude": 12.65,
+      "country_code": "CM",
+      "geonames_id": "2233387",
+      "description": "sovereign state in West-Central Africa",
+      "match_confidence": "exact"
+    },
+    "Germany": {
+      "original_name": "Germany",
+      "wikidata_id": "Q183",
+      "wikidata_label": "Germany",
+      "latitude": 51.0,
+      "longitude": 10.0,
+      "country_code": "DE",
+      "geonames_id": "2921044",
+      "description": "country in Central Europe",
+      "match_confidence": "exact"
+    }
+  },
+  "regions": {
+    "Kaduna State|Nigeria": {
+      "original_name": "Kaduna State",
+      "wikidata_id": "Q878284",
+      "wikidata_label": "Kaduna State",
+      "latitude": 10.333333333,
+      "longitude": 7.75,
+      "country_code": null,
+      "geonames_id": "2335722",
+      "description": "state in Nigeria",
+      "match_confidence": "exact"
+    },
+    "Australian Capital Territory|Australia": {
+      "original_name": "Australian Capital Territory",
+      "wikidata_id": "Q3258",
+      "wikidata_label": "Australian Capital Territory",
+      "latitude": -35.45,
+      "longitude": 148.980555555,
+      "country_code": null,
+      "geonames_id": "2177478",
+      "description": "federal territory of Australia, containing the capital city, Canberra",
+      "match_confidence": "fuzzy"
+    },
+    "Rhineland-Palatinate|Germany": {
+      "original_name": "Rhineland-Palatinate",
+      "wikidata_id": "Q1200",
+      "wikidata_label": "Rhineland-Palatinate",
+      "latitude": 49.913056,
+      "longitude": 7.449722,
+      "country_code": null,
+      "geonames_id": "2847618",
+      "description": "federal state of Germany",
+      "match_confidence": "exact"
+    },
+    "New South Wales|Australia": {
+      "original_name": "New South Wales",
+      "wikidata_id": "Q56056806",
+      "wikidata_label": "New South Wales, Australia government says entire state in winter 2018 drought",
+      "latitude": null,
+      "longitude": null,
+      "country_code": null,
+      "geonames_id": null,
+      "description": "Wikinews article",
+      "match_confidence": "exact"
+    },
+    "Thuringia|Germany": {
+      "original_name": "Thuringia",
+      "wikidata_id": "Q1205",
+      "wikidata_label": "Thuringia",
+      "latitude": 51.0,
+      "longitude": 11.0,
+      "country_code": null,
+      "geonames_id": "2822542",
+      "description": "federated state in the center of Germany",
+      "match_confidence": "exact"
+    },
+    "Enugu State|Nigeria": {
+      "original_name": "Enugu State",
+      "wikidata_id": "Q3817714",
+      "wikidata_label": "Enugu State",
+      "latitude": 6.5,
+      "longitude": 7.5,
+      "country_code": null,
+      "geonames_id": "2565344",
+      "description": "state in Nigeria",
+      "match_confidence": "exact"
+    },
+    "Bavaria|Germany": {
+      "original_name": "Bavaria",
+      "wikidata_id": "Q980",
+      "wikidata_label": "Bavaria",
+      "latitude": 49.078611111,
+      "longitude": 11.385555555,
+      "country_code": null,
+      "geonames_id": "2951839",
+      "description": "federated state in the south of Germany",
+      "match_confidence": "exact"
+    },
+    "Maputo|Mozambique": {
+      "original_name": "Maputo",
+      "wikidata_id": "Q116775317",
+      "wikidata_label": "Maputans",
+      "latitude": null,
+      "longitude": null,
+      "country_code": null,
+      "geonames_id": null,
+      "description": "natives of or residents of Maputo, Mozambique (formerly known as Lourenço Marques)",
+      "match_confidence": "fuzzy"
+    },
+    "Southwest|Cameroon": {
+      "original_name": "Southwest",
+      "wikidata_id": "Q607499",
+      "wikidata_label": "Southwest",
+      "latitude": 4.15,
+      "longitude": 9.238055555,
+      "country_code": null,
+      "geonames_id": "2221788",
+      "description": "region of Cameroon",
+      "match_confidence": "exact"
+    },
+    "Osun State|Nigeria": {
+      "original_name": "Osun State",
+      "wikidata_id": "Q682721",
+      "wikidata_label": "Osun State",
+      "latitude": 7.5,
+      "longitude": 4.5,
+      "country_code": null,
+      "geonames_id": "2597365",
+      "description": "state in Nigeria",
+      "match_confidence": "exact"
+    },
+    "National Capital District|Papua New Guinea": {
+      "original_name": "National Capital District",
+      "wikidata_id": "Q1378310",
+      "wikidata_label": "National Capital District",
+      "latitude": -9.41666667,
+      "longitude": 147.2833333,
+      "country_code": null,
+      "geonames_id": "2089856",
+      "description": "province of Papua New Guinea",
+      "match_confidence": "exact"
+    },
+    "Lagos State|Nigeria": {
+      "original_name": "Lagos State",
+      "wikidata_id": "Q815913",
+      "wikidata_label": "Lagos State",
+      "latitude": 6.583333333,
+      "longitude": 3.75,
+      "country_code": null,
+      "geonames_id": "2332453",
+      "description": "federal state in southwestern Nigeria",
+      "match_confidence": "exact"
+    },
+    "Oyo State|Nigeria": {
+      "original_name": "Oyo State",
+      "wikidata_id": "Q503905",
+      "wikidata_label": "Oyo State",
+      "latitude": 8.0,
+      "longitude": 4.0,
+      "country_code": null,
+      "geonames_id": "2325190",
+      "description": "state of Nigeria",
+      "match_confidence": "exact"
+    },
+    "England|United Kingdom": {
+      "original_name": "England",
+      "wikidata_id": "Q21",
+      "wikidata_label": "England",
+      "latitude": 53.0,
+      "longitude": -1.0,
+      "country_code": null,
+      "geonames_id": "2649994",
+      "description": "country in north-west Europe, part of the United Kingdom",
+      "match_confidence": "fuzzy"
+    },
+    "Lisbon|Portugal": {
+      "original_name": "Lisbon",
+      "wikidata_id": "Q597",
+      "wikidata_label": "Lisbon",
+      "latitude": 38.708042,
+      "longitude": -9.139016,
+      "country_code": null,
+      "geonames_id": "2267057",
+      "description": "municipality and capital city of Portugal",
+      "match_confidence": "exact"
+    }
+  },
+  "cities": {
+    "Osogbo|Nigeria": {
+      "original_name": "Osogbo",
+      "wikidata_id": "Q868203",
+      "wikidata_label": "Osogbo",
+      "latitude": 7.759722222,
+      "longitude": 4.576111111,
+      "country_code": null,
+      "geonames_id": "2325590",
+      "description": "city and local government area in Osun State, Nigeria",
+      "match_confidence": "exact"
+    },
+    "Ile-Ife|Nigeria": {
+      "original_name": "Ile-Ife",
+      "wikidata_id": "Q180084",
+      "wikidata_label": "Ile Ife",
+      "latitude": 7.466666666,
+      "longitude": 4.566666666,
+      "country_code": null,
+      "geonames_id": "2338900",
+      "description": "ancient Yoruba city in southwestern Nigeria",
+      "match_confidence": "exact"
+    },
+    "Erfurt|Germany": {
+      "original_name": "Erfurt",
+      "wikidata_id": "Q1729",
+      "wikidata_label": "Erfurt",
+      "latitude": 50.978055555,
+      "longitude": 11.028888888,
+      "country_code": null,
+      "geonames_id": "2929668",
+      "description": "capital city of the German federal state of Thuringia",
+      "match_confidence": "exact"
+    },
+    "Port Moresby|Papua New Guinea": {
+      "original_name": "Port Moresby",
+      "wikidata_id": "Q130476682",
+      "wikidata_label": "Port Moresby, Papua New Guinea, 1884",
+      "latitude": null,
+      "longitude": null,
+      "country_code": null,
+      "geonames_id": null,
+      "description": "Panoramic albumen print of Port Moresby, Papua New Guinea, 1884, by Augustine Dyer",
+      "match_confidence": "exact"
+    },
+    "Maputo|Mozambique": {
+      "original_name": "Maputo",
+      "wikidata_id": "Q116775317",
+      "wikidata_label": "Maputans",
+      "latitude": null,
+      "longitude": null,
+      "country_code": null,
+      "geonames_id": null,
+      "description": "natives of or residents of Maputo, Mozambique (formerly known as Lourenço Marques)",
+      "match_confidence": "fuzzy"
+    },
+    "Sydney|Australia": {
+      "original_name": "Sydney",
+      "wikidata_id": "Q3130",
+      "wikidata_label": "Sydney",
+      "latitude": -33.867777777,
+      "longitude": 151.21,
+      "country_code": null,
+      "geonames_id": "2147714",
+      "description": "capital city of New South Wales, Australia",
+      "match_confidence": "fuzzy"
+    },
+    "Zaria|Nigeria": {
+      "original_name": "Zaria",
+      "wikidata_id": "Q147975",
+      "wikidata_label": "Zaria",
+      "latitude": 11.066666666,
+      "longitude": 7.7,
+      "country_code": null,
+      "geonames_id": "2317765",
+      "description": "city and local government area in Kaduna, Nigeria",
+      "match_confidence": "exact"
+    },
+    "Enugu|Nigeria": {
+      "original_name": "Enugu",
+      "wikidata_id": "Q465022",
+      "wikidata_label": "Enugu",
+      "latitude": 6.440277777,
+      "longitude": 7.494166666,
+      "country_code": null,
+      "geonames_id": "2343279",
+      "description": "city in Nigeria",
+      "match_confidence": "exact"
+    },
+    "Bayreuth|Germany": {
+      "original_name": "Bayreuth",
+      "wikidata_id": "Q3923",
+      "wikidata_label": "Bayreuth",
+      "latitude": 49.948055555,
+      "longitude": 11.578333333,
+      "country_code": null,
+      "geonames_id": "6556726",
+      "description": "medium-sized town in northern Bavaria, Germany",
+      "match_confidence": "exact"
+    },
+    "Canberra|Australia": {
+      "original_name": "Canberra",
+      "wikidata_id": "Q3114",
+      "wikidata_label": "Canberra",
+      "latitude": -35.293055555,
+      "longitude": 149.126944444,
+      "country_code": null,
+      "geonames_id": "2172517",
+      "description": "capital city of Australia",
+      "match_confidence": "fuzzy"
+    },
+    "Sintra|Portugal": {
+      "original_name": "Sintra",
+      "wikidata_id": "Q190187",
+      "wikidata_label": "Sintra",
+      "latitude": 38.797361111,
+      "longitude": -9.390416666,
+      "country_code": null,
+      "geonames_id": "8010565",
+      "description": "municipality in the Lisbon District, Portugal",
+      "match_confidence": "exact"
+    },
+    "Ibadan|Nigeria": {
+      "original_name": "Ibadan",
+      "wikidata_id": "Q183298",
+      "wikidata_label": "Ibadan",
+      "latitude": 7.3775,
+      "longitude": 3.905833333,
+      "country_code": null,
+      "geonames_id": "2339354",
+      "description": "capital city of Oyo State in Nigeria",
+      "match_confidence": "exact"
+    },
+    "London|United Kingdom": {
+      "original_name": "London",
+      "wikidata_id": "Q84",
+      "wikidata_label": "London",
+      "latitude": 51.507222222,
+      "longitude": -0.1275,
+      "country_code": null,
+      "geonames_id": "2643743",
+      "description": "capital and largest city of England and the United Kingdom",
+      "match_confidence": "fuzzy"
+    },
+    "Mainz|Germany": {
+      "original_name": "Mainz",
+      "wikidata_id": "Q1720",
+      "wikidata_label": "Mainz",
+      "latitude": 49.999444444,
+      "longitude": 8.273611111,
+      "country_code": null,
+      "geonames_id": "2874225",
+      "description": "capital of the federal state Rhineland-Palatinate, Germany",
+      "match_confidence": "exact"
+    },
+    "Lagos|Nigeria": {
+      "original_name": "Lagos",
+      "wikidata_id": "Q133224214",
+      "wikidata_label": "Lagosians",
+      "latitude": null,
+      "longitude": null,
+      "country_code": null,
+      "geonames_id": null,
+      "description": "people from or residents of Lagos State, Nigeria",
+      "match_confidence": "fuzzy"
+    },
+    "Lisbon|Portugal": {
+      "original_name": "Lisbon",
+      "wikidata_id": "Q597",
+      "wikidata_label": "Lisbon",
+      "latitude": 38.708042,
+      "longitude": -9.139016,
+      "country_code": null,
+      "geonames_id": "2267057",
+      "description": "municipality and capital city of Portugal",
+      "match_confidence": "exact"
+    },
+    "Buea|Cameroon": {
+      "original_name": "Buea",
+      "wikidata_id": "Q312209",
+      "wikidata_label": "Buea",
+      "latitude": 4.166666666,
+      "longitude": 9.233333333,
+      "country_code": null,
+      "geonames_id": "2233410",
+      "description": "town in Cameroon",
+      "match_confidence": "exact"
+    },
+    "Iragbiji|Nigeria": {
+      "original_name": "Iragbiji",
+      "wikidata_id": "Q6066392",
+      "wikidata_label": "Iragbiji",
+      "latitude": 7.9,
+      "longitude": 4.683,
+      "country_code": null,
+      "geonames_id": "2337343",
+      "description": "Town in Osun State, Nigeria",
+      "match_confidence": "exact"
+    }
+  },
+  "other": {
+    "University of Bayreuth": {
+      "original_name": "University of Bayreuth",
+      "wikidata_id": "Q702482",
+      "wikidata_label": "University of Bayreuth",
+      "latitude": 49.92885,
+      "longitude": 11.5859,
+      "country_code": null,
+      "geonames_id": null,
+      "description": "university in Germany",
+      "match_confidence": "exact"
+    },
+    "Bayreuth": {
+      "original_name": "Bayreuth",
+      "wikidata_id": "Q3923",
+      "wikidata_label": "Bayreuth",
+      "latitude": 49.948055555,
+      "longitude": 11.578333333,
+      "country_code": null,
+      "geonames_id": "6556726",
+      "description": "medium-sized town in northern Bavaria, Germany",
+      "match_confidence": "exact"
+    }
+  },
+  "metadata": {
+    "generated_at": "2026-01-27T15:56:53Z",
+    "source_files": [
+      "dev.groups.json",
+      "dev.institutions.json",
+      "dev.persons.json",
+      "dev.projectsData.json",
+      "projects_metadata_ubt.UBT_ArtWorld2019.json",
+      "projects_metadata_ubt.UBT_CLnCK2019.json"
+    ],
+    "total_locations": 43
+  }
+}
