@@ -1,28 +1,38 @@
 <script lang="ts">
 	import { Card, CardHeader, CardTitle, CardContent, Select, Badge } from '$lib/components/ui';
 	import { Timeline, BarChart, PieChart } from '$lib/components/charts';
-	import { artWorldCollection, clnckCollection } from '$lib/stores/data';
+	import { allCollections } from '$lib/stores/data';
 	import {
 		groupByYear,
 		extractSubjects,
 		extractResourceTypes,
 		extractLanguages
 	} from '$lib/utils/dataTransform';
+	import { getUBTCollectionNames } from '$lib/utils/dataLoader';
 	import type { CollectionItem } from '$lib/types';
 
+	// Build collection options dynamically from UBT collection names
+	const ubtNames = getUBTCollectionNames();
 	const collectionOptions = [
-		{ value: 'artworld', label: 'ArtWorld 2019' },
-		{ value: 'clnck', label: 'CLnCK 2019' }
+		{ value: 'all', label: 'All Collections' },
+		...ubtNames.map(name => ({
+			value: name,
+			label: name.replace('UBT_', '').replace(/(\d{4})$/, ' $1')
+		}))
 	];
 
-	let leftCollection = $state('artworld');
-	let rightCollection = $state('clnck');
+	let leftCollection = $state('all');
+	let rightCollection = $state(ubtNames[0] || 'all');
 
-	// Get collections based on selection
+	// Get collections based on selection - filter from allCollections
 	function getCollection(id: string): CollectionItem[] {
-		if (id === 'artworld') return $artWorldCollection;
-		if (id === 'clnck') return $clnckCollection;
-		return [];
+		if (id === 'all') return $allCollections;
+		// Filter by project name containing the collection identifier
+		const searchTerm = id.replace('UBT_', '');
+		return $allCollections.filter(item =>
+			item.project?.name?.includes(searchTerm) ||
+			item.project?.id?.includes(id)
+		);
 	}
 
 	let leftData = $derived(getCollection(leftCollection));
