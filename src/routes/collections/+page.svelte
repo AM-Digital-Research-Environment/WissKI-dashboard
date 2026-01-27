@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { base } from '$app/paths';
 	import { Card, CardHeader, CardTitle, CardContent, Badge, Tabs } from '$lib/components/ui';
 	import { Timeline, BarChart, PieChart, WordCloud, GeoMap, LocationMap, SankeyChart, SunburstChart } from '$lib/components/charts';
 	import { allCollections, artWorldCollection, clnckCollection } from '$lib/stores/data';
@@ -22,7 +23,7 @@
 
 	onMount(async () => {
 		console.log('Collections: Loading enriched locations...');
-		enrichedLocations = await loadEnrichedLocations();
+		enrichedLocations = await loadEnrichedLocations(base);
 		console.log('Collections: Enriched locations loaded:', enrichedLocations ? 'yes' : 'no');
 		if (enrichedLocations) {
 			console.log('Collections: Countries:', Object.keys(enrichedLocations.countries).length);
