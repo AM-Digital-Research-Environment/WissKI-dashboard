@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { Card, CardHeader, CardTitle, CardContent, Badge, Tabs } from '$lib/components/ui';
 	import { Timeline, BarChart, PieChart, WordCloud, GeoMap, LocationMap, SankeyChart, SunburstChart } from '$lib/components/charts';
-	import { artWorldCollection, clnckCollection } from '$lib/stores/data';
+	import { allCollections, artWorldCollection, clnckCollection } from '$lib/stores/data';
 	import {
 		groupByYear,
 		extractSubjects,
@@ -44,7 +44,7 @@
 			? $artWorldCollection
 			: activeTab === 'clnck'
 				? $clnckCollection
-				: [...$artWorldCollection, ...$clnckCollection]
+				: $allCollections
 	);
 
 	// Derived chart data
@@ -55,11 +55,12 @@
 	let locationsData = $derived(extractLocations(currentCollection));
 	let languagesData = $derived(extractLanguages(currentCollection));
 
-	// Extract contributors
+	// Extract contributors (handle cases where name might not be an array)
 	let contributorsData = $derived(
-		countOccurrences(currentCollection, (item) =>
-			item.name?.map((n) => n.name?.label).filter(Boolean)
-		)
+		countOccurrences(currentCollection, (item) => {
+			if (!item.name || !Array.isArray(item.name)) return null;
+			return item.name.map((n) => n.name?.label).filter(Boolean);
+		})
 	);
 
 	// Sankey and Sunburst data
@@ -205,7 +206,7 @@
 				</Card>
 
 				<!-- Geographic Origins Map -->
-				<Card class="col-span-full">
+				<Card class="col-span-full overflow-visible">
 					{#snippet children()}
 						<CardHeader>
 							{#snippet children()}
@@ -214,7 +215,7 @@
 								</CardTitle>
 							{/snippet}
 						</CardHeader>
-						<CardContent class="h-[500px]">
+						<CardContent class="h-[500px] overflow-visible">
 							{#snippet children()}
 								<LocationMap data={locationsData} items={currentCollection} {enrichedLocations} />
 							{/snippet}

@@ -19,20 +19,23 @@ export const projects = writable<Project[]>([]);
 export const persons = writable<Person[]>([]);
 export const institutions = writable<Institution[]>([]);
 export const groups = writable<Group[]>([]);
-export const artWorldCollection = writable<CollectionItem[]>([]);
-export const clnckCollection = writable<CollectionItem[]>([]);
+export const allCollections = writable<CollectionItem[]>([]);
 
-// Derived store for all collections combined
-export const allCollections: Readable<CollectionItem[]> = derived(
-	[artWorldCollection, clnckCollection],
-	([$artWorld, $clnck]) => [...$artWorld, ...$clnck]
+// Legacy stores for backward compatibility (derived from allCollections)
+export const artWorldCollection: Readable<CollectionItem[]> = derived(
+	allCollections,
+	($all) => $all.filter((item) => item.project?.name?.includes('ArtWorld'))
+);
+export const clnckCollection: Readable<CollectionItem[]> = derived(
+	allCollections,
+	($all) => $all.filter((item) => item.project?.name?.includes('CLnCK'))
 );
 
 // Dashboard stats derived store
 export const dashboardStats: Readable<DashboardStats> = derived(
-	[projects, persons, institutions, artWorldCollection, clnckCollection],
-	([$projects, $persons, $institutions, $artWorld, $clnck]) =>
-		calculateStats($projects, $persons, $institutions, { artWorld: $artWorld, clnck: $clnck })
+	[projects, persons, institutions, allCollections],
+	([$projects, $persons, $institutions, $allCollections]) =>
+		calculateStats($projects, $persons, $institutions, { all: $allCollections })
 );
 
 // Initialize data from JSON files
@@ -47,8 +50,7 @@ export async function initializeData(basePath: string = '') {
 		persons.set(data.persons);
 		institutions.set(data.institutions);
 		groups.set(data.groups);
-		artWorldCollection.set(data.collections.artWorld);
-		clnckCollection.set(data.collections.clnck);
+		allCollections.set(data.collections.all);
 
 		isLoading.set(false);
 	} catch (error) {

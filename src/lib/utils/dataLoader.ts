@@ -84,6 +84,18 @@ export async function loadJSON<T>(path: string): Promise<T> {
 }
 
 /**
+ * Try to load a JSON file, return empty array if not found
+ */
+async function tryLoadJSON<T>(path: string): Promise<T[]> {
+	try {
+		return await loadJSON<T[]>(path);
+	} catch {
+		console.warn(`Could not load ${path}`);
+		return [];
+	}
+}
+
+/**
  * Load projects data
  */
 export async function loadProjects(basePath: string = ''): Promise<Project[]> {
@@ -112,45 +124,102 @@ export async function loadGroups(basePath: string = ''): Promise<Group[]> {
 }
 
 /**
- * Load UBT ArtWorld collection
+ * Load dev collections data
+ */
+export async function loadDevCollections(basePath: string = ''): Promise<CollectionItem[]> {
+	return tryLoadJSON<CollectionItem>(`${basePath}/data/dev/dev.collections.json`);
+}
+
+/**
+ * All UBT collection file names
+ */
+const UBT_COLLECTIONS = [
+	'UBT_ArtWorld2019',
+	'UBT_CLnCK2019',
+	'UBT_Covid192021',
+	'UBT_DigiRet2021',
+	'UBT_HDMC2019',
+	'UBT_Humanitar2019',
+	'UBT_Karakul2019',
+	'UBT_LearnClass2019',
+	'UBT_MaL2019',
+	'UBT_MiConIturi2019',
+	'UBT_MoCapIE2021',
+	'UBT_MuDAIMa-PRJ2019',
+	'UBT_MuDAIMa2019',
+	'UBT_MultiALS2021',
+	'UBT_OilMov2019',
+	'UBT_PEMESWA2021',
+	'UBT_Plura2021',
+	'UBT_TaiSha2021',
+	'UBT_TravKnowl2019',
+	'UBT_preDeath2021'
+];
+
+/**
+ * Load a specific UBT collection by name
+ */
+export async function loadUBTCollection(
+	collectionName: string,
+	basePath: string = ''
+): Promise<CollectionItem[]> {
+	return tryLoadJSON<CollectionItem>(
+		`${basePath}/data/projects_metadata_ubt/projects_metadata_ubt.${collectionName}.json`
+	);
+}
+
+/**
+ * Load UBT ArtWorld collection (legacy)
  */
 export async function loadArtWorldCollection(basePath: string = ''): Promise<CollectionItem[]> {
-	return loadJSON<CollectionItem[]>(
-		`${basePath}/data/projects_metadata_ubt/projects_metadata_ubt.UBT_ArtWorld2019.json`
-	);
+	return loadUBTCollection('UBT_ArtWorld2019', basePath);
 }
 
 /**
- * Load UBT CLnCK collection
+ * Load UBT CLnCK collection (legacy)
  */
 export async function loadCLnCKCollection(basePath: string = ''): Promise<CollectionItem[]> {
-	return loadJSON<CollectionItem[]>(
-		`${basePath}/data/projects_metadata_ubt/projects_metadata_ubt.UBT_CLnCK2019.json`
-	);
+	return loadUBTCollection('UBT_CLnCK2019', basePath);
 }
 
 /**
- * Load all collection items from all UBT collections
+ * Load all UBT collections
+ */
+export async function loadAllUBTCollections(basePath: string = ''): Promise<CollectionItem[]> {
+	const results = await Promise.all(
+		UBT_COLLECTIONS.map((name) => loadUBTCollection(name, basePath))
+	);
+	return results.flat();
+}
+
+/**
+ * Load all collection items from all sources (UBT + dev)
  */
 export async function loadAllCollections(basePath: string = ''): Promise<CollectionItem[]> {
-	const [artWorld, clnck] = await Promise.all([
-		loadArtWorldCollection(basePath),
-		loadCLnCKCollection(basePath)
+	const [ubtCollections, devCollections] = await Promise.all([
+		loadAllUBTCollections(basePath),
+		loadDevCollections(basePath)
 	]);
-	return [...artWorld, ...clnck];
+	return [...ubtCollections, ...devCollections];
+}
+
+/**
+ * Get list of available UBT collection names
+ */
+export function getUBTCollectionNames(): string[] {
+	return [...UBT_COLLECTIONS];
 }
 
 /**
  * Load all data for the dashboard
  */
 export async function loadAllData(basePath: string = '') {
-	const [projects, persons, institutions, groups, artWorld, clnck] = await Promise.all([
+	const [projects, persons, institutions, groups, allCollections] = await Promise.all([
 		loadProjects(basePath),
 		loadPersons(basePath),
 		loadInstitutions(basePath),
 		loadGroups(basePath),
-		loadArtWorldCollection(basePath),
-		loadCLnCKCollection(basePath)
+		loadAllCollections(basePath)
 	]);
 
 	return {
@@ -159,9 +228,7 @@ export async function loadAllData(basePath: string = '') {
 		institutions,
 		groups,
 		collections: {
-			artWorld,
-			clnck,
-			all: [...artWorld, ...clnck]
+			all: allCollections
 		}
 	};
 }

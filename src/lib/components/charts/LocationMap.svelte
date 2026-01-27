@@ -12,6 +12,7 @@
 	}
 
 	interface MarkerData {
+		id: string;
 		name: string;
 		latitude: number;
 		longitude: number;
@@ -32,8 +33,18 @@
 	let { data, items = [], enrichedLocations = null, title = '', class: className = '' }: Props = $props();
 
 	let mapContainer: HTMLDivElement | undefined = $state();
+	let mapWrapper: HTMLDivElement | undefined = $state();
 	let map: maplibregl.Map | null = null;
 	let mapReady = $state(false);
+	let isFullscreen = $state(false);
+
+	const ITEMS_PER_PAGE = 5;
+
+	// Store pagination state for each marker
+	const paginationState = new Map<string, number>();
+
+	// Store all markers to manage popups
+	let mapMarkers: maplibregl.Marker[] = [];
 
 	// Helper to get item title
 	function getItemTitle(item: CollectionItem): string {
@@ -87,10 +98,11 @@
 				const [cityName, countryName] = key.split('|');
 				const matchingItems = items
 					.filter(item => itemMatchesLocation(item, 'city', cityName, countryName))
-					.slice(0, 10)
 					.map(item => ({ title: getItemTitle(item), type: item.typeOfResource || 'Unknown' }));
 
-				markerMap.set(key, {
+				const markerId = `city-${key}`;
+				markerMap.set(markerId, {
+					id: markerId,
 					name: cityData.wikidata_label || cityName,
 					latitude: cityData.latitude,
 					longitude: cityData.longitude,
@@ -111,10 +123,11 @@
 				const adjustedCount = hasCities ? Math.ceil(count * 0.3) : count;
 				const matchingItems = items
 					.filter(item => itemMatchesLocation(item, 'country', country))
-					.slice(0, 10)
 					.map(item => ({ title: getItemTitle(item), type: item.typeOfResource || 'Unknown' }));
 
-				markerMap.set(`country:${country}`, {
+				const markerId = `country-${country}`;
+				markerMap.set(markerId, {
+					id: markerId,
 					name: countryData.wikidata_label || country,
 					latitude: countryData.latitude,
 					longitude: countryData.longitude,
@@ -130,14 +143,14 @@
 		data.forEach((d) => {
 			const currentLoc = enrichedLocations.other[d.city] || enrichedLocations.other[d.country];
 			if (currentLoc?.latitude && currentLoc?.longitude) {
-				const key = `other:${currentLoc.original_name}`;
-				if (!markerMap.has(key)) {
+				const markerId = `other-${currentLoc.original_name}`;
+				if (!markerMap.has(markerId)) {
 					const matchingItems = items
 						.filter(item => itemMatchesLocation(item, 'other', currentLoc.original_name))
-						.slice(0, 10)
 						.map(item => ({ title: getItemTitle(item), type: item.typeOfResource || 'Unknown' }));
 
-					markerMap.set(key, {
+					markerMap.set(markerId, {
+						id: markerId,
 						name: currentLoc.wikidata_label || currentLoc.original_name,
 						latitude: currentLoc.latitude,
 						longitude: currentLoc.longitude,
@@ -176,6 +189,219 @@
 		}
 	}
 
+	// Generate popup HTML for a specific page
+	function generatePopupContent(markerData: MarkerData, page: number): string {
+		const color = getMarkerColor(markerData.type);
+		const totalItems = markerData.items.length;
+		const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+		const startIdx = page * ITEMS_PER_PAGE;
+		const endIdx = Math.min(startIdx + ITEMS_PER_PAGE, totalItems);
+		const pageItems = markerData.items.slice(startIdx, endIdx);
+
+		const itemsHtml = pageItems.length > 0
+			? `<ul class="popup-items-list">
+				${pageItems.map(item =>
+					`<li class="popup-item">
+						<span class="popup-item-title">${item.title.length > 45 ? item.title.substring(0, 45) + '...' : item.title}</span>
+						<span class="popup-item-type">(${item.type})</span>
+					</li>`
+				).join('')}
+			</ul>`
+			: '<p class="popup-no-items">No documents found</p>';
+
+		const paginationHtml = totalPages > 1
+			? `<div class="popup-pagination">
+				<button class="popup-page-btn" data-marker-id="${markerData.id}" data-page="${page - 1}" ${page === 0 ? 'disabled' : ''}>
+					&larr; Prev
+				</button>
+				<span class="popup-page-info">${page + 1} / ${totalPages}</span>
+				<button class="popup-page-btn" data-marker-id="${markerData.id}" data-page="${page + 1}" ${page >= totalPages - 1 ? 'disabled' : ''}>
+					Next &rarr;
+				</button>
+			</div>`
+			: '';
+
+		return `
+			<div class="popup-container" data-marker-id="${markerData.id}">
+				<div class="popup-header">
+					<h3 class="popup-title">${markerData.name}</h3>
+					<div class="popup-meta">
+						<span class="popup-type-badge" style="background-color: ${color};">
+							${markerData.type}
+						</span>
+						<span class="popup-count">
+							<strong>${markerData.count}</strong> item${markerData.count !== 1 ? 's' : ''}
+						</span>
+					</div>
+				</div>
+				<div class="popup-content" id="popup-content-${markerData.id}">
+					${itemsHtml}
+				</div>
+				${paginationHtml}
+				${markerData.wikidataId ? `
+					<div class="popup-footer">
+						<a href="https://www.wikidata.org/wiki/${markerData.wikidataId}" target="_blank" class="popup-wikidata-link">
+							View on Wikidata &rarr;
+						</a>
+					</div>
+				` : ''}
+			</div>
+			<style>
+				.popup-container {
+					padding: 4px;
+					min-width: 260px;
+					max-width: 320px;
+				}
+				.popup-header {
+					margin-bottom: 12px;
+				}
+				.popup-title {
+					font-size: 16px;
+					font-weight: 600;
+					margin: 0 0 8px 0;
+					color: hsl(var(--popover-foreground));
+				}
+				.popup-meta {
+					display: flex;
+					align-items: center;
+					gap: 12px;
+				}
+				.popup-type-badge {
+					color: white;
+					padding: 2px 8px;
+					border-radius: 4px;
+					font-size: 11px;
+					font-weight: 500;
+					text-transform: capitalize;
+				}
+				.popup-count {
+					font-size: 13px;
+					color: hsl(var(--muted-foreground));
+				}
+				.popup-content {
+					border-top: 1px solid hsl(var(--border));
+					padding-top: 8px;
+				}
+				.popup-items-list {
+					margin: 0;
+					padding: 0 0 0 16px;
+					max-height: 180px;
+					overflow-y: auto;
+				}
+				.popup-item {
+					margin-bottom: 6px;
+					line-height: 1.4;
+				}
+				.popup-item-title {
+					font-size: 12px;
+					color: hsl(var(--popover-foreground));
+				}
+				.popup-item-type {
+					font-size: 10px;
+					color: hsl(var(--muted-foreground));
+					margin-left: 4px;
+				}
+				.popup-no-items {
+					font-size: 12px;
+					color: hsl(var(--muted-foreground));
+					margin: 8px 0;
+				}
+				.popup-pagination {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					margin-top: 12px;
+					padding-top: 8px;
+					border-top: 1px solid hsl(var(--border));
+				}
+				.popup-page-btn {
+					background: hsl(var(--secondary));
+					color: hsl(var(--secondary-foreground));
+					border: none;
+					padding: 4px 10px;
+					border-radius: 4px;
+					font-size: 11px;
+					cursor: pointer;
+					transition: background 0.2s;
+				}
+				.popup-page-btn:hover:not(:disabled) {
+					background: hsl(var(--accent));
+				}
+				.popup-page-btn:disabled {
+					opacity: 0.5;
+					cursor: not-allowed;
+				}
+				.popup-page-info {
+					font-size: 11px;
+					color: hsl(var(--muted-foreground));
+				}
+				.popup-footer {
+					margin-top: 12px;
+					padding-top: 8px;
+					border-top: 1px solid hsl(var(--border));
+				}
+				.popup-wikidata-link {
+					font-size: 11px;
+					color: hsl(var(--primary));
+					text-decoration: none;
+				}
+				.popup-wikidata-link:hover {
+					text-decoration: underline;
+				}
+			</style>
+		`;
+	}
+
+	// Handle pagination click
+	function handlePaginationClick(event: Event) {
+		const target = event.target as HTMLElement;
+		if (target.classList.contains('popup-page-btn') && !target.hasAttribute('disabled')) {
+			const markerId = target.dataset.markerId;
+			const page = parseInt(target.dataset.page || '0', 10);
+
+			if (markerId) {
+				paginationState.set(markerId, page);
+				const marker = markers.find(m => m.id === markerId);
+				if (marker) {
+					const popupContainer = document.querySelector(`.popup-container[data-marker-id="${markerId}"]`);
+					if (popupContainer) {
+						popupContainer.outerHTML = generatePopupContent(marker, page);
+					}
+				}
+			}
+		}
+	}
+
+	// Close all popups except the one being opened
+	function closeOtherPopups(currentMarker?: maplibregl.Marker) {
+		mapMarkers.forEach(marker => {
+			if (marker !== currentMarker) {
+				const popup = marker.getPopup();
+				if (popup && popup.isOpen()) {
+					popup.remove();
+				}
+			}
+		});
+	}
+
+	// Toggle fullscreen mode
+	function toggleFullscreen() {
+		isFullscreen = !isFullscreen;
+
+		// Resize map after fullscreen transition
+		setTimeout(() => {
+			map?.resize();
+		}, 100);
+	}
+
+	// Handle escape key to exit fullscreen
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape' && isFullscreen) {
+			isFullscreen = false;
+			setTimeout(() => map?.resize(), 100);
+		}
+	}
+
 	function initializeMap() {
 		if (!mapContainer || map) return;
 
@@ -192,14 +418,23 @@
 			mapReady = true;
 			updateMarkers();
 		});
+
+		// Close popups when clicking on the map (not on a marker)
+		map.on('click', () => {
+			closeOtherPopups();
+		});
+
+		// Add global click listener for pagination
+		document.addEventListener('click', handlePaginationClick);
+		document.addEventListener('keydown', handleKeydown);
 	}
 
 	function updateMarkers() {
 		if (!map || !mapReady) return;
 
-		// Remove existing markers
-		const existingMarkers = document.querySelectorAll('.location-marker');
-		existingMarkers.forEach((el) => el.remove());
+		// Remove existing markers from map and clear array
+		mapMarkers.forEach(marker => marker.remove());
+		mapMarkers = [];
 
 		// Add new markers
 		markers.forEach((markerData) => {
@@ -229,47 +464,28 @@
 				el.textContent = markerData.count.toString();
 			}
 
-			// Build document list HTML
-			const itemsHtml = markerData.items.length > 0
-				? `<ul style="margin: 8px 0 0 0; padding-left: 16px; font-size: 12px; max-height: 150px; overflow-y: auto;">
-					${markerData.items.map(item =>
-						`<li style="margin-bottom: 4px;">
-							<span style="color: #333;">${item.title.length > 40 ? item.title.substring(0, 40) + '...' : item.title}</span>
-							<span style="color: #888; font-size: 10px;"> (${item.type})</span>
-						</li>`
-					).join('')}
-					${markerData.count > markerData.items.length ? `<li style="color: #888; font-style: italic;">...and ${markerData.count - markerData.items.length} more</li>` : ''}
-				</ul>`
-				: '<p style="margin-top: 8px; color: #888; font-size: 12px;">No documents found</p>';
-
-			// Create popup content
-			const popupContent = `
-				<div style="padding: 8px; max-width: 280px;">
-					<strong style="font-size: 14px;">${markerData.name}</strong>
-					<div style="margin-top: 4px;">
-						<span style="background: ${color}; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px;">
-							${markerData.type}
-						</span>
-						<span style="margin-left: 8px; font-size: 12px; color: #666;">
-							<strong>${markerData.count}</strong> item${markerData.count !== 1 ? 's' : ''}
-						</span>
-					</div>
-					${itemsHtml}
-					${markerData.wikidataId ? `<div style="margin-top: 8px; border-top: 1px solid #eee; padding-top: 8px;"><a href="https://www.wikidata.org/wiki/${markerData.wikidataId}" target="_blank" style="font-size: 11px; color: #3b82f6;">View on Wikidata</a></div>` : ''}
-				</div>
-			`;
+			// Get current page for this marker
+			const currentPage = paginationState.get(markerData.id) || 0;
 
 			const popup = new maplibregl.Popup({
 				offset: radius,
 				closeButton: true,
 				closeOnClick: false,
-				maxWidth: '300px'
-			}).setHTML(popupContent);
+				maxWidth: '340px',
+				anchor: 'bottom' // Helps with positioning
+			}).setHTML(generatePopupContent(markerData, currentPage));
 
-			new maplibregl.Marker({ element: el })
+			const marker = new maplibregl.Marker({ element: el })
 				.setLngLat([markerData.longitude, markerData.latitude])
 				.setPopup(popup)
 				.addTo(map!);
+
+			// Close other popups when this popup opens
+			popup.on('open', () => {
+				closeOtherPopups(marker);
+			});
+
+			mapMarkers.push(marker);
 		});
 
 		// Fit bounds to show all markers
@@ -297,6 +513,10 @@
 	});
 
 	onDestroy(() => {
+		document.removeEventListener('click', handlePaginationClick);
+		document.removeEventListener('keydown', handleKeydown);
+		mapMarkers.forEach(marker => marker.remove());
+		mapMarkers = [];
 		if (map) {
 			map.remove();
 			map = null;
@@ -304,8 +524,17 @@
 	});
 </script>
 
-<div class={cn('w-full h-full min-h-[400px] flex flex-col', className)}>
-	{#if title}
+<div
+	bind:this={mapWrapper}
+	class={cn(
+		'flex flex-col',
+		isFullscreen
+			? 'fixed inset-0 z-50 bg-background p-4'
+			: 'w-full h-full min-h-[400px]',
+		className
+	)}
+>
+	{#if title && !isFullscreen}
 		<h3 class="text-lg font-semibold text-center mb-4">{title}</h3>
 	{/if}
 
@@ -324,12 +553,42 @@
 			<p class="text-muted-foreground">No locations with coordinates found</p>
 		</div>
 	{:else}
-		<div class="flex-1 relative rounded-lg overflow-hidden border" style="min-height: 400px;">
-			<div bind:this={mapContainer} class="absolute inset-0 w-full h-full"></div>
+		<div class="flex-1 relative rounded-lg border" style={isFullscreen ? '' : 'min-height: 400px; overflow: visible;'}>
+			<div bind:this={mapContainer} class="absolute inset-0 w-full h-full rounded-lg overflow-hidden"></div>
+
+			<!-- Fullscreen button -->
+			<button
+				onclick={toggleFullscreen}
+				class="absolute top-2 left-2 z-10 bg-background/90 hover:bg-background border rounded-md p-2 shadow-sm transition-colors"
+				title={isFullscreen ? 'Exit fullscreen (Esc)' : 'Enter fullscreen'}
+			>
+				{#if isFullscreen}
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<polyline points="4 14 10 14 10 20"></polyline>
+						<polyline points="20 10 14 10 14 4"></polyline>
+						<line x1="14" y1="10" x2="21" y2="3"></line>
+						<line x1="3" y1="21" x2="10" y2="14"></line>
+					</svg>
+				{:else}
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<polyline points="15 3 21 3 21 9"></polyline>
+						<polyline points="9 21 3 21 3 15"></polyline>
+						<line x1="21" y1="3" x2="14" y2="10"></line>
+						<line x1="3" y1="21" x2="10" y2="14"></line>
+					</svg>
+				{/if}
+			</button>
+
+			<!-- Fullscreen title -->
+			{#if isFullscreen && title}
+				<div class="absolute top-2 left-1/2 -translate-x-1/2 z-10 bg-background/90 border rounded-md px-4 py-2 shadow-sm">
+					<h3 class="text-lg font-semibold">{title}</h3>
+				</div>
+			{/if}
 		</div>
 
 		<!-- Legend -->
-		<div class="mt-3 flex flex-wrap gap-4 justify-center text-sm">
+		<div class={cn('flex flex-wrap gap-4 justify-center text-sm', isFullscreen ? 'mt-4' : 'mt-3')}>
 			<div class="flex items-center gap-2">
 				<div class="w-4 h-4 rounded-full bg-[#3b82f6] opacity-70"></div>
 				<span class="text-muted-foreground">City</span>
@@ -346,6 +605,14 @@
 				<span class="font-medium">{markers.length}</span> locations |
 				<span class="font-medium">{data.reduce((sum, d) => sum + d.count, 0)}</span> items
 			</div>
+			{#if isFullscreen}
+				<button
+					onclick={toggleFullscreen}
+					class="text-muted-foreground hover:text-foreground transition-colors"
+				>
+					Press Esc to exit
+				</button>
+			{/if}
 		</div>
 	{/if}
 </div>

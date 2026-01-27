@@ -297,17 +297,21 @@ export function calculateStats(
 	projects: Project[],
 	persons: Person[],
 	institutions: { _id: string; name: string }[],
-	collections: { artWorld: CollectionItem[]; clnck: CollectionItem[] }
+	collections: { all: CollectionItem[] }
 ): DashboardStats {
+	// Count collections by project for breakdown
+	const projectCounts = new Map<string, number>();
+	collections.all.forEach((item) => {
+		const projectName = item.project?.name || 'Unknown';
+		projectCounts.set(projectName, (projectCounts.get(projectName) || 0) + 1);
+	});
+
 	return {
 		totalProjects: projects.length,
 		totalPersons: persons.length,
-		totalDocuments: collections.artWorld.length + collections.clnck.length,
+		totalDocuments: collections.all.length,
 		totalInstitutions: institutions.length,
-		collectionCounts: {
-			artWorld: collections.artWorld.length,
-			clnck: collections.clnck.length
-		}
+		collectionCounts: Object.fromEntries(projectCounts)
 	};
 }
 
