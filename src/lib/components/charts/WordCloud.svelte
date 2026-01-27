@@ -11,10 +11,11 @@
 		data: WordCloudDataPoint[];
 		title?: string;
 		class?: string;
+		maxWords?: number;
 		onclick?: (word: string) => void;
 	}
 
-	let { data, title = '', class: className = '', onclick }: Props = $props();
+	let { data, title = '', class: className = '', maxWords = 100, onclick }: Props = $props();
 
 	let chartContainer: HTMLDivElement;
 	let chartInstance: ECharts | null = null;
@@ -31,8 +32,14 @@
 	];
 
 	function getOption() {
-		const maxValue = Math.max(...data.map((d) => d.value));
-		const minValue = Math.min(...data.map((d) => d.value));
+		const slicedData = data.slice(0, maxWords);
+
+		// Dynamic font size based on word count - fewer words = bigger fonts
+		const minFontSize = maxWords <= 30 ? 14 : maxWords <= 60 ? 12 : 10;
+		const maxFontSize = maxWords <= 30 ? 64 : maxWords <= 60 ? 52 : maxWords <= 100 ? 44 : 36;
+
+		// Dynamic grid size - more words need tighter packing
+		const gridSize = maxWords <= 50 ? 4 : maxWords <= 100 ? 3 : 2;
 
 		return {
 			title: title
@@ -57,13 +64,13 @@
 					type: 'wordCloud',
 					shape: 'circle',
 					left: 'center',
-					top: title ? '15%' : 'center',
-					width: '90%',
-					height: '80%',
-					sizeRange: [12, 60],
+					top: 'center',
+					width: '100%',
+					height: '100%',
+					sizeRange: [minFontSize, maxFontSize],
 					rotationRange: [-45, 45],
 					rotationStep: 15,
-					gridSize: 8,
+					gridSize: gridSize,
 					drawOutOfBound: false,
 					textStyle: {
 						fontFamily: 'Inter, sans-serif',
@@ -76,7 +83,7 @@
 							shadowColor: '#333'
 						}
 					},
-					data: data.slice(0, 100).map((d) => ({
+					data: slicedData.map((d) => ({
 						name: d.name,
 						value: d.value,
 						textStyle: {
@@ -114,6 +121,7 @@
 	$effect(() => {
 		$theme;
 		data;
+		maxWords;
 		if (chartInstance) {
 			chartInstance.setOption(getOption(), true);
 		}

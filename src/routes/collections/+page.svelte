@@ -42,6 +42,7 @@
 	];
 
 	let selectedCollection = $state('all');
+	let wordCloudMaxWords = $state(50);
 
 	// Get current collection based on selection
 	function getFilteredCollection(id: string): CollectionItem[] {
@@ -197,19 +198,35 @@
 				</Card>
 
 				<!-- Word Cloud -->
-				<Card>
+				<Card class="col-span-full">
 					{#snippet children()}
 						<CardHeader>
 							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Subject Word Cloud{/snippet}
-								</CardTitle>
+								<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+									<CardTitle>
+										{#snippet children()}Subject Word Cloud{/snippet}
+									</CardTitle>
+									<div class="flex items-center gap-4">
+										<label for="wordcloud-slider" class="text-sm text-muted-foreground whitespace-nowrap">
+											Words: {wordCloudMaxWords}
+										</label>
+										<input
+											id="wordcloud-slider"
+											type="range"
+											min="20"
+											max="200"
+											step="10"
+											bind:value={wordCloudMaxWords}
+											class="w-32 sm:w-48 h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+										/>
+									</div>
+								</div>
 							{/snippet}
 						</CardHeader>
-						<CardContent class="h-[350px]">
+						<CardContent class="h-[450px]">
 							{#snippet children()}
 								{#if wordCloudData.length > 0}
-									<WordCloud data={wordCloudData} />
+									<WordCloud data={wordCloudData} maxWords={wordCloudMaxWords} />
 								{:else}
 									<div class="h-full flex items-center justify-center text-muted-foreground">
 										No data available

@@ -18,6 +18,9 @@
 		extractResearchSections
 	} from '$lib/utils/dataTransform';
 
+	// Word cloud controls
+	let wordCloudMaxWords = $state(50);
+
 	// Derived chart data
 	let timelineData = $derived(groupByYear($filteredCollections));
 	let subjectsData = $derived(extractSubjects($filteredCollections));
@@ -205,19 +208,35 @@
 		</Card>
 
 		<!-- Word Cloud -->
-		<Card>
+		<Card class="col-span-full">
 			{#snippet children()}
 				<CardHeader>
 					{#snippet children()}
-						<CardTitle>
-							{#snippet children()}Tags & Subjects{/snippet}
-						</CardTitle>
+						<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+							<CardTitle>
+								{#snippet children()}Tags & Subjects{/snippet}
+							</CardTitle>
+							<div class="flex items-center gap-4">
+								<label for="home-wordcloud-slider" class="text-sm text-muted-foreground whitespace-nowrap">
+									Words: {wordCloudMaxWords}
+								</label>
+								<input
+									id="home-wordcloud-slider"
+									type="range"
+									min="20"
+									max="200"
+									step="10"
+									bind:value={wordCloudMaxWords}
+									class="w-32 sm:w-48 h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+								/>
+							</div>
+						</div>
 					{/snippet}
 				</CardHeader>
-				<CardContent class="h-[350px]">
+				<CardContent class="h-[450px]">
 					{#snippet children()}
 						{#if wordCloudData.length > 0}
-							<WordCloud data={wordCloudData} />
+							<WordCloud data={wordCloudData} maxWords={wordCloudMaxWords} />
 						{:else}
 							<div class="h-full flex items-center justify-center text-muted-foreground">
 								No data available
