@@ -238,13 +238,6 @@
 					${itemsHtml}
 				</div>
 				${paginationHtml}
-				${markerData.wikidataId ? `
-					<div class="popup-footer">
-						<a href="https://www.wikidata.org/wiki/${markerData.wikidataId}" target="_blank" class="popup-wikidata-link">
-							View on Wikidata &rarr;
-						</a>
-					</div>
-				` : ''}
 			</div>
 			<style>
 				.popup-container {
@@ -334,19 +327,6 @@
 				.popup-page-info {
 					font-size: 11px;
 					color: hsl(var(--muted-foreground));
-				}
-				.popup-footer {
-					margin-top: 12px;
-					padding-top: 8px;
-					border-top: 1px solid hsl(var(--border));
-				}
-				.popup-wikidata-link {
-					font-size: 11px;
-					color: hsl(var(--primary));
-					text-decoration: none;
-				}
-				.popup-wikidata-link:hover {
-					text-decoration: underline;
 				}
 			</style>
 		`;

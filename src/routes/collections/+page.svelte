@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
-	import { Card, CardHeader, CardTitle, CardContent, Badge, Tabs } from '$lib/components/ui';
+	import { Card, CardHeader, CardTitle, CardContent, Badge, Select } from '$lib/components/ui';
 	import { Timeline, BarChart, PieChart, WordCloud, GeoMap, LocationMap, SankeyChart, SunburstChart } from '$lib/components/charts';
-	import { allCollections, artWorldCollection, clnckCollection } from '$lib/stores/data';
+	import { allCollections } from '$lib/stores/data';
 	import {
 		groupByYear,
 		extractSubjects,
@@ -15,7 +15,7 @@
 		buildSankeyData,
 		buildSunburstData
 	} from '$lib/utils/dataTransform';
-	import { loadEnrichedLocations } from '$lib/utils/dataLoader';
+	import { loadEnrichedLocations, getUBTCollectionNames } from '$lib/utils/dataLoader';
 	import type { CollectionItem, EnrichedLocationsData } from '$lib/types';
 
 	// Enriched location data for the map
@@ -31,22 +31,29 @@
 		}
 	});
 
-	const tabs = [
-		{ id: 'all', label: 'All Collections' },
-		{ id: 'artworld', label: 'ArtWorld 2019' },
-		{ id: 'clnck', label: 'CLnCK 2019' }
+	// Build collection options dynamically
+	const ubtNames = getUBTCollectionNames();
+	const collectionOptions = [
+		{ value: 'all', label: 'All Collections' },
+		...ubtNames.map(name => ({
+			value: name,
+			label: name.replace('UBT_', '').replace(/(\d{4})$/, ' $1')
+		}))
 	];
 
-	let activeTab = $state('all');
+	let selectedCollection = $state('all');
 
-	// Get current collection based on active tab
-	let currentCollection = $derived<CollectionItem[]>(
-		activeTab === 'artworld'
-			? $artWorldCollection
-			: activeTab === 'clnck'
-				? $clnckCollection
-				: $allCollections
-	);
+	// Get current collection based on selection
+	function getFilteredCollection(id: string): CollectionItem[] {
+		if (id === 'all') return $allCollections;
+		const searchTerm = id.replace('UBT_', '');
+		return $allCollections.filter(item =>
+			item.project?.name?.includes(searchTerm) ||
+			item.project?.id?.includes(id)
+		);
+	}
+
+	let currentCollection = $derived<CollectionItem[]>(getFilteredCollection(selectedCollection));
 
 	// Derived chart data
 	let timelineData = $derived(groupByYear(currentCollection));
@@ -68,24 +75,31 @@
 	let sankeyData = $derived(buildSankeyData(currentCollection));
 	let sunburstData = $derived(buildSunburstData(currentCollection));
 
-	function handleTabChange(tabId: string) {
-		activeTab = tabId;
-	}
+	// Get label for current selection
+	let currentLabel = $derived(
+		collectionOptions.find(o => o.value === selectedCollection)?.label || 'All Collections'
+	);
 </script>
 
 <div class="space-y-6">
-	<!-- Page Header -->
-	<div>
-		<h1 class="text-3xl font-bold">Collections</h1>
-		<p class="text-muted-foreground mt-1">
-			Browse UBT collection metadata and visualizations
-		</p>
+	<!-- Page Header with Collection Selector -->
+	<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+		<div>
+			<h1 class="text-3xl font-bold">Collections</h1>
+			<p class="text-muted-foreground mt-1">
+				Browse UBT collection metadata and visualizations
+			</p>
+		</div>
+		<div class="w-full sm:w-64">
+			<Select
+				options={collectionOptions}
+				bind:value={selectedCollection}
+				placeholder="Select collection..."
+			/>
+		</div>
 	</div>
 
-	<!-- Collection Tabs -->
-	<Tabs {tabs} {activeTab} onTabChange={handleTabChange}>
-		{#snippet children(tab)}
-			<!-- Stats Cards -->
+	<!-- Stats Cards -->
 			<div class="grid gap-4 md:grid-cols-4 mb-6">
 				<Card>
 					{#snippet children()}
@@ -399,6 +413,4 @@
 					</CardContent>
 				{/snippet}
 			</Card>
-		{/snippet}
-	</Tabs>
 </div>
