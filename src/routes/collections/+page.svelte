@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { Card, CardHeader, CardTitle, CardContent, Badge, Tabs } from '$lib/components/ui';
-	import { Timeline, BarChart, PieChart, WordCloud, GeoMap, SankeyChart, SunburstChart } from '$lib/components/charts';
+	import { Timeline, BarChart, PieChart, WordCloud, GeoMap, LocationMap, SankeyChart, SunburstChart } from '$lib/components/charts';
 	import { artWorldCollection, clnckCollection } from '$lib/stores/data';
 	import {
 		groupByYear,
@@ -13,7 +14,21 @@
 		buildSankeyData,
 		buildSunburstData
 	} from '$lib/utils/dataTransform';
-	import type { CollectionItem } from '$lib/types';
+	import { loadEnrichedLocations } from '$lib/utils/dataLoader';
+	import type { CollectionItem, EnrichedLocationsData } from '$lib/types';
+
+	// Enriched location data for the map
+	let enrichedLocations = $state<EnrichedLocationsData | null>(null);
+
+	onMount(async () => {
+		console.log('Collections: Loading enriched locations...');
+		enrichedLocations = await loadEnrichedLocations();
+		console.log('Collections: Enriched locations loaded:', enrichedLocations ? 'yes' : 'no');
+		if (enrichedLocations) {
+			console.log('Collections: Countries:', Object.keys(enrichedLocations.countries).length);
+			console.log('Collections: Cities:', Object.keys(enrichedLocations.cities).length);
+		}
+	});
 
 	const tabs = [
 		{ id: 'all', label: 'All Collections' },
@@ -189,13 +204,31 @@
 					{/snippet}
 				</Card>
 
-				<!-- Geographic Origins -->
+				<!-- Geographic Origins Map -->
+				<Card class="col-span-full">
+					{#snippet children()}
+						<CardHeader>
+							{#snippet children()}
+								<CardTitle>
+									{#snippet children()}Geographic Origins (Map){/snippet}
+								</CardTitle>
+							{/snippet}
+						</CardHeader>
+						<CardContent class="h-[500px]">
+							{#snippet children()}
+								<LocationMap data={locationsData} items={currentCollection} {enrichedLocations} />
+							{/snippet}
+						</CardContent>
+					{/snippet}
+				</Card>
+
+				<!-- Geographic Origins Bar Chart -->
 				<Card>
 					{#snippet children()}
 						<CardHeader>
 							{#snippet children()}
 								<CardTitle>
-									{#snippet children()}Geographic Origins{/snippet}
+									{#snippet children()}Geographic Origins (Chart){/snippet}
 								</CardTitle>
 							{/snippet}
 						</CardHeader>

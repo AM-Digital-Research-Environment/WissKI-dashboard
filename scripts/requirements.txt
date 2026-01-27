@@ -1,0 +1,2 @@
+# Python dependencies for WissKI Dashboard data enrichment scripts
+requests>=2.28.0

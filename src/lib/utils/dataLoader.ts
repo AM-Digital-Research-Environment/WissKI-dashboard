@@ -6,7 +6,8 @@ import type {
 	CollectionItem,
 	MongoOid,
 	MongoDate,
-	MongoNaN
+	MongoNaN,
+	EnrichedLocationsData
 } from '$lib/types';
 
 /**
@@ -163,4 +164,23 @@ export async function loadAllData(basePath: string = '') {
 			all: [...artWorld, ...clnck]
 		}
 	};
+}
+
+/**
+ * Load enriched location data (Wikidata reconciliation results)
+ */
+export async function loadEnrichedLocations(
+	basePath: string = ''
+): Promise<EnrichedLocationsData | null> {
+	try {
+		const response = await fetch(`${basePath}/data/enriched/locations_wikidata.json`);
+		if (!response.ok) {
+			console.warn('Enriched location data not found. Run reconcile_locations.py to generate it.');
+			return null;
+		}
+		return response.json();
+	} catch {
+		console.warn('Failed to load enriched location data.');
+		return null;
+	}
 }

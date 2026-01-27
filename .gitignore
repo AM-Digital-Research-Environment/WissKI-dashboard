@@ -24,3 +24,8 @@ npm-debug.log*
 
 # Testing
 coverage/
+
+# Python scripts
+scripts/.location_cache.json
+__pycache__/
+*.pyc
