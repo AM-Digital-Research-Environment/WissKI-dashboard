@@ -8,35 +8,108 @@
 		extractResourceTypes,
 		extractLanguages
 	} from '$lib/utils/dataTransform';
-	import { getUBTCollectionNames } from '$lib/utils/dataLoader';
+	import { UNIVERSITY_COLLECTIONS, getUniversities } from '$lib/utils/dataLoader';
 	import type { CollectionItem } from '$lib/types';
 
-	// Build collection options dynamically from UBT collection names
-	const ubtNames = getUBTCollectionNames();
-	const collectionOptions = [
-		{ value: 'all', label: 'All Collections' },
-		...ubtNames.map(name => ({
-			value: name,
-			label: name.replace('UBT_', '').replace(/(\d{4})$/, ' $1')
+	// Get all universities
+	const allUniversities = getUniversities();
+
+	// Build university options
+	const universityOptions = [
+		{ value: 'all', label: 'All Universities' },
+		...allUniversities.map((uni) => ({
+			value: uni.id,
+			label: `${uni.code} - ${uni.name}`
 		}))
 	];
 
-	let leftCollection = $state('all');
-	let rightCollection = $state(ubtNames[0] || 'all');
+	// Build project options for a given university
+	function getProjectOptions(universityId: string) {
+		if (universityId === 'all') {
+			// Show all projects from all universities
+			const allProjects: { value: string; label: string }[] = [
+				{ value: 'all', label: 'All Projects' }
+			];
+			for (const uni of allUniversities) {
+				const projects = UNIVERSITY_COLLECTIONS[uni.id] || [];
+				for (const proj of projects) {
+					allProjects.push({
+						value: `${uni.id}:${proj}`,
+						label: `${uni.code}: ${proj.replace(uni.code + '_', '').replace(/(\d{4})$/, ' $1')}`
+					});
+				}
+			}
+			return allProjects;
+		}
 
-	// Get collections based on selection - filter from allCollections
-	function getCollection(id: string): CollectionItem[] {
-		if (id === 'all') return $allCollections;
-		// Filter by project name containing the collection identifier
-		const searchTerm = id.replace('UBT_', '');
-		return $allCollections.filter(item =>
-			item.project?.name?.includes(searchTerm) ||
-			item.project?.id?.includes(id)
-		);
+		const projects = UNIVERSITY_COLLECTIONS[universityId] || [];
+		const uni = allUniversities.find((u) => u.id === universityId);
+		const prefix = uni?.code || universityId.toUpperCase();
+
+		return [
+			{ value: 'all', label: 'All Projects' },
+			...projects.map((proj) => ({
+				value: `${universityId}:${proj}`,
+				label: proj.replace(prefix + '_', '').replace(/(\d{4})$/, ' $1')
+			}))
+		];
 	}
 
-	let leftData = $derived(getCollection(leftCollection));
-	let rightData = $derived(getCollection(rightCollection));
+	// Left side selection
+	let leftUniversity = $state('all');
+	let leftProject = $state('all');
+	let leftProjectOptions = $derived(getProjectOptions(leftUniversity));
+
+	// Right side selection
+	let rightUniversity = $state(allUniversities[0]?.id || 'all');
+	let rightProject = $state('all');
+	let rightProjectOptions = $derived(getProjectOptions(rightUniversity));
+
+	// Track previous values to reset project when university changes
+	let prevLeftUniversity = $state('all');
+	let prevRightUniversity = $state(allUniversities[0]?.id || 'all');
+
+	$effect(() => {
+		if (leftUniversity !== prevLeftUniversity) {
+			prevLeftUniversity = leftUniversity;
+			leftProject = 'all';
+		}
+	});
+
+	$effect(() => {
+		if (rightUniversity !== prevRightUniversity) {
+			prevRightUniversity = rightUniversity;
+			rightProject = 'all';
+		}
+	});
+
+	// Get collections based on selection
+	function getCollection(universityId: string, projectId: string): CollectionItem[] {
+		let result = $allCollections;
+
+		// Filter by university if not "all"
+		if (universityId !== 'all') {
+			result = result.filter((item) => item.university === universityId);
+		}
+
+		// Filter by project if not "all"
+		if (projectId !== 'all') {
+			// projectId format: "universityId:projectName"
+			const [, projectName] = projectId.split(':');
+			if (projectName) {
+				result = result.filter(
+					(item) =>
+						item.project?.name?.includes(projectName.replace(/(\d{4})$/, '')) ||
+						item.project?.id?.includes(projectName)
+				);
+			}
+		}
+
+		return result;
+	}
+
+	let leftData = $derived(getCollection(leftUniversity, leftProject));
+	let rightData = $derived(getCollection(rightUniversity, rightProject));
 
 	// Derived chart data for left
 	let leftTimeline = $derived(groupByYear(leftData));
@@ -64,8 +137,20 @@
 		};
 	});
 
-	function getCollectionName(id: string): string {
-		return collectionOptions.find((o) => o.value === id)?.label || id;
+	function getSelectionName(universityId: string, projectId: string): string {
+		if (universityId === 'all' && projectId === 'all') {
+			return 'All Collections';
+		}
+
+		const uni = allUniversities.find((u) => u.id === universityId);
+		const uniName = uni?.code || 'All';
+
+		if (projectId === 'all') {
+			return `${uniName} (All Projects)`;
+		}
+
+		const [, projectName] = projectId.split(':');
+		return `${uniName}: ${projectName?.replace(/(\d{4})$/, ' $1') || projectId}`;
 	}
 </script>
 
@@ -91,10 +176,22 @@
 				</CardHeader>
 				<CardContent>
 					{#snippet children()}
-						<Select
-							options={collectionOptions}
-							bind:value={leftCollection}
-						/>
+						<div class="space-y-3">
+							<div>
+								<label class="text-sm text-muted-foreground mb-1 block">University</label>
+								<Select
+									options={universityOptions}
+									bind:value={leftUniversity}
+								/>
+							</div>
+							<div>
+								<label class="text-sm text-muted-foreground mb-1 block">Project</label>
+								<Select
+									options={leftProjectOptions}
+									bind:value={leftProject}
+								/>
+							</div>
+						</div>
 					{/snippet}
 				</CardContent>
 			{/snippet}
@@ -111,10 +208,22 @@
 				</CardHeader>
 				<CardContent>
 					{#snippet children()}
-						<Select
-							options={collectionOptions}
-							bind:value={rightCollection}
-						/>
+						<div class="space-y-3">
+							<div>
+								<label class="text-sm text-muted-foreground mb-1 block">University</label>
+								<Select
+									options={universityOptions}
+									bind:value={rightUniversity}
+								/>
+							</div>
+							<div>
+								<label class="text-sm text-muted-foreground mb-1 block">Project</label>
+								<Select
+									options={rightProjectOptions}
+									bind:value={rightProject}
+								/>
+							</div>
+						</div>
 					{/snippet}
 				</CardContent>
 			{/snippet}
@@ -132,12 +241,12 @@
 							<div class="flex items-center justify-center gap-4">
 								<div>
 									<div class="text-2xl font-bold text-blue-500">{leftData.length}</div>
-									<p class="text-xs text-muted-foreground">{getCollectionName(leftCollection)}</p>
+									<p class="text-xs text-muted-foreground max-w-[120px] truncate">{getSelectionName(leftUniversity, leftProject)}</p>
 								</div>
 								<span class="text-muted-foreground">vs</span>
 								<div>
 									<div class="text-2xl font-bold text-green-500">{rightData.length}</div>
-									<p class="text-xs text-muted-foreground">{getCollectionName(rightCollection)}</p>
+									<p class="text-xs text-muted-foreground max-w-[120px] truncate">{getSelectionName(rightUniversity, rightProject)}</p>
 								</div>
 							</div>
 						</div>
@@ -155,12 +264,12 @@
 							<div class="flex items-center justify-center gap-4">
 								<div>
 									<div class="text-2xl font-bold text-blue-500">{leftResourceTypes.length}</div>
-									<p class="text-xs text-muted-foreground">{getCollectionName(leftCollection)}</p>
+									<p class="text-xs text-muted-foreground max-w-[120px] truncate">{getSelectionName(leftUniversity, leftProject)}</p>
 								</div>
 								<span class="text-muted-foreground">vs</span>
 								<div>
 									<div class="text-2xl font-bold text-green-500">{rightResourceTypes.length}</div>
-									<p class="text-xs text-muted-foreground">{getCollectionName(rightCollection)}</p>
+									<p class="text-xs text-muted-foreground max-w-[120px] truncate">{getSelectionName(rightUniversity, rightProject)}</p>
 								</div>
 							</div>
 						</div>
@@ -217,7 +326,7 @@
 				<CardHeader>
 					{#snippet children()}
 						<CardTitle>
-							{#snippet children()}{getCollectionName(leftCollection)} Timeline{/snippet}
+							{#snippet children()}{getSelectionName(leftUniversity, leftProject)} Timeline{/snippet}
 						</CardTitle>
 					{/snippet}
 				</CardHeader>
@@ -240,7 +349,7 @@
 				<CardHeader>
 					{#snippet children()}
 						<CardTitle>
-							{#snippet children()}{getCollectionName(rightCollection)} Timeline{/snippet}
+							{#snippet children()}{getSelectionName(rightUniversity, rightProject)} Timeline{/snippet}
 						</CardTitle>
 					{/snippet}
 				</CardHeader>
@@ -266,7 +375,7 @@
 				<CardHeader>
 					{#snippet children()}
 						<CardTitle>
-							{#snippet children()}{getCollectionName(leftCollection)} Resource Types{/snippet}
+							{#snippet children()}{getSelectionName(leftUniversity, leftProject)} Resource Types{/snippet}
 						</CardTitle>
 					{/snippet}
 				</CardHeader>
@@ -289,7 +398,7 @@
 				<CardHeader>
 					{#snippet children()}
 						<CardTitle>
-							{#snippet children()}{getCollectionName(rightCollection)} Resource Types{/snippet}
+							{#snippet children()}{getSelectionName(rightUniversity, rightProject)} Resource Types{/snippet}
 						</CardTitle>
 					{/snippet}
 				</CardHeader>
@@ -315,7 +424,7 @@
 				<CardHeader>
 					{#snippet children()}
 						<CardTitle>
-							{#snippet children()}{getCollectionName(leftCollection)} Top Subjects{/snippet}
+							{#snippet children()}{getSelectionName(leftUniversity, leftProject)} Top Subjects{/snippet}
 						</CardTitle>
 					{/snippet}
 				</CardHeader>
@@ -338,7 +447,7 @@
 				<CardHeader>
 					{#snippet children()}
 						<CardTitle>
-							{#snippet children()}{getCollectionName(rightCollection)} Top Subjects{/snippet}
+							{#snippet children()}{getSelectionName(rightUniversity, rightProject)} Top Subjects{/snippet}
 						</CardTitle>
 					{/snippet}
 				</CardHeader>
@@ -364,7 +473,7 @@
 				<CardHeader>
 					{#snippet children()}
 						<CardTitle>
-							{#snippet children()}{getCollectionName(leftCollection)} Languages{/snippet}
+							{#snippet children()}{getSelectionName(leftUniversity, leftProject)} Languages{/snippet}
 						</CardTitle>
 					{/snippet}
 				</CardHeader>
@@ -387,7 +496,7 @@
 				<CardHeader>
 					{#snippet children()}
 						<CardTitle>
-							{#snippet children()}{getCollectionName(rightCollection)} Languages{/snippet}
+							{#snippet children()}{getSelectionName(rightUniversity, rightProject)} Languages{/snippet}
 						</CardTitle>
 					{/snippet}
 				</CardHeader>

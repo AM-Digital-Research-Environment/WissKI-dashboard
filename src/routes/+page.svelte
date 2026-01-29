@@ -1,32 +1,57 @@
 <script lang="ts">
 	import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui';
-	import { Timeline, BarChart, PieChart, WordCloud } from '$lib/components/charts';
+	import { StackedTimeline, BarChart, PieChart, WordCloud } from '$lib/components/charts';
 	import { FilterPanel } from '$lib/components/layout';
 	import {
 		dashboardStats,
 		projects,
 		allCollections,
-		artWorldCollection,
-		clnckCollection
+		universitiesData
 	} from '$lib/stores/data';
 	import { filteredCollections } from '$lib/stores/filters';
 	import {
-		groupByYear,
+		groupByYearAndType,
 		extractSubjects,
 		extractResourceTypes,
 		extractTags,
-		extractResearchSections
+		extractResearchSections,
+		extractLanguages
 	} from '$lib/utils/dataTransform';
+	import { universities } from '$lib/types';
 
 	// Word cloud controls
 	let wordCloudMaxWords = $state(50);
 
 	// Derived chart data
-	let timelineData = $derived(groupByYear($filteredCollections));
+	let stackedTimelineData = $derived(groupByYearAndType($filteredCollections));
 	let subjectsData = $derived(extractSubjects($filteredCollections));
 	let resourceTypesData = $derived(extractResourceTypes($filteredCollections));
+	let languagesData = $derived(extractLanguages($filteredCollections));
 	let wordCloudData = $derived(extractTags($filteredCollections));
 	let researchSectionsData = $derived(extractResearchSections($projects));
+
+	// Calculate unique projects from filtered collections
+	let uniqueProjects = $derived(() => {
+		const projectIds = new Set<string>();
+		$filteredCollections.forEach((item) => {
+			if (item.project?.id) projectIds.add(item.project.id);
+		});
+		return projectIds.size;
+	});
+
+	// Calculate unique contributors
+	let uniqueContributors = $derived(() => {
+		const contributors = new Set<string>();
+		$filteredCollections.forEach((item) => {
+			// item.name is an array of NameEntry objects
+			if (Array.isArray(item.name)) {
+				item.name.forEach((entry) => {
+					if (entry.name?.label) contributors.add(entry.name.label);
+				});
+			}
+		});
+		return contributors.size;
+	});
 </script>
 
 <div class="space-y-8">
@@ -38,19 +63,19 @@
 		</p>
 	</div>
 
-	<!-- Stats Cards -->
+	<!-- Overall Stats Cards -->
 	<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 		<div class="stat-card animate-slide-in-up delay-75">
 			<div class="flex items-start justify-between">
 				<div>
-					<p class="text-sm font-medium text-muted-foreground">Total Projects</p>
-					<p class="stat-value mt-2">{$dashboardStats.totalProjects}</p>
-					<p class="stat-label">Research projects</p>
+					<p class="text-sm font-medium text-muted-foreground">Total Documents</p>
+					<p class="stat-value mt-2">{$filteredCollections.length}</p>
+					<p class="stat-label">Collection items</p>
 				</div>
 				<div class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
 					<svg class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-						<path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+						<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+						<polyline points="14 2 14 8 20 8" />
 					</svg>
 				</div>
 			</div>
@@ -59,14 +84,14 @@
 		<div class="stat-card animate-slide-in-up delay-100">
 			<div class="flex items-start justify-between">
 				<div>
-					<p class="text-sm font-medium text-muted-foreground">Total Documents</p>
-					<p class="stat-value mt-2">{$dashboardStats.totalDocuments}</p>
-					<p class="stat-label">Collection items</p>
+					<p class="text-sm font-medium text-muted-foreground">Projects</p>
+					<p class="stat-value mt-2">{uniqueProjects()}</p>
+					<p class="stat-label">Research projects</p>
 				</div>
 				<div class="h-10 w-10 rounded-xl bg-accent/80 flex items-center justify-center">
 					<svg class="h-5 w-5 text-accent-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-						<polyline points="14 2 14 8 20 8" />
+						<rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+						<path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
 					</svg>
 				</div>
 			</div>
@@ -75,14 +100,16 @@
 		<div class="stat-card animate-slide-in-up delay-150">
 			<div class="flex items-start justify-between">
 				<div>
-					<p class="text-sm font-medium text-muted-foreground">ArtWorld 2019</p>
-					<p class="stat-value mt-2">{$artWorldCollection.length}</p>
-					<p class="stat-label">Items in collection</p>
+					<p class="text-sm font-medium text-muted-foreground">Contributors</p>
+					<p class="stat-value mt-2">{uniqueContributors()}</p>
+					<p class="stat-label">Unique names</p>
 				</div>
 				<div class="h-10 w-10 rounded-xl bg-chart-1/10 flex items-center justify-center">
 					<svg class="h-5 w-5 text-chart-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<circle cx="12" cy="12" r="10" />
-						<polygon points="10 8 16 12 10 16 10 8" />
+						<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+						<circle cx="9" cy="7" r="4" />
+						<path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+						<path d="M16 3.13a4 4 0 0 1 0 7.75" />
 					</svg>
 				</div>
 			</div>
@@ -91,19 +118,39 @@
 		<div class="stat-card animate-slide-in-up delay-200">
 			<div class="flex items-start justify-between">
 				<div>
-					<p class="text-sm font-medium text-muted-foreground">CLnCK 2019</p>
-					<p class="stat-value mt-2">{$clnckCollection.length}</p>
-					<p class="stat-label">Items in collection</p>
+					<p class="text-sm font-medium text-muted-foreground">Universities</p>
+					<p class="stat-value mt-2">{universities.length}</p>
+					<p class="stat-label">Partner institutions</p>
 				</div>
 				<div class="h-10 w-10 rounded-xl bg-chart-2/10 flex items-center justify-center">
 					<svg class="h-5 w-5 text-chart-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M9 18V5l12-2v13" />
-						<circle cx="6" cy="18" r="3" />
-						<circle cx="18" cy="16" r="3" />
+						<path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+						<path d="M6 12v5c3 3 9 3 12 0v-5" />
 					</svg>
 				</div>
 			</div>
 		</div>
+	</div>
+
+	<!-- University Breakdown Cards -->
+	<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+		{#each $universitiesData as uniData, index}
+			<div class="stat-card animate-slide-in-up" style="animation-delay: {250 + index * 50}ms">
+				<div class="flex items-start justify-between">
+					<div>
+						<p class="text-sm font-medium text-muted-foreground">{uniData.university.code}</p>
+						<p class="stat-value mt-2">{uniData.count}</p>
+						<p class="stat-label truncate" title={uniData.university.name}>{uniData.university.name}</p>
+					</div>
+					<div class="h-10 w-10 rounded-xl bg-chart-{(index % 4) + 1}/10 flex items-center justify-center">
+						<svg class="h-5 w-5 text-chart-{(index % 4) + 1}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+							<path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+							<path d="M6 12v5c3 3 9 3 12 0v-5" />
+						</svg>
+					</div>
+				</div>
+			</div>
+		{/each}
 	</div>
 
 	<!-- Filters -->
@@ -113,15 +160,15 @@
 
 	<!-- Charts Grid -->
 	<div class="grid gap-6 lg:grid-cols-2">
-		<!-- Timeline -->
+		<!-- Timeline (Stacked by Resource Type) -->
 		<Card class="col-span-full chart-card">
 			{#snippet children()}
 				<div class="chart-card-header">
-					<h3 class="chart-card-title">Documents Timeline</h3>
+					<h3 class="chart-card-title">Documents Timeline by Type</h3>
 				</div>
-				<div class="chart-card-content h-[350px]">
-					{#if timelineData.length > 0}
-						<Timeline data={timelineData} />
+				<div class="chart-card-content h-[400px]">
+					{#if stackedTimelineData.length > 0}
+						<StackedTimeline data={stackedTimelineData} />
 					{:else}
 						<div class="h-full flex items-center justify-center text-muted-foreground">
 							<div class="text-center">

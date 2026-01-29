@@ -7,10 +7,12 @@
 		resetFilters,
 		toggleResourceType,
 		toggleLanguage,
+		toggleUniversity,
 		activeFilterCount
 	} from '$lib/stores/filters';
-	import { allCollections } from '$lib/stores/data';
+	import { allCollections, universityItemCounts } from '$lib/stores/data';
 	import { getUniqueResourceTypes, getUniqueLanguages } from '$lib/utils/dataTransform';
+	import { universities } from '$lib/types';
 
 	interface Props {
 		class?: string;
@@ -48,6 +50,28 @@
 
 	{#if isExpanded}
 		<div class="space-y-4">
+			<!-- Universities -->
+			<div>
+				<h4 class="text-sm font-medium mb-2 text-muted-foreground">University</h4>
+				<div class="flex flex-wrap gap-2">
+					{#each universities as uni}
+						<button
+							type="button"
+							onclick={() => toggleUniversity(uni.id)}
+							class={cn(
+								'px-2 py-1 rounded-md text-xs transition-colors flex items-center gap-1.5',
+								$filters.universities.includes(uni.id)
+									? 'bg-primary text-primary-foreground'
+									: 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+							)}
+						>
+							<span>{uni.code}</span>
+							<span class="opacity-70">({$universityItemCounts[uni.id] || 0})</span>
+						</button>
+					{/each}
+				</div>
+			</div>
+
 			<!-- Resource Types -->
 			<div>
 				<h4 class="text-sm font-medium mb-2 text-muted-foreground">Resource Type</h4>
@@ -93,6 +117,21 @@
 	{:else}
 		<!-- Quick filter summary -->
 		<div class="flex flex-wrap gap-2">
+			{#each $filters.universities as uniId}
+				{@const uni = universities.find((u) => u.id === uniId)}
+				{#if uni}
+					<Badge variant="outline">
+						{uni.code}
+						<button
+							type="button"
+							class="ml-1 hover:text-destructive"
+							onclick={() => toggleUniversity(uniId)}
+						>
+							×
+						</button>
+					</Badge>
+				{/if}
+			{/each}
 			{#each $filters.resourceTypes as type}
 				<Badge variant="outline">
 					{type}

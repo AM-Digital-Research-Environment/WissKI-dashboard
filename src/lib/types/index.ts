@@ -168,6 +168,7 @@ export interface CollectionItem {
 	targetAudience: string[];
 	tags: string[];
 	updatedBy: string;
+	university?: string; // University ID that this item belongs to
 }
 
 // Chart data types
@@ -220,12 +221,29 @@ export interface DashboardStats {
 	collectionCounts: Record<string, number>;
 }
 
+// University type
+export interface University {
+	id: string;
+	name: string;
+	code: string;
+	folder: string;
+}
+
+// Universities constant
+export const universities: University[] = [
+	{ id: 'unilag', name: 'University of Lagos', code: 'ULG', folder: 'projects_metadata_unilag' },
+	{ id: 'ujkz', name: 'Universite Joseph Ki-Zerbo', code: 'UJKZ', folder: 'projects_metadata_ujkz' },
+	{ id: 'ubt', name: 'University of Bayreuth', code: 'UBT', folder: 'projects_metadata_ubt' },
+	{ id: 'ufba', name: 'Federal University of Bahia', code: 'UFB', folder: 'projects_metadata_ufba' }
+];
+
 // Filter state
 export interface FilterState {
 	dateRange: {
 		start: Date | null;
 		end: Date | null;
 	};
+	universities: string[];
 	resourceTypes: string[];
 	locations: string[];
 	languages: string[];

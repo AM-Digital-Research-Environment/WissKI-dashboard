@@ -5,8 +5,10 @@ import type {
 	Institution,
 	Group,
 	CollectionItem,
-	DashboardStats
+	DashboardStats,
+	University
 } from '$lib/types';
+import { universities } from '$lib/types';
 import { loadAllData } from '$lib/utils/dataLoader';
 import { calculateStats } from '$lib/utils/dataTransform';
 
@@ -29,6 +31,52 @@ export const artWorldCollection: Readable<CollectionItem[]> = derived(
 export const clnckCollection: Readable<CollectionItem[]> = derived(
 	allCollections,
 	($all) => $all.filter((item) => item.project?.name?.includes('CLnCK'))
+);
+
+// University data interface
+export interface UniversityData {
+	university: University;
+	collections: CollectionItem[];
+	count: number;
+}
+
+// University-based derived stores
+export const universitiesData: Readable<UniversityData[]> = derived(
+	allCollections,
+	($allCollections) => {
+		return universities.map((university) => {
+			const collections = $allCollections.filter((item) => item.university === university.id);
+			return {
+				university,
+				collections,
+				count: collections.length
+			};
+		});
+	}
+);
+
+// Get collections by university ID
+export const collectionsByUniversity: Readable<Record<string, CollectionItem[]>> = derived(
+	allCollections,
+	($allCollections) => {
+		const result: Record<string, CollectionItem[]> = {};
+		for (const uni of universities) {
+			result[uni.id] = $allCollections.filter((item) => item.university === uni.id);
+		}
+		return result;
+	}
+);
+
+// University item counts
+export const universityItemCounts: Readable<Record<string, number>> = derived(
+	collectionsByUniversity,
+	($byUniversity) => {
+		const result: Record<string, number> = {};
+		for (const uni of universities) {
+			result[uni.id] = $byUniversity[uni.id]?.length || 0;
+		}
+		return result;
+	}
 );
 
 // Dashboard stats derived store

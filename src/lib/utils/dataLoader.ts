@@ -7,8 +7,10 @@ import type {
 	MongoOid,
 	MongoDate,
 	MongoNaN,
-	EnrichedLocationsData
+	EnrichedLocationsData,
+	University
 } from '$lib/types';
+import { universities } from '$lib/types';
 
 /**
  * Check if a value is a MongoDB NaN representation
@@ -131,30 +133,55 @@ export async function loadDevCollections(basePath: string = ''): Promise<Collect
 }
 
 /**
- * All UBT collection file names
+ * University collections configuration
+ * Maps university ID to their project file names
  */
-const UBT_COLLECTIONS = [
-	'UBT_ArtWorld2019',
-	'UBT_CLnCK2019',
-	'UBT_Covid192021',
-	'UBT_DigiRet2021',
-	'UBT_HDMC2019',
-	'UBT_Humanitar2019',
-	'UBT_Karakul2019',
-	'UBT_LearnClass2019',
-	'UBT_MaL2019',
-	'UBT_MiConIturi2019',
-	'UBT_MoCapIE2021',
-	'UBT_MuDAIMa-PRJ2019',
-	'UBT_MuDAIMa2019',
-	'UBT_MultiALS2021',
-	'UBT_OilMov2019',
-	'UBT_PEMESWA2021',
-	'UBT_Plura2021',
-	'UBT_TaiSha2021',
-	'UBT_TravKnowl2019',
-	'UBT_preDeath2021'
-];
+export const UNIVERSITY_COLLECTIONS: Record<string, string[]> = {
+	ubt: [
+		'UBT_ArtWorld2019',
+		'UBT_CLnCK2019',
+		'UBT_Covid192021',
+		'UBT_DigiRet2021',
+		'UBT_HDMC2019',
+		'UBT_Humanitar2019',
+		'UBT_Karakul2019',
+		'UBT_LearnClass2019',
+		'UBT_MaL2019',
+		'UBT_MiConIturi2019',
+		'UBT_MoCapIE2021',
+		'UBT_MuDAIMa-PRJ2019',
+		'UBT_MuDAIMa2019',
+		'UBT_MultiALS2021',
+		'UBT_OilMov2019',
+		'UBT_PEMESWA2021',
+		'UBT_Plura2021',
+		'UBT_TaiSha2021',
+		'UBT_TravKnowl2019',
+		'UBT_preDeath2021'
+	],
+	unilag: [
+		'ULG_AfEnt2020',
+		'ULG_EthDump2021',
+		'ULG_IWCVD2021',
+		'ULG_LOI2021',
+		'ULG_MFWA2021',
+		'ULG_MRC2021',
+		'ULG_WOPP2021',
+		'ULG_YoruFolk2020'
+	],
+	ujkz: [
+		'UJKZ_FluOnt2023',
+		'UJKZ_GLOBHEALTH2020',
+		'UJKZ_KnowFranco2021',
+		'UJKZ_SEDPaix2022'
+	],
+	ufba: ['UFB_AfroDigital']
+};
+
+/**
+ * All UBT collection file names (for backward compatibility)
+ */
+const UBT_COLLECTIONS = UNIVERSITY_COLLECTIONS.ubt;
 
 /**
  * Load a specific UBT collection by name
@@ -193,14 +220,14 @@ export async function loadAllUBTCollections(basePath: string = ''): Promise<Coll
 }
 
 /**
- * Load all collection items from all sources (UBT + dev)
+ * Load all collection items from all sources (all universities + dev)
  */
 export async function loadAllCollections(basePath: string = ''): Promise<CollectionItem[]> {
-	const [ubtCollections, devCollections] = await Promise.all([
-		loadAllUBTCollections(basePath),
+	const [universityCollections, devCollections] = await Promise.all([
+		loadAllUniversityCollections(basePath),
 		loadDevCollections(basePath)
 	]);
-	return [...ubtCollections, ...devCollections];
+	return [...universityCollections, ...devCollections];
 }
 
 /**
@@ -208,6 +235,80 @@ export async function loadAllCollections(basePath: string = ''): Promise<Collect
  */
 export function getUBTCollectionNames(): string[] {
 	return [...UBT_COLLECTIONS];
+}
+
+/**
+ * Get university by ID
+ */
+export function getUniversity(universityId: string): University | undefined {
+	return universities.find((u) => u.id === universityId);
+}
+
+/**
+ * Get all universities
+ */
+export function getUniversities(): University[] {
+	return [...universities];
+}
+
+/**
+ * Get collection names for a university
+ */
+export function getUniversityCollectionNames(universityId: string): string[] {
+	return [...(UNIVERSITY_COLLECTIONS[universityId] || [])];
+}
+
+/**
+ * Load a specific collection from a university
+ */
+export async function loadUniversityCollection(
+	universityId: string,
+	collectionName: string,
+	basePath: string = ''
+): Promise<CollectionItem[]> {
+	const university = getUniversity(universityId);
+	if (!university) {
+		console.warn(`Unknown university: ${universityId}`);
+		return [];
+	}
+
+	const items = await tryLoadJSON<CollectionItem>(
+		`${basePath}/data/${university.folder}/${university.folder}.${collectionName}.json`
+	);
+
+	// Add university field to each item
+	return items.map((item) => ({ ...item, university: universityId }));
+}
+
+/**
+ * Load all collections for a specific university
+ */
+export async function loadUniversityCollections(
+	universityId: string,
+	basePath: string = ''
+): Promise<CollectionItem[]> {
+	const collectionNames = UNIVERSITY_COLLECTIONS[universityId];
+	if (!collectionNames) {
+		console.warn(`Unknown university: ${universityId}`);
+		return [];
+	}
+
+	const results = await Promise.all(
+		collectionNames.map((name) => loadUniversityCollection(universityId, name, basePath))
+	);
+	return results.flat();
+}
+
+/**
+ * Load all collections from all universities
+ */
+export async function loadAllUniversityCollections(
+	basePath: string = ''
+): Promise<CollectionItem[]> {
+	const results = await Promise.all(
+		universities.map((uni) => loadUniversityCollections(uni.id, basePath))
+	);
+	return results.flat();
 }
 
 /**

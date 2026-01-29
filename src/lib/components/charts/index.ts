@@ -1,5 +1,6 @@
 export { default as EChart } from './EChart.svelte';
 export { default as Timeline } from './Timeline.svelte';
+export { default as StackedTimeline } from './StackedTimeline.svelte';
 export { default as BarChart } from './BarChart.svelte';
 export { default as PieChart } from './PieChart.svelte';
 export { default as WordCloud } from './WordCloud.svelte';

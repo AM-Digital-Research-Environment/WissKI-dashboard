@@ -14,6 +14,7 @@ export const filters = writable<FilterState>({
 		start: null,
 		end: null
 	},
+	universities: [],
 	resourceTypes: [],
 	locations: [],
 	languages: [],
@@ -25,6 +26,7 @@ export const filters = writable<FilterState>({
 export function resetFilters() {
 	filters.set({
 		dateRange: { start: null, end: null },
+		universities: [],
 		resourceTypes: [],
 		locations: [],
 		languages: [],
@@ -75,11 +77,31 @@ export function toggleLanguage(lang: string) {
 	});
 }
 
+export function setUniversities(unis: string[]) {
+	filters.update((f) => ({ ...f, universities: unis }));
+}
+
+export function toggleUniversity(uni: string) {
+	filters.update((f) => {
+		const universities = f.universities.includes(uni)
+			? f.universities.filter((u) => u !== uni)
+			: [...f.universities, uni];
+		return { ...f, universities };
+	});
+}
+
 // Filtered collections derived store
 export const filteredCollections: Readable<CollectionItem[]> = derived(
 	[allCollections, filters],
 	([$collections, $filters]) => {
 		let result = $collections;
+
+		// Apply university filter
+		if ($filters.universities.length > 0) {
+			result = result.filter(
+				(item) => item.university && $filters.universities.includes(item.university)
+			);
+		}
 
 		// Apply date range filter
 		if ($filters.dateRange.start || $filters.dateRange.end) {
@@ -122,6 +144,7 @@ export const filteredCollections: Readable<CollectionItem[]> = derived(
 // Active filter count
 export const activeFilterCount: Readable<number> = derived(filters, ($filters) => {
 	let count = 0;
+	if ($filters.universities.length > 0) count++;
 	if ($filters.dateRange.start || $filters.dateRange.end) count++;
 	if ($filters.resourceTypes.length > 0) count++;
 	if ($filters.languages.length > 0) count++;

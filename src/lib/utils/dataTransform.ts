@@ -53,6 +53,60 @@ export function groupByYear(items: CollectionItem[]): TimelineDataPoint[] {
 }
 
 /**
+ * Stacked timeline data point for showing breakdown by resource type
+ */
+export interface StackedTimelineDataPoint {
+	year: number;
+	total: number;
+	byType: Record<string, number>;
+}
+
+/**
+ * Group collection items by year and resource type for stacked bar chart
+ */
+export function groupByYearAndType(items: CollectionItem[]): StackedTimelineDataPoint[] {
+	const yearMap = new Map<number, Map<string, number>>();
+
+	items.forEach((item) => {
+		let year: number | null = null;
+
+		if (item.dateInfo?.issue?.start) {
+			year = extractYear(item.dateInfo.issue.start);
+		} else if (item.dateInfo?.creation?.start) {
+			year = extractYear(item.dateInfo.creation.start);
+		}
+
+		if (year) {
+			if (!yearMap.has(year)) {
+				yearMap.set(year, new Map());
+			}
+			const typeMap = yearMap.get(year)!;
+			const resourceType = item.typeOfResource || 'Unknown';
+			typeMap.set(resourceType, (typeMap.get(resourceType) || 0) + 1);
+		}
+	});
+
+	return Array.from(yearMap.entries())
+		.map(([year, typeMap]) => {
+			const byType = Object.fromEntries(typeMap);
+			const total = Array.from(typeMap.values()).reduce((sum, count) => sum + count, 0);
+			return { year, total, byType };
+		})
+		.sort((a, b) => a.year - b.year);
+}
+
+/**
+ * Get all unique resource types from stacked timeline data
+ */
+export function getResourceTypesFromStackedData(data: StackedTimelineDataPoint[]): string[] {
+	const types = new Set<string>();
+	data.forEach((point) => {
+		Object.keys(point.byType).forEach((type) => types.add(type));
+	});
+	return Array.from(types).sort();
+}
+
+/**
  * Group projects by year for timeline visualization
  */
 export function groupProjectsByYear(projects: Project[]): TimelineDataPoint[] {
