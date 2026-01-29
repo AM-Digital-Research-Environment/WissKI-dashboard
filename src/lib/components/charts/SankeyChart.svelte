@@ -2,6 +2,7 @@
 	import EChart from './EChart.svelte';
 	import type { EChartsOption } from 'echarts';
 	import { cn } from '$lib/utils/cn';
+	import { getChartColor } from '$lib/styles';
 
 	interface SankeyNode {
 		name: string;
@@ -21,19 +22,6 @@
 	}
 
 	let { nodes, links, title = '', class: className = '' }: Props = $props();
-
-	const colors = [
-		'#3b82f6',
-		'#10b981',
-		'#f59e0b',
-		'#ef4444',
-		'#8b5cf6',
-		'#ec4899',
-		'#06b6d4',
-		'#84cc16',
-		'#f97316',
-		'#6366f1'
-	];
 
 	let option: EChartsOption = $derived({
 		title: title
@@ -67,7 +55,7 @@
 				data: nodes.map((node, i) => ({
 					...node,
 					itemStyle: {
-						color: colors[i % colors.length]
+						color: getChartColor(i)
 					}
 				})),
 				links: links,

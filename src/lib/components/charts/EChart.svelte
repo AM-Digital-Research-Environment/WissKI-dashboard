@@ -4,6 +4,7 @@
 	import type { EChartsOption, ECharts } from 'echarts';
 	import { theme } from '$lib/stores/data';
 	import { cn } from '$lib/utils/cn';
+	import { getEChartsTheme } from '$lib/styles';
 
 	interface Props {
 		option: EChartsOption;
@@ -17,98 +18,6 @@
 	let chartContainer: HTMLDivElement;
 	let chartInstance: ECharts | null = null;
 	let zoomLevel = $state(1);
-
-	const darkTheme = {
-		backgroundColor: 'transparent',
-		textStyle: {
-			color: '#e5e7eb'
-		},
-		title: {
-			textStyle: {
-				color: '#f3f4f6'
-			}
-		},
-		legend: {
-			textStyle: {
-				color: '#9ca3af'
-			}
-		},
-		tooltip: {
-			backgroundColor: 'rgba(17, 24, 39, 0.95)',
-			borderColor: '#374151',
-			textStyle: {
-				color: '#f3f4f6'
-			}
-		},
-		xAxis: {
-			axisLine: {
-				lineStyle: { color: '#374151' }
-			},
-			axisLabel: {
-				color: '#9ca3af'
-			},
-			splitLine: {
-				lineStyle: { color: '#1f2937' }
-			}
-		},
-		yAxis: {
-			axisLine: {
-				lineStyle: { color: '#374151' }
-			},
-			axisLabel: {
-				color: '#9ca3af'
-			},
-			splitLine: {
-				lineStyle: { color: '#1f2937' }
-			}
-		}
-	};
-
-	const lightTheme = {
-		backgroundColor: 'transparent',
-		textStyle: {
-			color: '#1f2937'
-		},
-		title: {
-			textStyle: {
-				color: '#111827'
-			}
-		},
-		legend: {
-			textStyle: {
-				color: '#4b5563'
-			}
-		},
-		tooltip: {
-			backgroundColor: 'rgba(255, 255, 255, 0.95)',
-			borderColor: '#e5e7eb',
-			textStyle: {
-				color: '#1f2937'
-			}
-		},
-		xAxis: {
-			axisLine: {
-				lineStyle: { color: '#d1d5db' }
-			},
-			axisLabel: {
-				color: '#4b5563'
-			},
-			splitLine: {
-				lineStyle: { color: '#f3f4f6' }
-			}
-		},
-		yAxis: {
-			axisLine: {
-				lineStyle: { color: '#d1d5db' }
-			},
-			axisLabel: {
-				color: '#4b5563'
-			},
-			splitLine: {
-				lineStyle: { color: '#f3f4f6' }
-			}
-		}
-	};
 
 	function initChart() {
 		if (!chartContainer) return;
@@ -134,7 +43,7 @@
 	function updateChart() {
 		if (!chartInstance) return;
 
-		const themeConfig = $theme === 'dark' ? darkTheme : lightTheme;
+		const themeConfig = getEChartsTheme($theme === 'dark');
 		const mergedOption = echarts.util.merge(
 			echarts.util.clone(themeConfig),
 			option,

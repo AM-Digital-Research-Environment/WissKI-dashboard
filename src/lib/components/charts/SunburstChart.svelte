@@ -2,6 +2,7 @@
 	import EChart from './EChart.svelte';
 	import type { EChartsOption } from 'echarts';
 	import { cn } from '$lib/utils/cn';
+	import { CHART_COLORS } from '$lib/styles';
 
 	interface SunburstNode {
 		name: string;
@@ -17,19 +18,6 @@
 	}
 
 	let { data, title = '', class: className = '', onclick }: Props = $props();
-
-	const colors = [
-		'#3b82f6',
-		'#10b981',
-		'#f59e0b',
-		'#ef4444',
-		'#8b5cf6',
-		'#ec4899',
-		'#06b6d4',
-		'#84cc16',
-		'#f97316',
-		'#6366f1'
-	];
 
 	let option: EChartsOption = $derived({
 		title: title
@@ -105,7 +93,7 @@
 				}
 			}
 		],
-		color: colors
+		color: [...CHART_COLORS]
 	});
 
 	function handleClick(params: unknown) {

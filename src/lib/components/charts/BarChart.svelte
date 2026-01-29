@@ -3,6 +3,7 @@
 	import type { EChartsOption } from 'echarts';
 	import type { BarChartDataPoint } from '$lib/types';
 	import { cn } from '$lib/utils/cn';
+	import { CHART_COLORS } from '$lib/styles';
 
 	interface Props {
 		data: BarChartDataPoint[];
@@ -77,12 +78,12 @@
 					? displayData.map((d) => d.value).reverse()
 					: displayData.map((d) => d.value),
 				itemStyle: {
-					color: '#3b82f6',
+					color: CHART_COLORS[0],
 					borderRadius: horizontal ? [0, 4, 4, 0] : [4, 4, 0, 0]
 				},
 				emphasis: {
 					itemStyle: {
-						color: '#60a5fa'
+						color: CHART_COLORS[0] + 'cc' // Add transparency for hover
 					}
 				}
 			}

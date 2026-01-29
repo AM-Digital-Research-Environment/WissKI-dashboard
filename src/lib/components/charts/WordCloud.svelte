@@ -6,6 +6,7 @@
 	import type { WordCloudDataPoint } from '$lib/types';
 	import { theme } from '$lib/stores/data';
 	import { cn } from '$lib/utils/cn';
+	import { CHART_COLORS, FONT_FAMILY, getThemeColors } from '$lib/styles';
 
 	interface Props {
 		data: WordCloudDataPoint[];
@@ -20,19 +21,9 @@
 	let chartContainer: HTMLDivElement;
 	let chartInstance: ECharts | null = null;
 
-	const colors = [
-		'#3b82f6',
-		'#10b981',
-		'#f59e0b',
-		'#ef4444',
-		'#8b5cf6',
-		'#ec4899',
-		'#06b6d4',
-		'#84cc16'
-	];
-
 	function getOption() {
 		const slicedData = data.slice(0, maxWords);
+		const themeColors = getThemeColors($theme === 'dark');
 
 		// Dynamic font size based on word count - fewer words = bigger fonts
 		const minFontSize = maxWords <= 30 ? 14 : maxWords <= 60 ? 12 : 10;
@@ -48,7 +39,7 @@
 						left: 'center',
 						top: 0,
 						textStyle: {
-							color: $theme === 'dark' ? '#f3f4f6' : '#111827'
+							color: themeColors.foreground
 						}
 					}
 				: undefined,
@@ -73,21 +64,21 @@
 					gridSize: gridSize,
 					drawOutOfBound: false,
 					textStyle: {
-						fontFamily: 'Inter, sans-serif',
+						fontFamily: FONT_FAMILY.sans,
 						fontWeight: 'bold',
-						color: () => colors[Math.floor(Math.random() * colors.length)]
+						color: () => CHART_COLORS[Math.floor(Math.random() * CHART_COLORS.length)]
 					},
 					emphasis: {
 						textStyle: {
 							shadowBlur: 10,
-							shadowColor: '#333'
+							shadowColor: themeColors.foreground
 						}
 					},
 					data: slicedData.map((d) => ({
 						name: d.name,
 						value: d.value,
 						textStyle: {
-							color: colors[Math.floor(Math.random() * colors.length)]
+							color: CHART_COLORS[Math.floor(Math.random() * CHART_COLORS.length)]
 						}
 					}))
 				}

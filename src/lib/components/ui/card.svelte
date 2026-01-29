@@ -4,14 +4,19 @@
 
 	interface Props {
 		class?: string;
+		variant?: 'default' | 'elevated' | 'accent';
 		children: Snippet;
 	}
 
-	let { class: className = '', children }: Props = $props();
+	let { class: className = '', variant = 'default', children }: Props = $props();
+
+	const variants = {
+		default: 'rounded-xl border border-border/50 bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow duration-300',
+		elevated: 'card-elevated text-card-foreground',
+		accent: 'rounded-xl border border-border/50 bg-card text-card-foreground shadow-sm card-accent'
+	};
 </script>
 
-<div
-	class={cn('rounded-lg border bg-card text-card-foreground shadow-sm', className)}
->
+<div class={cn(variants[variant], className)}>
 	{@render children()}
 </div>

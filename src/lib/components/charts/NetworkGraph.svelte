@@ -3,6 +3,7 @@
 	import type { EChartsOption } from 'echarts';
 	import type { NetworkData } from '$lib/types';
 	import { cn } from '$lib/utils/cn';
+	import { CHART_COLORS_SIMPLE, getChartColor } from '$lib/styles';
 
 	interface Props {
 		data: NetworkData;
@@ -12,14 +13,6 @@
 	}
 
 	let { data, title = '', class: className = '', onclick }: Props = $props();
-
-	const categoryColors = [
-		'#3b82f6', // Blue
-		'#10b981', // Green
-		'#f59e0b', // Amber
-		'#ef4444', // Red
-		'#8b5cf6' // Purple
-	];
 
 	let option: EChartsOption = $derived({
 		title: title
@@ -54,14 +47,14 @@
 				data: data.nodes.map((node) => ({
 					...node,
 					itemStyle: {
-						color: categoryColors[node.category % categoryColors.length]
+						color: CHART_COLORS_SIMPLE[node.category % CHART_COLORS_SIMPLE.length]
 					}
 				})),
 				links: data.links,
 				categories: data.categories.map((c, i) => ({
 					name: c.name,
 					itemStyle: {
-						color: categoryColors[i % categoryColors.length]
+						color: CHART_COLORS_SIMPLE[i % CHART_COLORS_SIMPLE.length]
 					}
 				})),
 				roam: true,

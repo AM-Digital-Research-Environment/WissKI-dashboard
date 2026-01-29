@@ -3,6 +3,7 @@
 	import type { EChartsOption } from 'echarts';
 	import type { TimelineDataPoint } from '$lib/types';
 	import { cn } from '$lib/utils/cn';
+	import { CHART_COLORS } from '$lib/styles';
 
 	interface Props {
 		data: TimelineDataPoint[];
@@ -74,15 +75,15 @@
 						x2: 0,
 						y2: 1,
 						colorStops: [
-							{ offset: 0, color: '#3b82f6' },
-							{ offset: 1, color: '#1d4ed8' }
+							{ offset: 0, color: CHART_COLORS[0] },
+							{ offset: 1, color: CHART_COLORS[0] + 'bb' } // Slightly darker
 						]
 					},
 					borderRadius: [4, 4, 0, 0]
 				},
 				emphasis: {
 					itemStyle: {
-						color: '#60a5fa'
+						color: CHART_COLORS[0] + 'cc'
 					}
 				}
 			}

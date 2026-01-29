@@ -3,6 +3,7 @@
 	import { cn } from '$lib/utils/cn';
 	import type { EnrichedLocationsData, CollectionItem } from '$lib/types';
 	import maplibregl from 'maplibre-gl';
+	import { CHART_COLORS } from '$lib/styles';
 
 	interface LocationData {
 		country: string;
@@ -31,6 +32,13 @@
 	}
 
 	let { data, items = [], enrichedLocations = null, title = '', class: className = '' }: Props = $props();
+
+	// Map marker colors using design tokens
+	const MARKER_COLORS = {
+		city: CHART_COLORS[0],    // Blue
+		country: CHART_COLORS[1], // Emerald
+		other: CHART_COLORS[4]    // Purple
+	} as const;
 
 	let mapContainer: HTMLDivElement | undefined = $state();
 	let mapWrapper: HTMLDivElement | undefined = $state();
@@ -181,11 +189,11 @@
 	function getMarkerColor(type: string): string {
 		switch (type) {
 			case 'city':
-				return '#3b82f6'; // blue
+				return MARKER_COLORS.city;
 			case 'country':
-				return '#10b981'; // green
+				return MARKER_COLORS.country;
 			default:
-				return '#8b5cf6'; // purple
+				return MARKER_COLORS.other;
 		}
 	}
 
@@ -570,15 +578,15 @@
 		<!-- Legend -->
 		<div class={cn('flex flex-wrap gap-4 justify-center text-sm', isFullscreen ? 'mt-4' : 'mt-3')}>
 			<div class="flex items-center gap-2">
-				<div class="w-4 h-4 rounded-full bg-[#3b82f6] opacity-70"></div>
+				<div class="w-4 h-4 rounded-full bg-chart-1 opacity-70"></div>
 				<span class="text-muted-foreground">City</span>
 			</div>
 			<div class="flex items-center gap-2">
-				<div class="w-4 h-4 rounded-full bg-[#10b981] opacity-70"></div>
+				<div class="w-4 h-4 rounded-full bg-chart-2 opacity-70"></div>
 				<span class="text-muted-foreground">Country</span>
 			</div>
 			<div class="flex items-center gap-2">
-				<div class="w-4 h-4 rounded-full bg-[#8b5cf6] opacity-70"></div>
+				<div class="w-4 h-4 rounded-full bg-chart-5 opacity-70"></div>
 				<span class="text-muted-foreground">Other</span>
 			</div>
 			<div class="text-muted-foreground">

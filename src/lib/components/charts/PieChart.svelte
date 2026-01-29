@@ -3,6 +3,7 @@
 	import type { EChartsOption } from 'echarts';
 	import type { PieChartDataPoint } from '$lib/types';
 	import { cn } from '$lib/utils/cn';
+	import { CHART_COLORS, getChartColor } from '$lib/styles';
 
 	interface Props {
 		data: PieChartDataPoint[];
@@ -12,19 +13,6 @@
 	}
 
 	let { data, title = '', class: className = '', onclick }: Props = $props();
-
-	const colors = [
-		'#3b82f6',
-		'#10b981',
-		'#f59e0b',
-		'#ef4444',
-		'#8b5cf6',
-		'#ec4899',
-		'#06b6d4',
-		'#84cc16',
-		'#f97316',
-		'#6366f1'
-	];
 
 	let option: EChartsOption = $derived({
 		title: title
@@ -75,7 +63,7 @@
 					name: d.name,
 					value: d.value,
 					itemStyle: {
-						color: colors[i % colors.length]
+						color: getChartColor(i)
 					}
 				}))
 			}
