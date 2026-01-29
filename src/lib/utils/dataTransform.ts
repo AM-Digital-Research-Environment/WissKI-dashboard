@@ -21,20 +21,39 @@ export function extractYear(date: Date | string | null | undefined): number | nu
 }
 
 /**
+ * Extract year from a collection item's dateInfo, checking all possible date fields
+ * Priority: issue.start > issue.end > creation.start > creation.end > created.start > created.end
+ */
+export function extractItemYear(item: CollectionItem): number | null {
+	const dateInfo = item.dateInfo as Record<string, { start?: unknown; end?: unknown }> | undefined;
+	if (!dateInfo) return null;
+
+	// Try each date category in order of preference
+	const categories = ['issue', 'creation', 'created'];
+
+	for (const category of categories) {
+		const dateCategory = dateInfo[category];
+		if (dateCategory) {
+			// Try start date first, then end date
+			let year = extractYear(dateCategory.start as Date | string | null);
+			if (year) return year;
+
+			year = extractYear(dateCategory.end as Date | string | null);
+			if (year) return year;
+		}
+	}
+
+	return null;
+}
+
+/**
  * Group collection items by year for timeline visualization
  */
 export function groupByYear(items: CollectionItem[]): TimelineDataPoint[] {
 	const yearMap = new Map<number, CollectionItem[]>();
 
 	items.forEach((item) => {
-		// Try to get year from dateInfo.issue.start, then dateInfo.creation.start
-		let year: number | null = null;
-
-		if (item.dateInfo?.issue?.start) {
-			year = extractYear(item.dateInfo.issue.start);
-		} else if (item.dateInfo?.creation?.start) {
-			year = extractYear(item.dateInfo.creation.start);
-		}
+		const year = extractItemYear(item);
 
 		if (year) {
 			const existing = yearMap.get(year) || [];
@@ -68,13 +87,7 @@ export function groupByYearAndType(items: CollectionItem[]): StackedTimelineData
 	const yearMap = new Map<number, Map<string, number>>();
 
 	items.forEach((item) => {
-		let year: number | null = null;
-
-		if (item.dateInfo?.issue?.start) {
-			year = extractYear(item.dateInfo.issue.start);
-		} else if (item.dateInfo?.creation?.start) {
-			year = extractYear(item.dateInfo.creation.start);
-		}
+		const year = extractItemYear(item);
 
 		if (year) {
 			if (!yearMap.has(year)) {
@@ -380,7 +393,7 @@ export function filterByDateRange(
 	if (!startYear && !endYear) return items;
 
 	return items.filter((item) => {
-		const year = extractYear(item.dateInfo?.issue?.start) || extractYear(item.dateInfo?.creation?.start);
+		const year = extractItemYear(item);
 		if (!year) return true; // Include items without dates
 
 		if (startYear && year < startYear) return false;
