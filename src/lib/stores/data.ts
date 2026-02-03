@@ -136,24 +136,3 @@ function createThemeStore() {
 }
 
 export const theme = createThemeStore();
-
-// Selected project for filtering
-export const selectedProjectId = writable<string | null>(null);
-
-// Derived store for selected project
-export const selectedProject: Readable<Project | null> = derived(
-	[projects, selectedProjectId],
-	([$projects, $selectedId]) => {
-		if (!$selectedId) return null;
-		return $projects.find((p) => p.id === $selectedId) || null;
-	}
-);
-
-// Collection for selected project
-export const selectedProjectCollection: Readable<CollectionItem[]> = derived(
-	[allCollections, selectedProjectId],
-	([$collections, $selectedId]) => {
-		if (!$selectedId) return $collections;
-		return $collections.filter((item) => item.project?.id === $selectedId);
-	}
-);

@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { theme, projects, selectedProjectId } from '$lib/stores/data';
-	import Select from '$lib/components/ui/select.svelte';
+	import { theme } from '$lib/stores/data';
 	import Button from '$lib/components/ui/button.svelte';
 
 	interface Props {
@@ -9,14 +8,6 @@
 	}
 
 	let { onMenuClick, isSidebarCollapsed = false }: Props = $props();
-
-	let projectOptions = $derived(
-		$projects.map((p) => ({ value: p.id, label: p.name }))
-	);
-
-	function handleProjectChange(value: string) {
-		$selectedProjectId = value || null;
-	}
 
 	function toggleTheme() {
 		const newTheme = $theme === 'dark' ? 'light' : 'dark';
@@ -43,16 +34,6 @@
 			<h1 class="header-title truncate">Dashboard</h1>
 		</div>
 		<h1 class="lg:hidden text-lg font-semibold font-display truncate">Dashboard</h1>
-	</div>
-
-	<!-- Project selector -->
-	<div class="hidden md:block w-56 flex-shrink-0">
-		<Select
-			options={projectOptions}
-			value={$selectedProjectId || ''}
-			placeholder="All Projects"
-			onchange={handleProjectChange}
-		/>
 	</div>
 
 	<!-- Theme toggle -->
