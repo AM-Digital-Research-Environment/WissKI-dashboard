@@ -264,6 +264,41 @@ export interface WikidataLocation {
 	match_confidence: 'exact' | 'fuzzy' | 'manual' | 'not_found' | null;
 }
 
+// Raw geolocation data from MongoDB (pre-reconciled with Wikidata)
+export interface RawGeolocCountry {
+	_id: MongoOid;
+	uri: string;
+	name: string;
+	coordinates: {
+		lat: number;
+		long: number;
+	};
+	updatedAt?: MongoDate;
+}
+
+export interface RawGeolocRegion {
+	_id: MongoOid;
+	country_uri: string;
+	uri: string;
+	name: string;
+	coordinates: {
+		latitude: number;
+		longitude: number;
+	};
+}
+
+export interface RawGeolocSubregion {
+	_id: MongoOid;
+	country_uri: string;
+	region_uri: string;
+	uri: string;
+	name: string;
+	coordinates: {
+		latitude: number;
+		longitude: number;
+	};
+}
+
 export interface EnrichedLocationsData {
 	countries: Record<string, WikidataLocation>;
 	regions: Record<string, WikidataLocation>;

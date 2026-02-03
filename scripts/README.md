@@ -11,53 +11,23 @@ pip install -r requirements.txt
 
 ## Scripts
 
-### `reconcile_locations.py`
+### `reconcile_locations.py` (DEPRECATED)
 
-Reconciles location names from collection data to Wikidata entities and fetches GPS coordinates.
+> **Note:** This script is no longer needed. Location data is now loaded directly from pre-reconciled geolocation files exported from MongoDB:
+> - `static/data/dev/dev.geoloc_countries.json`
+> - `static/data/dev/dev.geoloc_regions.json`
+> - `static/data/dev/dev.geoloc_subregions.json`
+>
+> These files contain pre-reconciled Wikidata URIs and GPS coordinates.
 
-**Features:**
+~~Reconciles location names from collection data to Wikidata entities and fetches GPS coordinates.~~
+
+**Previous features (for reference):**
 - Extracts unique locations (countries, regions, cities) from JSON collection files
 - Queries Wikidata API to find matching entities
 - Fetches GPS coordinates via SPARQL queries
 - Caches results to avoid redundant API calls
 - Outputs enriched location mapping
-
-**Usage:**
-```bash
-python scripts/reconcile_locations.py
-```
-
-**Output:**
-- `static/data/enriched/locations_wikidata.json` - Enriched location data with:
-  - Wikidata entity IDs (Q-codes)
-  - GPS coordinates (latitude/longitude)
-  - ISO country codes
-  - GeoNames IDs
-  - Entity descriptions
-
-**Output structure:**
-```json
-{
-  "countries": {
-    "Germany": {
-      "original_name": "Germany",
-      "wikidata_id": "Q183",
-      "wikidata_label": "Germany",
-      "latitude": 51.0,
-      "longitude": 9.0,
-      "country_code": "DE",
-      ...
-    }
-  },
-  "regions": { ... },
-  "cities": { ... },
-  "other": { ... },
-  "metadata": { ... }
-}
-```
-
-**Caching:**
-The script maintains a cache at `scripts/.location_cache.json` to avoid repeated API calls. Delete this file to force fresh lookups.
 
 ## Adding New Scripts
 

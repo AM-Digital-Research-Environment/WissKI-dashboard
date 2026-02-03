@@ -529,10 +529,9 @@
 	{#if !enrichedLocations}
 		<div class="flex-1 flex items-center justify-center bg-muted rounded-lg">
 			<div class="text-center text-muted-foreground p-4">
-				<p class="mb-2">Enriched location data not available.</p>
+				<p class="mb-2">Location data not available.</p>
 				<p class="text-sm">
-					Run <code class="bg-background px-2 py-1 rounded">python scripts/reconcile_locations.py</code>
-					to generate GPS coordinates.
+					Geolocation data files (dev.geoloc_*.json) could not be loaded.
 				</p>
 			</div>
 		</div>
