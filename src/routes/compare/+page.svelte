@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { Card, CardHeader, CardTitle, CardContent, Select, Badge } from '$lib/components/ui';
-	import { Timeline, BarChart, PieChart } from '$lib/components/charts';
+	import { StackedTimeline, BarChart, PieChart } from '$lib/components/charts';
 	import { allCollections } from '$lib/stores/data';
 	import {
-		groupByYear,
+		groupByYearAndType,
 		extractSubjects,
 		extractResourceTypes,
 		extractLanguages
@@ -112,13 +112,13 @@
 	let rightData = $derived(getCollection(rightUniversity, rightProject));
 
 	// Derived chart data for left
-	let leftTimeline = $derived(groupByYear(leftData));
+	let leftTimeline = $derived(groupByYearAndType(leftData));
 	let leftSubjects = $derived(extractSubjects(leftData));
 	let leftResourceTypes = $derived(extractResourceTypes(leftData));
 	let leftLanguages = $derived(extractLanguages(leftData));
 
 	// Derived chart data for right
-	let rightTimeline = $derived(groupByYear(rightData));
+	let rightTimeline = $derived(groupByYearAndType(rightData));
 	let rightSubjects = $derived(extractSubjects(rightData));
 	let rightResourceTypes = $derived(extractResourceTypes(rightData));
 	let rightLanguages = $derived(extractLanguages(rightData));
@@ -178,17 +178,19 @@
 					{#snippet children()}
 						<div class="space-y-3">
 							<div>
-								<label class="text-sm text-muted-foreground mb-1 block">University</label>
+								<span class="text-sm text-muted-foreground mb-1 block">University</span>
 								<Select
 									options={universityOptions}
 									bind:value={leftUniversity}
+									placeholder="Select university"
 								/>
 							</div>
 							<div>
-								<label class="text-sm text-muted-foreground mb-1 block">Project</label>
+								<span class="text-sm text-muted-foreground mb-1 block">Project</span>
 								<Select
 									options={leftProjectOptions}
 									bind:value={leftProject}
+									placeholder="Select project"
 								/>
 							</div>
 						</div>
@@ -210,17 +212,19 @@
 					{#snippet children()}
 						<div class="space-y-3">
 							<div>
-								<label class="text-sm text-muted-foreground mb-1 block">University</label>
+								<span class="text-sm text-muted-foreground mb-1 block">University</span>
 								<Select
 									options={universityOptions}
 									bind:value={rightUniversity}
+									placeholder="Select university"
 								/>
 							</div>
 							<div>
-								<label class="text-sm text-muted-foreground mb-1 block">Project</label>
+								<span class="text-sm text-muted-foreground mb-1 block">Project</span>
 								<Select
 									options={rightProjectOptions}
 									bind:value={rightProject}
+									placeholder="Select project"
 								/>
 							</div>
 						</div>
@@ -330,10 +334,10 @@
 						</CardTitle>
 					{/snippet}
 				</CardHeader>
-				<CardContent class="h-[300px]">
+				<CardContent class="h-[350px]">
 					{#snippet children()}
 						{#if leftTimeline.length > 0}
-							<Timeline data={leftTimeline} />
+							<StackedTimeline data={leftTimeline} />
 						{:else}
 							<div class="h-full flex items-center justify-center text-muted-foreground">
 								No timeline data
@@ -353,10 +357,10 @@
 						</CardTitle>
 					{/snippet}
 				</CardHeader>
-				<CardContent class="h-[300px]">
+				<CardContent class="h-[350px]">
 					{#snippet children()}
 						{#if rightTimeline.length > 0}
-							<Timeline data={rightTimeline} />
+							<StackedTimeline data={rightTimeline} />
 						{:else}
 							<div class="h-full flex items-center justify-center text-muted-foreground">
 								No timeline data

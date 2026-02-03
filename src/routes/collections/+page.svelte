@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import { Card, CardHeader, CardTitle, CardContent, Badge, Select } from '$lib/components/ui';
-	import { StackedTimeline, BarChart, PieChart, WordCloud, GeoMap, LocationMap, SankeyChart, SunburstChart } from '$lib/components/charts';
+	import { StackedTimeline, BarChart, PieChart, WordCloud, LocationMap, SankeyChart, SunburstChart } from '$lib/components/charts';
 	import { allCollections } from '$lib/stores/data';
 	import {
 		groupByYearAndType,
@@ -81,6 +81,19 @@
 	let wordCloudData = $derived(extractTags(currentCollection));
 	let locationsData = $derived(extractLocations(currentCollection));
 	let languagesData = $derived(extractLanguages(currentCollection));
+
+	// Convert locations to bar chart format (grouped by country)
+	let locationsByCountry = $derived.by(() => {
+		const countryMap = new Map<string, number>();
+		locationsData.forEach((d) => {
+			if (d.country) {
+				countryMap.set(d.country, (countryMap.get(d.country) || 0) + d.count);
+			}
+		});
+		return Array.from(countryMap.entries())
+			.map(([name, value]) => ({ name, value }))
+			.sort((a, b) => b.value - a.value);
+	});
 
 	// Extract contributors (handle cases where name might not be an array)
 	let contributorsData = $derived(
@@ -288,7 +301,13 @@
 						</CardHeader>
 						<CardContent class="h-[350px]">
 							{#snippet children()}
-								<GeoMap data={locationsData} />
+								{#if locationsByCountry.length > 0}
+									<BarChart data={locationsByCountry} maxItems={10} />
+								{:else}
+									<div class="h-full flex items-center justify-center text-muted-foreground">
+										No data available
+									</div>
+								{/if}
 							{/snippet}
 						</CardContent>
 					{/snippet}
