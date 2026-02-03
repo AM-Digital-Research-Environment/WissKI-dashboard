@@ -473,3 +473,22 @@ export type BorderRadiusKey = keyof typeof BORDER_RADIUS;
 export type ShadowKey = keyof typeof SHADOW;
 export type DurationKey = keyof typeof DURATION;
 export type ZIndexKey = keyof typeof Z_INDEX;
+
+/* =============================================================================
+   ECHARTS PERFORMANCE SETTINGS
+   ============================================================================= */
+
+/**
+ * Performance thresholds and settings for ECharts
+ * Used to automatically optimize large dataset rendering
+ */
+export const ECHARTS_PERFORMANCE = {
+	/** Dataset size threshold for enabling large mode optimizations */
+	LARGE_DATASET_THRESHOLD: 1000,
+	/** Dataset size threshold for enabling progressive rendering */
+	PROGRESSIVE_THRESHOLD: 5000,
+	/** Number of data points to render per frame in progressive mode */
+	PROGRESSIVE_CHUNK_SIZE: 500,
+	/** Milliseconds to throttle resize event handlers */
+	RESIZE_THROTTLE_MS: 100
+} as const;

@@ -9,3 +9,4 @@ export { default as GeoMap } from './GeoMap.svelte';
 export { default as LocationMap } from './LocationMap.svelte';
 export { default as SankeyChart } from './SankeyChart.svelte';
 export { default as SunburstChart } from './SunburstChart.svelte';
+export { default as ChordDiagram } from './ChordDiagram.svelte';

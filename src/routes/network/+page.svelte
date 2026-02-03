@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { Card, CardHeader, CardTitle, CardContent, Tabs, Select } from '$lib/components/ui';
 	import { NetworkGraph } from '$lib/components/charts';
-	import { allCollections, persons } from '$lib/stores/data';
-	import { buildContributorNetwork, buildPersonInstitutionNetwork } from '$lib/utils/dataTransform';
+	import { allCollections, persons, projects } from '$lib/stores/data';
+	import { buildContributorNetwork, buildPersonInstitutionNetwork, buildInstitutionCollaborationNetwork } from '$lib/utils/dataTransform';
 	import { universities } from '$lib/types';
 	import type { CollectionItem } from '$lib/types';
 
 	const tabs = [
 		{ id: 'contributors', label: 'Contributors' },
-		{ id: 'affiliations', label: 'Affiliations' }
+		{ id: 'affiliations', label: 'Affiliations' },
+		{ id: 'institutions', label: 'Institution Collaborations' }
 	];
 
 	let activeTab = $state('contributors');
@@ -53,6 +54,7 @@
 
 	let contributorNetwork = $derived(buildContributorNetwork(filteredCollections, maxNodes));
 	let affiliationNetwork = $derived(buildPersonInstitutionNetwork($persons, 50));
+	let institutionNetwork = $derived(buildInstitutionCollaborationNetwork($projects, $persons, maxNodes));
 
 	function handleTabChange(tabId: string) {
 		activeTab = tabId;
@@ -207,7 +209,7 @@
 						</CardContent>
 					{/snippet}
 				</Card>
-			{:else}
+			{:else if tab === 'affiliations'}
 				<!-- Affiliation Network -->
 				<div class="grid gap-4 md:grid-cols-3 mb-6">
 					<Card>
@@ -289,6 +291,89 @@
 										</div>
 									{/each}
 								</div>
+								<p class="text-sm text-muted-foreground mt-4">
+									Drag nodes to rearrange. Scroll to zoom. Click and drag background to pan.
+								</p>
+							{/snippet}
+						</CardContent>
+					{/snippet}
+				</Card>
+			{:else}
+				<!-- Institution Collaboration Network -->
+				<div class="grid gap-4 md:grid-cols-3 mb-6">
+					<Card>
+						{#snippet children()}
+							<CardContent class="pt-6">
+								{#snippet children()}
+									<div class="text-2xl font-bold">{institutionNetwork.nodes.length}</div>
+									<p class="text-sm text-muted-foreground">Institutions</p>
+								{/snippet}
+							</CardContent>
+						{/snippet}
+					</Card>
+
+					<Card>
+						{#snippet children()}
+							<CardContent class="pt-6">
+								{#snippet children()}
+									<div class="text-2xl font-bold">{institutionNetwork.links.length}</div>
+									<p class="text-sm text-muted-foreground">Collaborations</p>
+								{/snippet}
+							</CardContent>
+						{/snippet}
+					</Card>
+
+					<Card>
+						{#snippet children()}
+							<CardContent class="pt-6">
+								{#snippet children()}
+									<div class="text-2xl font-bold">{$projects.length}</div>
+									<p class="text-sm text-muted-foreground">Total Projects</p>
+								{/snippet}
+							</CardContent>
+						{/snippet}
+					</Card>
+				</div>
+
+				<Card>
+					{#snippet children()}
+						<CardHeader>
+							{#snippet children()}
+								<CardTitle>
+									{#snippet children()}Institution Collaboration Network{/snippet}
+								</CardTitle>
+							{/snippet}
+						</CardHeader>
+						<CardContent class="h-[600px]">
+							{#snippet children()}
+								{#if institutionNetwork.nodes.length > 0}
+									<NetworkGraph data={institutionNetwork} />
+								{:else}
+									<div class="h-full flex items-center justify-center text-muted-foreground">
+										No collaboration data available. Institutions may not have shared projects.
+									</div>
+								{/if}
+							{/snippet}
+						</CardContent>
+					{/snippet}
+				</Card>
+
+				<Card class="mt-6">
+					{#snippet children()}
+						<CardHeader>
+							{#snippet children()}
+								<CardTitle>
+									{#snippet children()}About this visualization{/snippet}
+								</CardTitle>
+							{/snippet}
+						</CardHeader>
+						<CardContent>
+							{#snippet children()}
+								<p class="text-sm text-muted-foreground">
+									This network shows institutions that collaborate through shared research projects.
+									Connections are formed when institutions have team members working on the same project.
+									Node size reflects the number of collaborations. Thicker lines indicate more shared projects.
+								</p>
 								<p class="text-sm text-muted-foreground mt-4">
 									Drag nodes to rearrange. Scroll to zoom. Click and drag background to pan.
 								</p>

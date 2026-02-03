@@ -3,7 +3,8 @@
 	import type { EChartsOption } from 'echarts';
 	import type { NetworkData } from '$lib/types';
 	import { cn } from '$lib/utils/cn';
-	import { CHART_COLORS_SIMPLE, getChartColor } from '$lib/styles';
+	import { CHART_COLORS_SIMPLE } from '$lib/styles';
+	import { buildTitle, hideAxes, nodeFormatter } from './utils';
 
 	interface Props {
 		data: NetworkData;
@@ -15,22 +16,12 @@
 	let { data, title = '', class: className = '', onclick }: Props = $props();
 
 	let option: EChartsOption = $derived({
-		title: title
-			? {
-					text: title,
-					left: 'center',
-					top: 0
-				}
-			: undefined,
+		...buildTitle(title),
 		tooltip: {
 			trigger: 'item',
-			formatter: (params: unknown) => {
-				const p = params as { data: { name: string } };
-				return p.data?.name || '';
-			}
+			formatter: nodeFormatter
 		},
-		xAxis: { show: false },
-		yAxis: { show: false },
+		...hideAxes(),
 		legend: {
 			data: data.categories.map((c) => c.name),
 			orient: 'vertical',

@@ -3,6 +3,7 @@
 	import type { EChartsOption } from 'echarts';
 	import { cn } from '$lib/utils/cn';
 	import { CHART_COLORS } from '$lib/styles';
+	import { buildTitle, hideAxes, pathFormatter } from './utils';
 
 	interface SunburstNode {
 		name: string;
@@ -20,23 +21,12 @@
 	let { data, title = '', class: className = '', onclick }: Props = $props();
 
 	let option: EChartsOption = $derived({
-		title: title
-			? {
-					text: title,
-					left: 'center',
-					top: 0
-				}
-			: undefined,
+		...buildTitle(title),
 		tooltip: {
 			trigger: 'item',
-			formatter: (params: unknown) => {
-				const p = params as { name: string; value: number; treePathInfo: { name: string }[] };
-				const path = p.treePathInfo?.map(n => n.name).filter(n => n).join(' → ') || p.name;
-				return `${path}<br/>Count: ${p.value}`;
-			}
+			formatter: pathFormatter
 		},
-		xAxis: { show: false },
-		yAxis: { show: false },
+		...hideAxes(),
 		series: [
 			{
 				type: 'sunburst',

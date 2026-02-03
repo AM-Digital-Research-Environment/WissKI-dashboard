@@ -3,6 +3,7 @@
 	import type { EChartsOption } from 'echarts';
 	import { cn } from '$lib/utils/cn';
 	import { getChartColor } from '$lib/styles';
+	import { buildTitle, hideAxes, linkFormatter } from './utils';
 
 	interface SankeyNode {
 		name: string;
@@ -24,26 +25,13 @@
 	let { nodes, links, title = '', class: className = '' }: Props = $props();
 
 	let option: EChartsOption = $derived({
-		title: title
-			? {
-					text: title,
-					left: 'center',
-					top: 0
-				}
-			: undefined,
+		...buildTitle(title),
 		tooltip: {
 			trigger: 'item',
 			triggerOn: 'mousemove',
-			formatter: (params: unknown) => {
-				const p = params as { data: { source?: string; target?: string; value?: number; name?: string } };
-				if (p.data.source && p.data.target) {
-					return `${p.data.source} → ${p.data.target}: ${p.data.value}`;
-				}
-				return p.data.name || '';
-			}
+			formatter: linkFormatter
 		},
-		xAxis: { show: false },
-		yAxis: { show: false },
+		...hideAxes(),
 		series: [
 			{
 				type: 'sankey',

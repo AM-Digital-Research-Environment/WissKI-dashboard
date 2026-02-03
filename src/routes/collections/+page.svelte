@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import { Card, CardHeader, CardTitle, CardContent, Badge, Select } from '$lib/components/ui';
-	import { StackedTimeline, BarChart, PieChart, WordCloud, LocationMap, SankeyChart, SunburstChart } from '$lib/components/charts';
+	import { StackedTimeline, BarChart, PieChart, WordCloud, LocationMap, SankeyChart, SunburstChart, ChordDiagram } from '$lib/components/charts';
 	import { allCollections } from '$lib/stores/data';
 	import {
 		groupByYearAndType,
@@ -13,7 +13,8 @@
 		extractLanguages,
 		countOccurrences,
 		buildSankeyData,
-		buildSunburstData
+		buildSunburstData,
+		buildSubjectCoOccurrence
 	} from '$lib/utils/dataTransform';
 	import { loadEnrichedLocations, UNIVERSITY_COLLECTIONS } from '$lib/utils/dataLoader';
 	import { universities } from '$lib/types';
@@ -103,9 +104,10 @@
 		})
 	);
 
-	// Sankey and Sunburst data
+	// Sankey, Sunburst, and Chord diagram data
 	let sankeyData = $derived(buildSankeyData(currentCollection));
 	let sunburstData = $derived(buildSunburstData(currentCollection));
+	let subjectCoOccurrence = $derived(buildSubjectCoOccurrence(currentCollection, 2, 20));
 
 </script>
 
@@ -378,6 +380,35 @@
 								{:else}
 									<div class="h-full flex items-center justify-center text-muted-foreground">
 										No data available
+									</div>
+								{/if}
+							{/snippet}
+						</CardContent>
+					{/snippet}
+				</Card>
+
+				<!-- Subject Co-occurrence Chord Diagram -->
+				<Card class="col-span-full">
+					{#snippet children()}
+						<CardHeader>
+							{#snippet children()}
+								<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+									<CardTitle>
+										{#snippet children()}Subject Co-occurrence{/snippet}
+									</CardTitle>
+									<p class="text-sm text-muted-foreground">
+										Shows which subjects frequently appear together
+									</p>
+								</div>
+							{/snippet}
+						</CardHeader>
+						<CardContent class="h-[550px]">
+							{#snippet children()}
+								{#if subjectCoOccurrence.names.length > 0}
+									<ChordDiagram data={subjectCoOccurrence} />
+								{:else}
+									<div class="h-full flex items-center justify-center text-muted-foreground">
+										Not enough subject data for co-occurrence analysis
 									</div>
 								{/if}
 							{/snippet}

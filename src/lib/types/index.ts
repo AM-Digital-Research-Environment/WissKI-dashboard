@@ -212,6 +212,11 @@ export interface NetworkData {
 	categories: { name: string }[];
 }
 
+export interface ChordData {
+	names: string[];
+	matrix: number[][];
+}
+
 // Dashboard stats
 export interface DashboardStats {
 	totalProjects: number;

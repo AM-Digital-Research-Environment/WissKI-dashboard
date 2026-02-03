@@ -499,6 +499,168 @@ export function buildSankeyData(
 }
 
 /**
+ * Build subject co-occurrence matrix for chord diagram
+ * Shows which subjects frequently appear together in the same items
+ */
+export function buildSubjectCoOccurrence(
+	items: CollectionItem[],
+	minOccurrences: number = 3,
+	maxSubjects: number = 25
+): { names: string[]; matrix: number[][] } {
+	// First, count all subjects to find the most common ones
+	const subjectCounts = new Map<string, number>();
+
+	items.forEach((item) => {
+		const subjects = item.subject?.map((s) => s.authLabel || s.origLabel).filter(Boolean) || [];
+		subjects.forEach((subject) => {
+			if (subject) {
+				subjectCounts.set(subject, (subjectCounts.get(subject) || 0) + 1);
+			}
+		});
+	});
+
+	// Get top subjects that appear at least minOccurrences times
+	const topSubjects = Array.from(subjectCounts.entries())
+		.filter(([, count]) => count >= minOccurrences)
+		.sort((a, b) => b[1] - a[1])
+		.slice(0, maxSubjects)
+		.map(([name]) => name);
+
+	if (topSubjects.length === 0) {
+		return { names: [], matrix: [] };
+	}
+
+	// Create a map for quick index lookup
+	const subjectIndex = new Map<string, number>();
+	topSubjects.forEach((subject, i) => subjectIndex.set(subject, i));
+
+	// Build co-occurrence matrix
+	const n = topSubjects.length;
+	const matrix: number[][] = Array.from({ length: n }, () => Array(n).fill(0));
+
+	items.forEach((item) => {
+		const subjects = item.subject
+			?.map((s) => s.authLabel || s.origLabel)
+			.filter((s): s is string => Boolean(s) && subjectIndex.has(s)) || [];
+
+		// Count co-occurrences (pairs that appear in the same item)
+		for (let i = 0; i < subjects.length; i++) {
+			for (let j = i + 1; j < subjects.length; j++) {
+				const idx1 = subjectIndex.get(subjects[i])!;
+				const idx2 = subjectIndex.get(subjects[j])!;
+				matrix[idx1][idx2]++;
+				matrix[idx2][idx1]++;
+			}
+		}
+	});
+
+	return { names: topSubjects, matrix };
+}
+
+/**
+ * Build institution collaboration network
+ * Shows which institutions collaborate through shared project memberships
+ */
+export function buildInstitutionCollaborationNetwork(
+	projects: Project[],
+	persons: Person[],
+	maxNodes: number = 50
+): NetworkData {
+	const nodes: NetworkData['nodes'] = [];
+	const links: NetworkData['links'] = [];
+	const institutionSet = new Set<string>();
+	const collaborationMap = new Map<string, number>();
+
+	// Build a map of person names to their institutions
+	const personInstitutions = new Map<string, string[]>();
+	persons.forEach((person) => {
+		if (person.affiliation && person.affiliation.length > 0) {
+			personInstitutions.set(person.name, person.affiliation);
+		}
+	});
+
+	// For each project, find all institutions involved
+	projects.forEach((project) => {
+		const projectInstitutions = new Set<string>();
+
+		// Add institutions directly listed on the project
+		project.institutions?.forEach((inst) => {
+			if (inst) projectInstitutions.add(inst);
+		});
+
+		// Add institutions from PI affiliations
+		project.pi?.forEach((piName) => {
+			const affiliations = personInstitutions.get(piName);
+			affiliations?.forEach((inst) => projectInstitutions.add(inst));
+		});
+
+		// Add institutions from member affiliations
+		if (Array.isArray(project.members)) {
+			project.members.forEach((memberName) => {
+				if (typeof memberName === 'string') {
+					const affiliations = personInstitutions.get(memberName);
+					affiliations?.forEach((inst) => projectInstitutions.add(inst));
+				}
+			});
+		}
+
+		// Create collaboration links between all institution pairs in this project
+		const instArray = Array.from(projectInstitutions);
+		for (let i = 0; i < instArray.length; i++) {
+			institutionSet.add(instArray[i]);
+			for (let j = i + 1; j < instArray.length; j++) {
+				const key = [instArray[i], instArray[j]].sort().join('|||');
+				collaborationMap.set(key, (collaborationMap.get(key) || 0) + 1);
+			}
+		}
+	});
+
+	// Convert institutions to nodes, sorted by collaboration count
+	const institutionCollabCount = new Map<string, number>();
+	collaborationMap.forEach((count, key) => {
+		const [inst1, inst2] = key.split('|||');
+		institutionCollabCount.set(inst1, (institutionCollabCount.get(inst1) || 0) + count);
+		institutionCollabCount.set(inst2, (institutionCollabCount.get(inst2) || 0) + count);
+	});
+
+	// Take top institutions by collaboration count
+	const sortedInstitutions = Array.from(institutionSet)
+		.map((name) => ({ name, count: institutionCollabCount.get(name) || 0 }))
+		.sort((a, b) => b.count - a.count)
+		.slice(0, maxNodes);
+
+	const topInstitutionSet = new Set(sortedInstitutions.map((i) => i.name));
+
+	// Create nodes
+	sortedInstitutions.forEach((inst, index) => {
+		nodes.push({
+			id: `inst_${inst.name}`,
+			name: inst.name,
+			category: 0,
+			symbolSize: Math.max(15, Math.min(60, 10 + Math.sqrt(inst.count) * 5))
+		});
+	});
+
+	// Create links (only between top institutions)
+	collaborationMap.forEach((count, key) => {
+		const [inst1, inst2] = key.split('|||');
+		if (topInstitutionSet.has(inst1) && topInstitutionSet.has(inst2)) {
+			links.push({
+				source: `inst_${inst1}`,
+				target: `inst_${inst2}`,
+				value: count
+			});
+		}
+	});
+
+	return {
+		nodes,
+		links,
+		categories: [{ name: 'Institution' }]
+	};
+}
+
+/**
  * Build Sunburst data: Resource Type → Language → Subject hierarchy
  */
 export function buildSunburstData(

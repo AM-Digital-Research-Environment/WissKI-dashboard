@@ -5,6 +5,7 @@
 	import { cn } from '$lib/utils/cn';
 	import { CHART_COLORS } from '$lib/styles';
 	import { ChevronLeft, ChevronRight } from '@lucide/svelte';
+	import { buildTitle, buildGrid } from './utils';
 
 	interface Props {
 		data: BarChartDataPoint[];
@@ -54,15 +55,9 @@
 	});
 
 	let option: EChartsOption = $derived({
-		title: title
-			? {
-					text: title,
-					left: 'center',
-					top: 0
-				}
-			: undefined,
+		...buildTitle(title),
 		legend: {
-			show: false // Hide legend for single series
+			show: false
 		},
 		tooltip: {
 			trigger: 'axis',
@@ -70,13 +65,12 @@
 				type: 'shadow'
 			}
 		},
-		grid: {
-			left: horizontal ? '3%' : '3%',
+		grid: buildGrid({
+			left: '3%',
 			right: '4%',
 			bottom: horizontal ? '3%' : '25%',
-			top: title ? '15%' : '3%',
-			containLabel: true
-		},
+			top: title ? '15%' : '3%'
+		}),
 		xAxis: horizontal
 			? {
 					type: 'value'
@@ -114,7 +108,7 @@
 				},
 				emphasis: {
 					itemStyle: {
-						color: CHART_COLORS[0] + 'cc' // Add transparency for hover
+						color: CHART_COLORS[0] + 'cc'
 					}
 				}
 			}

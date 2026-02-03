@@ -4,7 +4,7 @@
 	import type { EChartsOption, ECharts } from 'echarts';
 	import { theme } from '$lib/stores/data';
 	import { cn } from '$lib/utils/cn';
-	import { getEChartsTheme } from '$lib/styles';
+	import { getEChartsTheme, ECHARTS_PERFORMANCE } from '$lib/styles';
 	import { ZoomIn, ZoomOut, RotateCcw } from '@lucide/svelte';
 
 	interface Props {
@@ -12,13 +12,98 @@
 		class?: string;
 		showZoomControls?: boolean;
 		onclick?: (params: unknown) => void;
+		/** Enable large dataset optimizations (auto-detected if not specified) */
+		largeData?: boolean;
+		/** Enable progressive rendering for very large datasets */
+		progressive?: boolean;
+		/** Whether to replace the entire option (true) or merge (false) */
+		notMerge?: boolean;
 	}
 
-	let { option, class: className = '', showZoomControls = true, onclick }: Props = $props();
+	let {
+		option,
+		class: className = '',
+		showZoomControls = true,
+		onclick,
+		largeData,
+		progressive,
+		notMerge = false
+	}: Props = $props();
 
 	let chartContainer: HTMLDivElement;
 	let chartInstance: ECharts | null = null;
 	let zoomLevel = $state(1);
+	let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
+
+	/**
+	 * Count total data points in the option to determine if large mode is needed
+	 */
+	function countDataPoints(opt: EChartsOption): number {
+		let count = 0;
+		const series = opt.series;
+
+		if (Array.isArray(series)) {
+			for (const s of series) {
+				if (s && typeof s === 'object' && 'data' in s && Array.isArray(s.data)) {
+					count += s.data.length;
+				}
+			}
+		} else if (series && typeof series === 'object' && 'data' in series && Array.isArray(series.data)) {
+			count += series.data.length;
+		}
+
+		return count;
+	}
+
+	/**
+	 * Apply performance optimizations based on data size
+	 */
+	function applyPerformanceOptimizations(opt: EChartsOption): EChartsOption {
+		const dataCount = countDataPoints(opt);
+		const isLargeData = largeData ?? dataCount >= ECHARTS_PERFORMANCE.LARGE_DATASET_THRESHOLD;
+		const useProgressive = progressive ?? dataCount >= ECHARTS_PERFORMANCE.PROGRESSIVE_THRESHOLD;
+
+		if (!isLargeData) {
+			return opt;
+		}
+
+		const performanceOpts: Partial<EChartsOption> = {
+			animation: !useProgressive
+		};
+
+		if (useProgressive) {
+			performanceOpts.progressive = ECHARTS_PERFORMANCE.PROGRESSIVE_CHUNK_SIZE;
+			performanceOpts.progressiveThreshold = ECHARTS_PERFORMANCE.PROGRESSIVE_THRESHOLD;
+		}
+
+		// Apply large mode to series
+		if (Array.isArray(opt.series)) {
+			performanceOpts.series = opt.series.map((s) => {
+				if (s && typeof s === 'object') {
+					return {
+						...s,
+						large: true,
+						largeThreshold: ECHARTS_PERFORMANCE.LARGE_DATASET_THRESHOLD
+					};
+				}
+				return s;
+			});
+		}
+
+		return { ...opt, ...performanceOpts };
+	}
+
+	/**
+	 * Throttled resize handler for better performance
+	 */
+	function handleResize() {
+		if (resizeTimeout) {
+			clearTimeout(resizeTimeout);
+		}
+		resizeTimeout = setTimeout(() => {
+			chartInstance?.resize();
+		}, ECHARTS_PERFORMANCE.RESIZE_THROTTLE_MS);
+	}
 
 	function initChart() {
 		if (!chartContainer) return;
@@ -30,14 +115,15 @@
 			chartInstance.on('click', onclick);
 		}
 
-		// Handle resize
-		const resizeObserver = new ResizeObserver(() => {
-			chartInstance?.resize();
-		});
+		// Handle resize with throttling via ResizeObserver
+		const resizeObserver = new ResizeObserver(handleResize);
 		resizeObserver.observe(chartContainer);
 
 		return () => {
 			resizeObserver.disconnect();
+			if (resizeTimeout) {
+				clearTimeout(resizeTimeout);
+			}
 		};
 	}
 
@@ -45,13 +131,14 @@
 		if (!chartInstance) return;
 
 		const themeConfig = getEChartsTheme($theme === 'dark');
+		const optimizedOption = applyPerformanceOptimizations(option);
 		const mergedOption = echarts.util.merge(
 			echarts.util.clone(themeConfig),
-			option,
+			optimizedOption,
 			true
 		);
 
-		chartInstance.setOption(mergedOption, true);
+		chartInstance.setOption(mergedOption, notMerge);
 	}
 
 	// React to theme changes
@@ -72,6 +159,9 @@
 	});
 
 	onDestroy(() => {
+		if (resizeTimeout) {
+			clearTimeout(resizeTimeout);
+		}
 		chartInstance?.dispose();
 	});
 

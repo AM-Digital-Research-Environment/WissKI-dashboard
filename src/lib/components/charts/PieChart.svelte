@@ -3,7 +3,8 @@
 	import type { EChartsOption } from 'echarts';
 	import type { PieChartDataPoint } from '$lib/types';
 	import { cn } from '$lib/utils/cn';
-	import { CHART_COLORS, getChartColor } from '$lib/styles';
+	import { getChartColor } from '$lib/styles';
+	import { buildTitle, hideAxes, PIE_FORMAT_STRING } from './utils';
 
 	interface Props {
 		data: PieChartDataPoint[];
@@ -15,19 +16,12 @@
 	let { data, title = '', class: className = '', onclick }: Props = $props();
 
 	let option: EChartsOption = $derived({
-		title: title
-			? {
-					text: title,
-					left: 'center',
-					top: 0
-				}
-			: undefined,
+		...buildTitle(title),
 		tooltip: {
 			trigger: 'item',
-			formatter: '{b}: {c} ({d}%)'
+			formatter: PIE_FORMAT_STRING
 		},
-		xAxis: { show: false },
-		yAxis: { show: false },
+		...hideAxes(),
 		legend: {
 			orient: 'vertical',
 			left: 'left',

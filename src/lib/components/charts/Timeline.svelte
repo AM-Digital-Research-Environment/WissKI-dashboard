@@ -4,6 +4,7 @@
 	import type { TimelineDataPoint } from '$lib/types';
 	import { cn } from '$lib/utils/cn';
 	import { CHART_COLORS } from '$lib/styles';
+	import { buildTitle, buildGrid, itemCountFormatter } from './utils';
 
 	interface Props {
 		data: TimelineDataPoint[];
@@ -15,34 +16,23 @@
 	let { data, title = '', class: className = '', onclick }: Props = $props();
 
 	let option: EChartsOption = $derived({
-		title: title
-			? {
-					text: title,
-					left: 'center',
-					top: 0
-				}
-			: undefined,
+		...buildTitle(title),
 		legend: {
-			show: false // Hide legend for single series
+			show: false
 		},
 		tooltip: {
 			trigger: 'axis',
 			axisPointer: {
 				type: 'shadow'
 			},
-			formatter: (params: unknown) => {
-				const p = Array.isArray(params) ? params[0] : params;
-				const d = p as { name: string; value: number };
-				return `${d.name}: ${d.value} items`;
-			}
+			formatter: itemCountFormatter
 		},
-		grid: {
+		grid: buildGrid({
 			left: '3%',
 			right: '4%',
 			bottom: '15%',
-			top: title ? '15%' : '3%',
-			containLabel: true
-		},
+			top: title ? '15%' : '3%'
+		}),
 		xAxis: {
 			type: 'category',
 			data: data.map((d) => d.year.toString()),
@@ -68,7 +58,7 @@
 						y2: 1,
 						colorStops: [
 							{ offset: 0, color: CHART_COLORS[0] },
-							{ offset: 1, color: CHART_COLORS[0] + 'bb' } // Slightly darker
+							{ offset: 1, color: CHART_COLORS[0] + 'bb' }
 						]
 					},
 					borderRadius: [4, 4, 0, 0]

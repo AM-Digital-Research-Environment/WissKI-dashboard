@@ -5,6 +5,7 @@
 	import { getResourceTypesFromStackedData } from '$lib/utils/dataTransform';
 	import { cn } from '$lib/utils/cn';
 	import { CHART_COLORS } from '$lib/styles';
+	import { buildTitle, buildGrid, buildDataZoom, stackedFormatter } from './utils';
 
 	interface Props {
 		data: StackedTimelineDataPoint[];
@@ -19,49 +20,25 @@
 	let resourceTypes = $derived(getResourceTypesFromStackedData(data));
 
 	let option: EChartsOption = $derived({
-		title: title
-			? {
-					text: title,
-					left: 'center',
-					top: 0
-				}
-			: undefined,
+		...buildTitle(title),
 		tooltip: {
 			trigger: 'axis',
 			axisPointer: {
 				type: 'shadow'
 			},
-			formatter: (params: unknown) => {
-				const pArray = params as { seriesName: string; value: number; name: string; color: string }[];
-				if (!Array.isArray(pArray) || pArray.length === 0) return '';
-
-				const year = pArray[0].name;
-				let total = 0;
-				let content = `<strong>${year}</strong><br/>`;
-
-				pArray.forEach((p) => {
-					if (p.value > 0) {
-						content += `<span style="display:inline-block;margin-right:5px;border-radius:50%;width:10px;height:10px;background-color:${p.color};"></span>${p.seriesName}: ${p.value}<br/>`;
-						total += p.value;
-					}
-				});
-
-				content += `<br/><strong>Total: ${total}</strong>`;
-				return content;
-			}
+			formatter: stackedFormatter
 		},
 		legend: {
 			type: 'scroll',
 			bottom: 65,
 			data: resourceTypes
 		},
-		grid: {
+		grid: buildGrid({
 			left: '3%',
 			right: '4%',
 			bottom: 100,
-			top: title ? '15%' : '10%',
-			containLabel: true
-		},
+			top: title ? '15%' : '10%'
+		}),
 		xAxis: {
 			type: 'category',
 			data: data.map((d) => d.year.toString()),
@@ -73,15 +50,12 @@
 			type: 'value',
 			name: 'Count'
 		},
-		dataZoom: [
-			{
-				type: 'slider',
-				start: 0,
-				end: 100,
-				bottom: 10,
-				height: 25
-			}
-		],
+		dataZoom: buildDataZoom({
+			start: 0,
+			end: 100,
+			bottom: 10,
+			height: 25
+		}),
 		series: resourceTypes.map((type, index) => ({
 			name: type,
 			type: 'bar',
