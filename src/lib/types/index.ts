@@ -227,14 +227,15 @@ export interface University {
 	name: string;
 	code: string;
 	folder: string;
+	logo: string;
 }
 
 // Universities constant
 export const universities: University[] = [
-	{ id: 'unilag', name: 'University of Lagos', code: 'ULG', folder: 'projects_metadata_unilag' },
-	{ id: 'ujkz', name: 'Universite Joseph Ki-Zerbo', code: 'UJKZ', folder: 'projects_metadata_ujkz' },
-	{ id: 'ubt', name: 'University of Bayreuth', code: 'UBT', folder: 'projects_metadata_ubt' },
-	{ id: 'ufba', name: 'Federal University of Bahia', code: 'UFB', folder: 'projects_metadata_ufba' }
+	{ id: 'unilag', name: 'University of Lagos', code: 'ULG', folder: 'projects_metadata_unilag', logo: 'logos/ULG.png' },
+	{ id: 'ujkz', name: 'Universite Joseph Ki-Zerbo', code: 'UJKZ', folder: 'projects_metadata_ujkz', logo: 'logos/UJKZ.png' },
+	{ id: 'ubt', name: 'University of Bayreuth', code: 'UBT', folder: 'projects_metadata_ubt', logo: 'logos/UBT.png' },
+	{ id: 'ufba', name: 'Federal University of Bahia', code: 'UFB', folder: 'projects_metadata_ufba', logo: 'logos/UFBA.png' }
 ];
 
 // Filter state

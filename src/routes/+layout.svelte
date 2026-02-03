@@ -6,6 +6,7 @@
 	import { Sidebar, Header } from '$lib/components/layout';
 	import { initializeData, theme, isLoading, loadError } from '$lib/stores/data';
 	import type { Snippet } from 'svelte';
+	import { AlertCircle } from '@lucide/svelte';
 
 	interface Props {
 		children: Snippet;
@@ -75,11 +76,7 @@
 				<div class="flex items-center justify-center h-64 animate-fade-in">
 					<div class="text-center max-w-md">
 						<div class="h-16 w-16 rounded-2xl bg-destructive/10 flex items-center justify-center mx-auto mb-4">
-							<svg class="h-8 w-8 text-destructive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<circle cx="12" cy="12" r="10" />
-								<line x1="12" y1="8" x2="12" y2="12" />
-								<line x1="12" y1="16" x2="12.01" y2="16" />
-							</svg>
+							<AlertCircle class="h-8 w-8 text-destructive" />
 						</div>
 						<h2 class="text-lg font-display font-semibold text-destructive">Error Loading Data</h2>
 						<p class="text-sm text-muted-foreground mt-2">{$loadError}</p>

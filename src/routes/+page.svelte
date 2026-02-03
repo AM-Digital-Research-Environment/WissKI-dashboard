@@ -18,6 +18,8 @@
 		extractLanguages
 	} from '$lib/utils/dataTransform';
 	import { universities } from '$lib/types';
+	import { base } from '$app/paths';
+	import { FileText, Briefcase, Users, Building2, Calendar, PieChart as PieChartIcon, BarChart3, Edit3, BookOpen } from '@lucide/svelte';
 
 	// Word cloud controls
 	let wordCloudMaxWords = $state(50);
@@ -73,10 +75,7 @@
 					<p class="stat-label">Collection items</p>
 				</div>
 				<div class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
-					<svg class="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-						<polyline points="14 2 14 8 20 8" />
-					</svg>
+					<FileText class="h-5 w-5 text-primary" />
 				</div>
 			</div>
 		</div>
@@ -89,10 +88,7 @@
 					<p class="stat-label">Research projects</p>
 				</div>
 				<div class="h-10 w-10 rounded-xl bg-accent/80 flex items-center justify-center">
-					<svg class="h-5 w-5 text-accent-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-						<path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-					</svg>
+					<Briefcase class="h-5 w-5 text-accent-foreground" />
 				</div>
 			</div>
 		</div>
@@ -105,12 +101,7 @@
 					<p class="stat-label">Unique names</p>
 				</div>
 				<div class="h-10 w-10 rounded-xl bg-chart-1/10 flex items-center justify-center">
-					<svg class="h-5 w-5 text-chart-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-						<circle cx="9" cy="7" r="4" />
-						<path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-						<path d="M16 3.13a4 4 0 0 1 0 7.75" />
-					</svg>
+					<Users class="h-5 w-5 text-chart-1" />
 				</div>
 			</div>
 		</div>
@@ -123,30 +114,28 @@
 					<p class="stat-label">Partner institutions</p>
 				</div>
 				<div class="h-10 w-10 rounded-xl bg-chart-2/10 flex items-center justify-center">
-					<svg class="h-5 w-5 text-chart-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-						<path d="M6 12v5c3 3 9 3 12 0v-5" />
-					</svg>
+					<Building2 class="h-5 w-5 text-chart-2" />
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<!-- University Breakdown Cards -->
-	<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+	<div class="grid gap-4 grid-cols-2 lg:grid-cols-4">
 		{#each $universitiesData as uniData, index}
 			<div class="stat-card animate-slide-in-up" style="animation-delay: {250 + index * 50}ms">
-				<div class="flex items-start justify-between">
-					<div>
+				<div class="flex items-start justify-between gap-2">
+					<div class="min-w-0 flex-1">
 						<p class="text-sm font-medium text-muted-foreground">{uniData.university.code}</p>
 						<p class="stat-value mt-2">{uniData.count}</p>
 						<p class="stat-label truncate" title={uniData.university.name}>{uniData.university.name}</p>
 					</div>
-					<div class="h-10 w-10 rounded-xl bg-chart-{(index % 4) + 1}/10 flex items-center justify-center">
-						<svg class="h-5 w-5 text-chart-{(index % 4) + 1}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-							<path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-							<path d="M6 12v5c3 3 9 3 12 0v-5" />
-						</svg>
+					<div class="size-9 sm:size-10 rounded-lg bg-white flex items-center justify-center p-1.5 shadow-sm flex-shrink-0">
+						<img
+							src="{base}/{uniData.university.logo}"
+							alt="{uniData.university.name} logo"
+							class="h-full w-full object-contain"
+						/>
 					</div>
 				</div>
 			</div>
@@ -172,12 +161,7 @@
 					{:else}
 						<div class="h-full flex items-center justify-center text-muted-foreground">
 							<div class="text-center">
-								<svg class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-									<rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-									<line x1="16" y1="2" x2="16" y2="6" />
-									<line x1="8" y1="2" x2="8" y2="6" />
-									<line x1="3" y1="10" x2="21" y2="10" />
-								</svg>
+								<Calendar class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" strokeWidth={1.5} />
 								<p>No timeline data available</p>
 							</div>
 						</div>
@@ -198,10 +182,7 @@
 					{:else}
 						<div class="h-full flex items-center justify-center text-muted-foreground">
 							<div class="text-center">
-								<svg class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-									<path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
-									<path d="M22 12A10 10 0 0 0 12 2v10z" />
-								</svg>
+								<PieChartIcon class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" strokeWidth={1.5} />
 								<p>No data available</p>
 							</div>
 						</div>
@@ -222,11 +203,7 @@
 					{:else}
 						<div class="h-full flex items-center justify-center text-muted-foreground">
 							<div class="text-center">
-								<svg class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-									<line x1="18" y1="20" x2="18" y2="10" />
-									<line x1="12" y1="20" x2="12" y2="4" />
-									<line x1="6" y1="20" x2="6" y2="14" />
-								</svg>
+								<BarChart3 class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" strokeWidth={1.5} />
 								<p>No data available</p>
 							</div>
 						</div>
@@ -261,9 +238,7 @@
 					{:else}
 						<div class="h-full flex items-center justify-center text-muted-foreground">
 							<div class="text-center">
-								<svg class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-									<path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-								</svg>
+								<Edit3 class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" strokeWidth={1.5} />
 								<p>No data available</p>
 							</div>
 						</div>
@@ -284,10 +259,7 @@
 					{:else}
 						<div class="h-full flex items-center justify-center text-muted-foreground">
 							<div class="text-center">
-								<svg class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-									<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-									<path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-								</svg>
+								<BookOpen class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" strokeWidth={1.5} />
 								<p>No data available</p>
 							</div>
 						</div>

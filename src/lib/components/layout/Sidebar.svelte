@@ -2,6 +2,7 @@
 	import { cn } from '$lib/utils/cn';
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
+	import { Layers, ChevronsLeft, X, Home, Folder, BarChart3, Briefcase, Share2 } from '@lucide/svelte';
 
 	interface Props {
 		isOpen?: boolean;
@@ -68,11 +69,7 @@
 	<div class="sidebar-header">
 		<a href="{base}/" class="sidebar-logo">
 			<div class="sidebar-logo-icon">
-				<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-					<path d="M12 2L2 7l10 5 10-5-10-5z" />
-					<path d="M2 17l10 5 10-5" />
-					<path d="M2 12l10 5 10-5" />
-				</svg>
+				<Layers class="h-4 w-4" strokeWidth={2.5} />
 			</div>
 			<span class="sidebar-logo-text">WissKI</span>
 		</a>
@@ -84,10 +81,7 @@
 			onclick={onToggleCollapse}
 			aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
 		>
-			<svg class="sidebar-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-				<path d="M11 17l-5-5 5-5" />
-				<path d="M18 17l-5-5 5-5" />
-			</svg>
+			<ChevronsLeft class="sidebar-toggle-icon" />
 		</button>
 
 		<!-- Mobile close button -->
@@ -97,10 +91,7 @@
 			onclick={onClose}
 			aria-label="Close sidebar"
 		>
-			<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-				<path d="M18 6L6 18" />
-				<path d="M6 6l12 12" />
-			</svg>
+			<X class="w-4 h-4" />
 		</button>
 	</div>
 
@@ -118,33 +109,15 @@
 					>
 						<span class="sidebar-nav-icon">
 							{#if item.icon === 'home'}
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-									<polyline points="9 22 9 12 15 12 15 22" />
-								</svg>
+								<Home />
 							{:else if item.icon === 'folder'}
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-								</svg>
+								<Folder />
 							{:else if item.icon === 'bar-chart'}
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<line x1="18" y1="20" x2="18" y2="10" />
-									<line x1="12" y1="20" x2="12" y2="4" />
-									<line x1="6" y1="20" x2="6" y2="14" />
-								</svg>
+								<BarChart3 />
 							{:else if item.icon === 'briefcase'}
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-									<path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-								</svg>
+								<Briefcase />
 							{:else if item.icon === 'share-2'}
-								<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-									<circle cx="18" cy="5" r="3" />
-									<circle cx="6" cy="12" r="3" />
-									<circle cx="18" cy="19" r="3" />
-									<line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-									<line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-								</svg>
+								<Share2 />
 							{/if}
 						</span>
 						<span class="sidebar-nav-label">{item.label}</span>
@@ -156,14 +129,31 @@
 
 	<!-- Footer -->
 	<div class="sidebar-footer">
-		<div class="sidebar-footer-card">
-			<p class="text-xs font-medium" style="color: hsl(var(--sidebar-foreground))">
-				Research Dashboard
-			</p>
-			<p class="text-2xs mt-1" style="color: hsl(var(--sidebar-muted-foreground))">
-				v0.1.0
-			</p>
-		</div>
+		<a
+			href="https://www.africamultiple.uni-bayreuth.de/"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="block mx-auto mb-2 opacity-80 hover:opacity-100 transition-opacity"
+			style="max-width: 140px;"
+		>
+			<img
+				src="{base}/logos/africamultiple.jpg"
+				alt="Africa Multiple"
+				class="w-full h-auto rounded-md"
+			/>
+		</a>
+		<p class="text-2xs text-center" style="color: hsl(var(--sidebar-muted-foreground))">
+			v1.0.0
+		</p>
+		<a
+			href="https://www.frederickmadore.com/"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="text-2xs text-center block mt-1 hover:text-primary transition-colors"
+			style="color: hsl(var(--sidebar-muted-foreground))"
+		>
+			Frédérick Madore
+		</a>
 	</div>
 
 	<!-- Rail for resize/toggle (desktop only) -->

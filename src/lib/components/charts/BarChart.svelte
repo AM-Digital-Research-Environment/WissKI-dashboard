@@ -4,6 +4,7 @@
 	import type { BarChartDataPoint } from '$lib/types';
 	import { cn } from '$lib/utils/cn';
 	import { CHART_COLORS } from '$lib/styles';
+	import { ChevronLeft, ChevronRight } from '@lucide/svelte';
 
 	interface Props {
 		data: BarChartDataPoint[];
@@ -23,7 +24,34 @@
 		onclick
 	}: Props = $props();
 
-	let displayData = $derived(data.slice(0, maxItems));
+	let currentPage = $state(0);
+
+	let totalPages = $derived(Math.ceil(data.length / maxItems));
+	let needsPagination = $derived(data.length > maxItems);
+
+	let displayData = $derived.by(() => {
+		const start = currentPage * maxItems;
+		const end = start + maxItems;
+		return data.slice(start, end);
+	});
+
+	function nextPage() {
+		if (currentPage < totalPages - 1) {
+			currentPage++;
+		}
+	}
+
+	function prevPage() {
+		if (currentPage > 0) {
+			currentPage--;
+		}
+	}
+
+	// Reset to first page when data changes
+	$effect(() => {
+		data;
+		currentPage = 0;
+	});
 
 	let option: EChartsOption = $derived({
 		title: title
@@ -98,4 +126,34 @@
 	}
 </script>
 
-<EChart {option} class={cn(className)} onclick={handleClick} showZoomControls={false} />
+<div class={cn('flex flex-col h-full', className)}>
+	<div class="flex-1 min-h-0">
+		<EChart {option} class="h-full w-full" onclick={handleClick} showZoomControls={false} />
+	</div>
+
+	{#if needsPagination}
+		<div class="flex items-center justify-center gap-2 pt-2 flex-shrink-0">
+			<button
+				onclick={prevPage}
+				disabled={currentPage === 0}
+				class="p-1 rounded hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+				aria-label="Previous page"
+			>
+				<ChevronLeft class="h-4 w-4" />
+			</button>
+
+			<span class="text-sm text-muted-foreground min-w-[80px] text-center">
+				{currentPage + 1} / {totalPages}
+			</span>
+
+			<button
+				onclick={nextPage}
+				disabled={currentPage === totalPages - 1}
+				class="p-1 rounded hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+				aria-label="Next page"
+			>
+				<ChevronRight class="h-4 w-4" />
+			</button>
+		</div>
+	{/if}
+</div>
