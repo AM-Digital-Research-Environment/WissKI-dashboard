@@ -2,10 +2,10 @@
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import { Card, CardHeader, CardTitle, CardContent, Badge, Select } from '$lib/components/ui';
-	import { Timeline, BarChart, PieChart, WordCloud, GeoMap, LocationMap, SankeyChart, SunburstChart } from '$lib/components/charts';
+	import { StackedTimeline, BarChart, PieChart, WordCloud, GeoMap, LocationMap, SankeyChart, SunburstChart } from '$lib/components/charts';
 	import { allCollections } from '$lib/stores/data';
 	import {
-		groupByYear,
+		groupByYearAndType,
 		extractSubjects,
 		extractResourceTypes,
 		extractTags,
@@ -15,7 +15,8 @@
 		buildSankeyData,
 		buildSunburstData
 	} from '$lib/utils/dataTransform';
-	import { loadEnrichedLocations, getUBTCollectionNames } from '$lib/utils/dataLoader';
+	import { loadEnrichedLocations, UNIVERSITY_COLLECTIONS } from '$lib/utils/dataLoader';
+	import { universities } from '$lib/types';
 	import type { CollectionItem, EnrichedLocationsData } from '$lib/types';
 
 	// Enriched location data for the map
@@ -31,15 +32,36 @@
 		}
 	});
 
-	// Build collection options dynamically
-	const ubtNames = getUBTCollectionNames();
-	const collectionOptions = [
-		{ value: 'all', label: 'All Collections' },
-		...ubtNames.map(name => ({
-			value: name,
-			label: name.replace('UBT_', '').replace(/(\d{4})$/, ' $1')
-		}))
-	];
+	// Build a map of project IDs to full project names from the data
+	let projectNameMap = $derived(
+		$allCollections.reduce((acc, item) => {
+			if (item.project?.id && item.project?.name) {
+				acc[item.project.id] = item.project.name;
+			}
+			return acc;
+		}, {} as Record<string, string>)
+	);
+
+	// Format collection ID to readable label (e.g., "UBT_ArtWorld2019" -> "ArtWorld 2019")
+	function formatCollectionLabel(name: string): string {
+		return name
+			.replace(/^(UBT|ULG|UJKZ|UFB)_/, '') // Remove university prefix
+			.replace(/(\d{4})$/, ' $1'); // Add space before year
+	}
+
+	// Build grouped and sorted collection options
+	let collectionGroups = $derived(
+		universities.map(uni => ({
+			label: uni.name,
+			options: (UNIVERSITY_COLLECTIONS[uni.id] || [])
+				.map(name => ({
+					value: name,
+					label: formatCollectionLabel(name),
+					title: projectNameMap[name] || name
+				}))
+				.sort((a, b) => a.label.localeCompare(b.label))
+		})).filter(group => group.options.length > 0)
+	);
 
 	let selectedCollection = $state('all');
 	let wordCloudMaxWords = $state(50);
@@ -47,17 +69,13 @@
 	// Get current collection based on selection
 	function getFilteredCollection(id: string): CollectionItem[] {
 		if (id === 'all') return $allCollections;
-		const searchTerm = id.replace('UBT_', '');
-		return $allCollections.filter(item =>
-			item.project?.name?.includes(searchTerm) ||
-			item.project?.id?.includes(id)
-		);
+		return $allCollections.filter(item => item.project?.id === id);
 	}
 
 	let currentCollection = $derived<CollectionItem[]>(getFilteredCollection(selectedCollection));
 
 	// Derived chart data
-	let timelineData = $derived(groupByYear(currentCollection));
+	let timelineData = $derived(groupByYearAndType(currentCollection));
 	let subjectsData = $derived(extractSubjects(currentCollection));
 	let resourceTypesData = $derived(extractResourceTypes(currentCollection));
 	let wordCloudData = $derived(extractTags(currentCollection));
@@ -76,24 +94,27 @@
 	let sankeyData = $derived(buildSankeyData(currentCollection));
 	let sunburstData = $derived(buildSunburstData(currentCollection));
 
-	// Get label for current selection
-	let currentLabel = $derived(
-		collectionOptions.find(o => o.value === selectedCollection)?.label || 'All Collections'
-	);
 </script>
 
 <div class="space-y-6">
 	<!-- Page Header with Collection Selector -->
 	<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-		<div>
+		<div class="flex-1 min-w-0">
 			<h1 class="text-3xl font-bold">Collections</h1>
-			<p class="text-muted-foreground mt-1">
-				Browse UBT collection metadata and visualizations
-			</p>
+			{#if selectedCollection !== 'all' && projectNameMap[selectedCollection]}
+				<p class="text-muted-foreground mt-1 line-clamp-2">
+					{projectNameMap[selectedCollection]}
+				</p>
+			{:else}
+				<p class="text-muted-foreground mt-1">
+					Browse collection metadata and visualizations
+				</p>
+			{/if}
 		</div>
-		<div class="w-full sm:w-64">
+		<div class="w-full sm:w-64 flex-shrink-0">
 			<Select
-				options={collectionOptions}
+				options={[{ value: 'all', label: 'All Collections' }]}
+				groups={collectionGroups}
 				bind:value={selectedCollection}
 				placeholder="Select collection..."
 			/>
@@ -159,10 +180,10 @@
 								</CardTitle>
 							{/snippet}
 						</CardHeader>
-						<CardContent class="h-[300px]">
+						<CardContent class="h-[420px]">
 							{#snippet children()}
 								{#if timelineData.length > 0}
-									<Timeline data={timelineData} />
+									<StackedTimeline data={timelineData} />
 								{:else}
 									<div class="h-full flex items-center justify-center text-muted-foreground">
 										No timeline data available

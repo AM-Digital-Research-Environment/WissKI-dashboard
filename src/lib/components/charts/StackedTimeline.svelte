@@ -52,13 +52,13 @@
 		},
 		legend: {
 			type: 'scroll',
-			bottom: 0,
+			bottom: 65,
 			data: resourceTypes
 		},
 		grid: {
 			left: '3%',
 			right: '4%',
-			bottom: '15%',
+			bottom: 100,
 			top: title ? '15%' : '10%',
 			containLabel: true
 		},
@@ -75,14 +75,11 @@
 		},
 		dataZoom: [
 			{
-				type: 'inside',
-				start: 0,
-				end: 100
-			},
-			{
+				type: 'slider',
 				start: 0,
 				end: 100,
-				bottom: 35
+				bottom: 10,
+				height: 25
 			}
 		],
 		series: resourceTypes.map((type, index) => ({
@@ -107,4 +104,4 @@
 	}
 </script>
 
-<EChart {option} class={cn(className)} onclick={handleClick} />
+<EChart {option} class={cn(className)} onclick={handleClick} showZoomControls={false} />

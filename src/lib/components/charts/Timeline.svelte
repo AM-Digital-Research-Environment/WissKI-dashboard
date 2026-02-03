@@ -51,17 +51,6 @@
 			type: 'value',
 			name: 'Count'
 		},
-		dataZoom: [
-			{
-				type: 'inside',
-				start: 0,
-				end: 100
-			},
-			{
-				start: 0,
-				end: 100
-			}
-		],
 		series: [
 			{
 				name: 'Documents',
@@ -98,4 +87,4 @@
 	}
 </script>
 
-<EChart {option} class={cn(className)} onclick={handleClick} />
+<EChart {option} class={cn(className)} onclick={handleClick} showZoomControls={false} />

@@ -4,10 +4,17 @@
 	interface Option {
 		value: string;
 		label: string;
+		title?: string;
+	}
+
+	interface OptionGroup {
+		label: string;
+		options: Option[];
 	}
 
 	interface Props {
-		options: Option[];
+		options?: Option[];
+		groups?: OptionGroup[];
 		value?: string;
 		placeholder?: string;
 		class?: string;
@@ -15,7 +22,8 @@
 	}
 
 	let {
-		options,
+		options = [],
+		groups = [],
 		value = $bindable(''),
 		placeholder = 'Select...',
 		class: className = '',
@@ -39,6 +47,13 @@
 >
 	<option value="" disabled>{placeholder}</option>
 	{#each options as option}
-		<option value={option.value}>{option.label}</option>
+		<option value={option.value} title={option.title}>{option.label}</option>
+	{/each}
+	{#each groups as group}
+		<optgroup label={group.label}>
+			{#each group.options as option}
+				<option value={option.value} title={option.title}>{option.label}</option>
+			{/each}
+		</optgroup>
 	{/each}
 </select>

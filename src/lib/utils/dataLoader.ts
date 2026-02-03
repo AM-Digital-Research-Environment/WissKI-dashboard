@@ -242,6 +242,13 @@ export function getUBTCollectionNames(): string[] {
 }
 
 /**
+ * Get all collection names from all universities
+ */
+export function getAllCollectionNames(): string[] {
+	return Object.values(UNIVERSITY_COLLECTIONS).flat();
+}
+
+/**
  * Get university by ID
  */
 export function getUniversity(universityId: string): University | undefined {

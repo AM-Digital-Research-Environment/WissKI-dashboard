@@ -98,4 +98,4 @@
 	}
 </script>
 
-<EChart {option} class={cn(className)} onclick={handleClick} />
+<EChart {option} class={cn(className)} onclick={handleClick} showZoomControls={false} />
