@@ -61,6 +61,9 @@
 					top: 0
 				}
 			: undefined,
+		legend: {
+			show: false // Hide legend for single series
+		},
 		tooltip: {
 			trigger: 'axis',
 			axisPointer: {
@@ -71,7 +74,7 @@
 			left: horizontal ? '3%' : '3%',
 			right: '4%',
 			bottom: horizontal ? '3%' : '25%',
-			top: title ? '15%' : '10%',
+			top: title ? '15%' : '3%',
 			containLabel: true
 		},
 		xAxis: horizontal
@@ -132,7 +135,7 @@
 	</div>
 
 	{#if needsPagination}
-		<div class="flex items-center justify-center gap-2 pt-2 flex-shrink-0">
+		<div class="flex-shrink-0 h-8 flex items-center justify-center gap-2">
 			<button
 				onclick={prevPage}
 				disabled={currentPage === 0}
@@ -142,7 +145,7 @@
 				<ChevronLeft class="h-4 w-4" />
 			</button>
 
-			<span class="text-sm text-muted-foreground min-w-[80px] text-center">
+			<span class="text-sm text-muted-foreground min-w-[60px] text-center">
 				{currentPage + 1} / {totalPages}
 			</span>
 

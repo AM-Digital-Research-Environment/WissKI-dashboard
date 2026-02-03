@@ -22,6 +22,9 @@
 					top: 0
 				}
 			: undefined,
+		legend: {
+			show: false // Hide legend for single series
+		},
 		tooltip: {
 			trigger: 'axis',
 			axisPointer: {
@@ -37,7 +40,7 @@
 			left: '3%',
 			right: '4%',
 			bottom: '15%',
-			top: title ? '15%' : '10%',
+			top: title ? '15%' : '3%',
 			containLabel: true
 		},
 		xAxis: {
@@ -53,7 +56,7 @@
 		},
 		series: [
 			{
-				name: 'Documents',
+				name: 'Count',
 				type: 'bar',
 				data: data.map((d) => d.count),
 				itemStyle: {

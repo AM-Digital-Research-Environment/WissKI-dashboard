@@ -126,7 +126,7 @@
 	}
 </script>
 
-<div class={cn('relative w-full h-full min-h-[300px]', className)}>
+<div class={cn('relative w-full h-full', className)}>
 	<div bind:this={chartContainer} class="w-full h-full"></div>
 
 	{#if showZoomControls}

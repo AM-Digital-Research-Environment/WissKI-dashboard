@@ -51,9 +51,7 @@
 				},
 				emphasis: {
 					label: {
-						show: true,
-						fontSize: 14,
-						fontWeight: 'bold'
+						show: false
 					}
 				},
 				labelLine: {
