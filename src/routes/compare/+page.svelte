@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, CardHeader, CardTitle, CardContent, Select, Badge } from '$lib/components/ui';
+	import { ChartCard, EmptyState, Card, CardHeader, CardTitle, CardContent, Select, Badge } from '$lib/components/ui';
 	import { StackedTimeline, BarChart, PieChart } from '$lib/components/charts';
 	import { allCollections } from '$lib/stores/data';
 	import {
@@ -10,18 +10,11 @@
 	} from '$lib/utils/dataTransform';
 	import { UNIVERSITY_COLLECTIONS, getUniversities } from '$lib/utils/dataLoader';
 	import type { CollectionItem } from '$lib/types';
+	import { universityOptions } from '$lib/types';
+	import { FileQuestion } from '@lucide/svelte';
 
 	// Get all universities
 	const allUniversities = getUniversities();
-
-	// Build university options
-	const universityOptions = [
-		{ value: 'all', label: 'All Universities' },
-		...allUniversities.map((uni) => ({
-			value: uni.id,
-			label: `${uni.code} - ${uni.name}`
-		}))
-	];
 
 	// Build project options for a given university
 	function getProjectOptions(universityId: string) {
@@ -124,7 +117,7 @@
 	let rightLanguages = $derived(extractLanguages(rightData));
 
 	// Calculate subject overlap
-	let subjectOverlap = $derived(() => {
+	let subjectOverlap = $derived.by(() => {
 		const leftSet = new Set(leftSubjects.map((s) => s.name));
 		const rightSet = new Set(rightSubjects.map((s) => s.name));
 		const intersection = new Set([...leftSet].filter((x) => rightSet.has(x)));
@@ -156,9 +149,9 @@
 
 <div class="space-y-6">
 	<!-- Page Header -->
-	<div>
-		<h1 class="text-3xl font-bold">Compare Collections</h1>
-		<p class="text-muted-foreground mt-1">
+	<div class="animate-slide-in-up">
+		<h1 class="page-title">Compare Collections</h1>
+		<p class="page-subtitle">
 			Side-by-side comparison of different collections
 		</p>
 	</div>
@@ -244,12 +237,12 @@
 							<p class="text-sm text-muted-foreground mb-2">Total Items</p>
 							<div class="flex items-center justify-center gap-4">
 								<div>
-									<div class="text-2xl font-bold text-blue-500">{leftData.length}</div>
+									<div class="text-2xl font-bold text-chart-1">{leftData.length}</div>
 									<p class="text-xs text-muted-foreground max-w-[120px] truncate">{getSelectionName(leftUniversity, leftProject)}</p>
 								</div>
 								<span class="text-muted-foreground">vs</span>
 								<div>
-									<div class="text-2xl font-bold text-green-500">{rightData.length}</div>
+									<div class="text-2xl font-bold text-chart-2">{rightData.length}</div>
 									<p class="text-xs text-muted-foreground max-w-[120px] truncate">{getSelectionName(rightUniversity, rightProject)}</p>
 								</div>
 							</div>
@@ -267,12 +260,12 @@
 							<p class="text-sm text-muted-foreground mb-2">Resource Types</p>
 							<div class="flex items-center justify-center gap-4">
 								<div>
-									<div class="text-2xl font-bold text-blue-500">{leftResourceTypes.length}</div>
+									<div class="text-2xl font-bold text-chart-1">{leftResourceTypes.length}</div>
 									<p class="text-xs text-muted-foreground max-w-[120px] truncate">{getSelectionName(leftUniversity, leftProject)}</p>
 								</div>
 								<span class="text-muted-foreground">vs</span>
 								<div>
-									<div class="text-2xl font-bold text-green-500">{rightResourceTypes.length}</div>
+									<div class="text-2xl font-bold text-chart-2">{rightResourceTypes.length}</div>
 									<p class="text-xs text-muted-foreground max-w-[120px] truncate">{getSelectionName(rightUniversity, rightProject)}</p>
 								</div>
 							</div>
@@ -288,9 +281,9 @@
 					{#snippet children()}
 						<div class="text-center">
 							<p class="text-sm text-muted-foreground mb-2">Subject Overlap</p>
-							<div class="text-3xl font-bold text-primary">{subjectOverlap().percentage}%</div>
+							<div class="text-3xl font-bold text-primary">{subjectOverlap.percentage}%</div>
 							<p class="text-xs text-muted-foreground">
-								{subjectOverlap().overlap} shared of {subjectOverlap().total} total
+								{subjectOverlap.overlap} shared of {subjectOverlap.total} total
 							</p>
 						</div>
 					{/snippet}
@@ -300,7 +293,7 @@
 	</div>
 
 	<!-- Shared Subjects -->
-	{#if subjectOverlap().shared.length > 0}
+	{#if subjectOverlap.shared.length > 0}
 		<Card>
 			{#snippet children()}
 				<CardHeader>
@@ -313,7 +306,7 @@
 				<CardContent>
 					{#snippet children()}
 						<div class="flex flex-wrap gap-2">
-							{#each subjectOverlap().shared as subject}
+							{#each subjectOverlap.shared as subject}
 								<Badge variant="secondary">{subject}</Badge>
 							{/each}
 						</div>
@@ -325,197 +318,77 @@
 
 	<!-- Timeline Comparison -->
 	<div class="grid gap-6 lg:grid-cols-2">
-		<Card>
-			{#snippet children()}
-				<CardHeader>
-					{#snippet children()}
-						<CardTitle>
-							{#snippet children()}{getSelectionName(leftUniversity, leftProject)} Timeline{/snippet}
-						</CardTitle>
-					{/snippet}
-				</CardHeader>
-				<CardContent class="h-[350px]">
-					{#snippet children()}
-						{#if leftTimeline.length > 0}
-							<StackedTimeline data={leftTimeline} />
-						{:else}
-							<div class="h-full flex items-center justify-center text-muted-foreground">
-								No timeline data
-							</div>
-						{/if}
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<ChartCard title="{getSelectionName(leftUniversity, leftProject)} Timeline" contentHeight="h-[350px]">
+			{#if leftTimeline.length > 0}
+				<StackedTimeline data={leftTimeline} />
+			{:else}
+				<EmptyState message="No timeline data" icon={FileQuestion} />
+			{/if}
+		</ChartCard>
 
-		<Card>
-			{#snippet children()}
-				<CardHeader>
-					{#snippet children()}
-						<CardTitle>
-							{#snippet children()}{getSelectionName(rightUniversity, rightProject)} Timeline{/snippet}
-						</CardTitle>
-					{/snippet}
-				</CardHeader>
-				<CardContent class="h-[350px]">
-					{#snippet children()}
-						{#if rightTimeline.length > 0}
-							<StackedTimeline data={rightTimeline} />
-						{:else}
-							<div class="h-full flex items-center justify-center text-muted-foreground">
-								No timeline data
-							</div>
-						{/if}
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<ChartCard title="{getSelectionName(rightUniversity, rightProject)} Timeline" contentHeight="h-[350px]">
+			{#if rightTimeline.length > 0}
+				<StackedTimeline data={rightTimeline} />
+			{:else}
+				<EmptyState message="No timeline data" icon={FileQuestion} />
+			{/if}
+		</ChartCard>
 	</div>
 
 	<!-- Resource Types Comparison -->
 	<div class="grid gap-6 lg:grid-cols-2">
-		<Card>
-			{#snippet children()}
-				<CardHeader>
-					{#snippet children()}
-						<CardTitle>
-							{#snippet children()}{getSelectionName(leftUniversity, leftProject)} Resource Types{/snippet}
-						</CardTitle>
-					{/snippet}
-				</CardHeader>
-				<CardContent class="h-[350px]">
-					{#snippet children()}
-						{#if leftResourceTypes.length > 0}
-							<PieChart data={leftResourceTypes} />
-						{:else}
-							<div class="h-full flex items-center justify-center text-muted-foreground">
-								No data
-							</div>
-						{/if}
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<ChartCard title="{getSelectionName(leftUniversity, leftProject)} Resource Types" contentHeight="h-[350px]">
+			{#if leftResourceTypes.length > 0}
+				<PieChart data={leftResourceTypes} />
+			{:else}
+				<EmptyState message="No data" icon={FileQuestion} />
+			{/if}
+		</ChartCard>
 
-		<Card>
-			{#snippet children()}
-				<CardHeader>
-					{#snippet children()}
-						<CardTitle>
-							{#snippet children()}{getSelectionName(rightUniversity, rightProject)} Resource Types{/snippet}
-						</CardTitle>
-					{/snippet}
-				</CardHeader>
-				<CardContent class="h-[350px]">
-					{#snippet children()}
-						{#if rightResourceTypes.length > 0}
-							<PieChart data={rightResourceTypes} />
-						{:else}
-							<div class="h-full flex items-center justify-center text-muted-foreground">
-								No data
-							</div>
-						{/if}
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<ChartCard title="{getSelectionName(rightUniversity, rightProject)} Resource Types" contentHeight="h-[350px]">
+			{#if rightResourceTypes.length > 0}
+				<PieChart data={rightResourceTypes} />
+			{:else}
+				<EmptyState message="No data" icon={FileQuestion} />
+			{/if}
+		</ChartCard>
 	</div>
 
 	<!-- Top Subjects Comparison -->
 	<div class="grid gap-6 lg:grid-cols-2">
-		<Card>
-			{#snippet children()}
-				<CardHeader>
-					{#snippet children()}
-						<CardTitle>
-							{#snippet children()}{getSelectionName(leftUniversity, leftProject)} Top Subjects{/snippet}
-						</CardTitle>
-					{/snippet}
-				</CardHeader>
-				<CardContent class="h-[350px]">
-					{#snippet children()}
-						{#if leftSubjects.length > 0}
-							<BarChart data={leftSubjects} maxItems={8} />
-						{:else}
-							<div class="h-full flex items-center justify-center text-muted-foreground">
-								No data
-							</div>
-						{/if}
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<ChartCard title="{getSelectionName(leftUniversity, leftProject)} Top Subjects" contentHeight="h-[350px]">
+			{#if leftSubjects.length > 0}
+				<BarChart data={leftSubjects} maxItems={8} />
+			{:else}
+				<EmptyState message="No data" icon={FileQuestion} />
+			{/if}
+		</ChartCard>
 
-		<Card>
-			{#snippet children()}
-				<CardHeader>
-					{#snippet children()}
-						<CardTitle>
-							{#snippet children()}{getSelectionName(rightUniversity, rightProject)} Top Subjects{/snippet}
-						</CardTitle>
-					{/snippet}
-				</CardHeader>
-				<CardContent class="h-[350px]">
-					{#snippet children()}
-						{#if rightSubjects.length > 0}
-							<BarChart data={rightSubjects} maxItems={8} />
-						{:else}
-							<div class="h-full flex items-center justify-center text-muted-foreground">
-								No data
-							</div>
-						{/if}
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<ChartCard title="{getSelectionName(rightUniversity, rightProject)} Top Subjects" contentHeight="h-[350px]">
+			{#if rightSubjects.length > 0}
+				<BarChart data={rightSubjects} maxItems={8} />
+			{:else}
+				<EmptyState message="No data" icon={FileQuestion} />
+			{/if}
+		</ChartCard>
 	</div>
 
 	<!-- Languages Comparison -->
 	<div class="grid gap-6 lg:grid-cols-2">
-		<Card>
-			{#snippet children()}
-				<CardHeader>
-					{#snippet children()}
-						<CardTitle>
-							{#snippet children()}{getSelectionName(leftUniversity, leftProject)} Languages{/snippet}
-						</CardTitle>
-					{/snippet}
-				</CardHeader>
-				<CardContent class="h-[300px]">
-					{#snippet children()}
-						{#if leftLanguages.length > 0}
-							<BarChart data={leftLanguages} maxItems={6} />
-						{:else}
-							<div class="h-full flex items-center justify-center text-muted-foreground">
-								No data
-							</div>
-						{/if}
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<ChartCard title="{getSelectionName(leftUniversity, leftProject)} Languages" contentHeight="h-[300px]">
+			{#if leftLanguages.length > 0}
+				<BarChart data={leftLanguages} maxItems={6} />
+			{:else}
+				<EmptyState message="No data" icon={FileQuestion} />
+			{/if}
+		</ChartCard>
 
-		<Card>
-			{#snippet children()}
-				<CardHeader>
-					{#snippet children()}
-						<CardTitle>
-							{#snippet children()}{getSelectionName(rightUniversity, rightProject)} Languages{/snippet}
-						</CardTitle>
-					{/snippet}
-				</CardHeader>
-				<CardContent class="h-[300px]">
-					{#snippet children()}
-						{#if rightLanguages.length > 0}
-							<BarChart data={rightLanguages} maxItems={6} />
-						{:else}
-							<div class="h-full flex items-center justify-center text-muted-foreground">
-								No data
-							</div>
-						{/if}
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<ChartCard title="{getSelectionName(rightUniversity, rightProject)} Languages" contentHeight="h-[300px]">
+			{#if rightLanguages.length > 0}
+				<BarChart data={rightLanguages} maxItems={6} />
+			{:else}
+				<EmptyState message="No data" icon={FileQuestion} />
+			{/if}
+		</ChartCard>
 	</div>
 </div>

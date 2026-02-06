@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, CardHeader, CardTitle, CardContent, Badge, Input } from '$lib/components/ui';
+	import { StatCard, ChartCard, EmptyState, Card, CardHeader, CardTitle, CardContent, Badge, Input } from '$lib/components/ui';
 	import { BarChart, Timeline } from '$lib/components/charts';
 	import { projects } from '$lib/stores/data';
 	import {
@@ -7,7 +7,7 @@
 		extractResearchSections,
 		extractInstitutions
 	} from '$lib/utils/dataTransform';
-	import { ChevronLeft, ChevronRight, X } from '@lucide/svelte';
+	import { ChevronLeft, ChevronRight, X, Briefcase, BookOpen, Building2, Calendar, Layers } from '@lucide/svelte';
 
 	let searchQuery = $state('');
 
@@ -20,13 +20,13 @@
 	const itemsPerPage = 10;
 
 	// Get unique values for facets
-	let allResearchSections = $derived(() => {
+	let allResearchSections = $derived.by(() => {
 		const sections = new Set<string>();
 		$projects.forEach((p) => p.researchSection?.forEach((s) => sections.add(s)));
 		return Array.from(sections).sort();
 	});
 
-	let allInstitutions = $derived(() => {
+	let allInstitutions = $derived.by(() => {
 		const institutions = new Set<string>();
 		$projects.forEach((p) => p.institutions?.forEach((i) => institutions.add(i)));
 		return Array.from(institutions).sort();
@@ -107,119 +107,65 @@
 
 <div class="space-y-6">
 	<!-- Page Header -->
-	<div>
-		<h1 class="text-3xl font-bold">Projects</h1>
-		<p class="text-muted-foreground mt-1">
+	<div class="animate-slide-in-up">
+		<h1 class="page-title">Projects</h1>
+		<p class="page-subtitle">
 			Browse and explore research projects
 		</p>
 	</div>
 
 	<!-- Stats -->
 	<div class="grid gap-4 md:grid-cols-3">
-		<Card>
-			{#snippet children()}
-				<CardContent class="pt-6">
-					{#snippet children()}
-						<div class="text-2xl font-bold">{$projects.length}</div>
-						<p class="text-sm text-muted-foreground">Total Projects</p>
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<StatCard
+			value={$projects.length}
+			label="Total Projects"
+			icon={Briefcase}
+			iconBgClass="bg-primary/10"
+			animationDelay="75ms"
+		/>
 
-		<Card>
-			{#snippet children()}
-				<CardContent class="pt-6">
-					{#snippet children()}
-						<div class="text-2xl font-bold">{researchSectionsData.length}</div>
-						<p class="text-sm text-muted-foreground">Research Sections</p>
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<StatCard
+			value={researchSectionsData.length}
+			label="Research Sections"
+			icon={BookOpen}
+			iconBgClass="bg-primary/10"
+			animationDelay="150ms"
+		/>
 
-		<Card>
-			{#snippet children()}
-				<CardContent class="pt-6">
-					{#snippet children()}
-						<div class="text-2xl font-bold">{institutionsData.length}</div>
-						<p class="text-sm text-muted-foreground">Institutions</p>
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<StatCard
+			value={institutionsData.length}
+			label="Institutions"
+			icon={Building2}
+			iconBgClass="bg-primary/10"
+			animationDelay="225ms"
+		/>
 	</div>
 
 	<!-- Charts -->
 	<div class="grid gap-6 lg:grid-cols-2">
-		<Card>
-			{#snippet children()}
-				<CardHeader>
-					{#snippet children()}
-						<CardTitle>
-							{#snippet children()}Projects by Year{/snippet}
-						</CardTitle>
-					{/snippet}
-				</CardHeader>
-				<CardContent class="h-[300px]">
-					{#snippet children()}
-						{#if timelineData.length > 0}
-							<Timeline data={timelineData} />
-						{:else}
-							<div class="h-full flex items-center justify-center text-muted-foreground">
-								No data available
-							</div>
-						{/if}
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<ChartCard title="Projects by Year" contentHeight="h-[300px]">
+			{#if timelineData.length > 0}
+				<Timeline data={timelineData} />
+			{:else}
+				<EmptyState message="No data available" icon={Calendar} />
+			{/if}
+		</ChartCard>
 
-		<Card>
-			{#snippet children()}
-				<CardHeader>
-					{#snippet children()}
-						<CardTitle>
-							{#snippet children()}Research Sections{/snippet}
-						</CardTitle>
-					{/snippet}
-				</CardHeader>
-				<CardContent class="h-[300px]">
-					{#snippet children()}
-						{#if researchSectionsData.length > 0}
-							<BarChart data={researchSectionsData} maxItems={6} />
-						{:else}
-							<div class="h-full flex items-center justify-center text-muted-foreground">
-								No data available
-							</div>
-						{/if}
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<ChartCard title="Research Sections" contentHeight="h-[300px]">
+			{#if researchSectionsData.length > 0}
+				<BarChart data={researchSectionsData} maxItems={6} />
+			{:else}
+				<EmptyState message="No data available" icon={BookOpen} />
+			{/if}
+		</ChartCard>
 
-		<Card class="lg:col-span-2">
-			{#snippet children()}
-				<CardHeader>
-					{#snippet children()}
-						<CardTitle>
-							{#snippet children()}Top Institutions{/snippet}
-						</CardTitle>
-					{/snippet}
-				</CardHeader>
-				<CardContent class="h-[300px]">
-					{#snippet children()}
-						{#if institutionsData.length > 0}
-							<BarChart data={institutionsData} maxItems={10} />
-						{:else}
-							<div class="h-full flex items-center justify-center text-muted-foreground">
-								No data available
-							</div>
-						{/if}
-					{/snippet}
-				</CardContent>
-			{/snippet}
-		</Card>
+		<ChartCard title="Top Institutions" contentHeight="h-[300px]" class="lg:col-span-2">
+			{#if institutionsData.length > 0}
+				<BarChart data={institutionsData} maxItems={10} />
+			{:else}
+				<EmptyState message="No data available" icon={Building2} />
+			{/if}
+		</ChartCard>
 	</div>
 
 	<!-- Projects List with Facets -->
@@ -257,7 +203,7 @@
 							<div>
 								<label class="text-sm font-medium mb-2 block">Research Section</label>
 								<div class="space-y-1 max-h-48 overflow-y-auto">
-									{#each allResearchSections() as section}
+									{#each allResearchSections as section}
 									{@const isSelected = selectedResearchSections.includes(section)}
 										<button
 											onclick={() => toggleResearchSection(section)}
@@ -276,7 +222,7 @@
 							<div>
 								<label class="text-sm font-medium mb-2 block">Institution</label>
 								<div class="space-y-1 max-h-48 overflow-y-auto">
-									{#each allInstitutions() as institution}
+									{#each allInstitutions as institution}
 									{@const isSelected = selectedInstitutions.includes(institution)}
 										<button
 											onclick={() => toggleInstitution(institution)}

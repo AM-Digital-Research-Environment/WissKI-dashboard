@@ -632,7 +632,7 @@ export function buildInstitutionCollaborationNetwork(
 	const topInstitutionSet = new Set(sortedInstitutions.map((i) => i.name));
 
 	// Create nodes
-	sortedInstitutions.forEach((inst, index) => {
+	sortedInstitutions.forEach((inst) => {
 		nodes.push({
 			id: `inst_${inst.name}`,
 			name: inst.name,
@@ -661,12 +661,21 @@ export function buildInstitutionCollaborationNetwork(
 }
 
 /**
+ * Sunburst hierarchy node type
+ */
+export interface SunburstNode {
+	name: string;
+	value?: number;
+	children: SunburstNode[];
+}
+
+/**
  * Build Sunburst data: Resource Type → Language → Subject hierarchy
  */
 export function buildSunburstData(
 	items: CollectionItem[],
 	maxSubjects: number = 8
-): { name: string; value?: number; children?: { name: string; value?: number; children?: { name: string; value: number }[] }[] }[] {
+): SunburstNode[] {
 	// Group by resource type
 	const typeMap = new Map<string, Map<string, Map<string, number>>>();
 
@@ -697,16 +706,16 @@ export function buildSunburstData(
 	});
 
 	// Convert to sunburst format
-	const result: { name: string; children: { name: string; children: { name: string; value: number }[] }[] }[] = [];
+	const result: SunburstNode[] = [];
 
 	typeMap.forEach((langMap, resourceType) => {
-		const typeNode: { name: string; children: { name: string; children: { name: string; value: number }[] }[] } = {
+		const typeNode: SunburstNode = {
 			name: resourceType,
 			children: []
 		};
 
 		langMap.forEach((subjectMap, lang) => {
-			const langNode: { name: string; children: { name: string; value: number }[] } = {
+			const langNode: SunburstNode = {
 				name: lang,
 				children: []
 			};
@@ -717,7 +726,7 @@ export function buildSunburstData(
 				.slice(0, maxSubjects);
 
 			sortedSubjects.forEach(([subject, count]) => {
-				langNode.children.push({ name: subject, value: count });
+				langNode.children.push({ name: subject, value: count, children: [] });
 			});
 
 			if (langNode.children.length > 0) {
@@ -732,8 +741,8 @@ export function buildSunburstData(
 
 	// Sort by total count
 	return result.sort((a, b) => {
-		const aTotal = a.children.reduce((sum, lang) => sum + lang.children.reduce((s, subj) => s + subj.value, 0), 0);
-		const bTotal = b.children.reduce((sum, lang) => sum + lang.children.reduce((s, subj) => s + subj.value, 0), 0);
+		const aTotal = a.children.reduce((sum, lang) => sum + lang.children.reduce((s, subj) => s + (subj.value ?? 0), 0), 0);
+		const bTotal = b.children.reduce((sum, lang) => sum + lang.children.reduce((s, subj) => s + (subj.value ?? 0), 0), 0);
 		return bTotal - aTotal;
 	});
 }

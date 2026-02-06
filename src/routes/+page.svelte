@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Card, CardHeader, CardTitle, CardContent } from '$lib/components/ui';
+	import { StatCard, ChartCard, EmptyState } from '$lib/components/ui';
 	import { StackedTimeline, BarChart, PieChart, WordCloud } from '$lib/components/charts';
 	import { FilterPanel } from '$lib/components/layout';
 	import {
@@ -33,7 +33,7 @@
 	let researchSectionsData = $derived(extractResearchSections($projects));
 
 	// Calculate unique projects from filtered collections
-	let uniqueProjects = $derived(() => {
+	let uniqueProjects = $derived.by(() => {
 		const projectIds = new Set<string>();
 		$filteredCollections.forEach((item) => {
 			if (item.project?.id) projectIds.add(item.project.id);
@@ -42,10 +42,9 @@
 	});
 
 	// Calculate unique contributors
-	let uniqueContributors = $derived(() => {
+	let uniqueContributors = $derived.by(() => {
 		const contributors = new Set<string>();
 		$filteredCollections.forEach((item) => {
-			// item.name is an array of NameEntry objects
 			if (Array.isArray(item.name)) {
 				item.name.forEach((entry) => {
 					if (entry.name?.label) contributors.add(entry.name.label);
@@ -67,57 +66,34 @@
 
 	<!-- Overall Stats Cards -->
 	<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-		<div class="stat-card animate-slide-in-up delay-75">
-			<div class="flex items-start justify-between">
-				<div>
-					<p class="text-sm font-medium text-muted-foreground">Total Documents</p>
-					<p class="stat-value mt-2">{$filteredCollections.length}</p>
-					<p class="stat-label">Collection items</p>
-				</div>
-				<div class="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center">
-					<FileText class="h-5 w-5 text-primary" />
-				</div>
-			</div>
-		</div>
-
-		<div class="stat-card animate-slide-in-up delay-100">
-			<div class="flex items-start justify-between">
-				<div>
-					<p class="text-sm font-medium text-muted-foreground">Projects</p>
-					<p class="stat-value mt-2">{uniqueProjects()}</p>
-					<p class="stat-label">Research projects</p>
-				</div>
-				<div class="h-10 w-10 rounded-xl bg-accent/80 flex items-center justify-center">
-					<Briefcase class="h-5 w-5 text-accent-foreground" />
-				</div>
-			</div>
-		</div>
-
-		<div class="stat-card animate-slide-in-up delay-150">
-			<div class="flex items-start justify-between">
-				<div>
-					<p class="text-sm font-medium text-muted-foreground">Contributors</p>
-					<p class="stat-value mt-2">{uniqueContributors()}</p>
-					<p class="stat-label">Unique names</p>
-				</div>
-				<div class="h-10 w-10 rounded-xl bg-chart-1/10 flex items-center justify-center">
-					<Users class="h-5 w-5 text-chart-1" />
-				</div>
-			</div>
-		</div>
-
-		<div class="stat-card animate-slide-in-up delay-200">
-			<div class="flex items-start justify-between">
-				<div>
-					<p class="text-sm font-medium text-muted-foreground">Universities</p>
-					<p class="stat-value mt-2">{universities.length}</p>
-					<p class="stat-label">Partner institutions</p>
-				</div>
-				<div class="h-10 w-10 rounded-xl bg-chart-2/10 flex items-center justify-center">
-					<Building2 class="h-5 w-5 text-chart-2" />
-				</div>
-			</div>
-		</div>
+		<StatCard
+			value={$filteredCollections.length}
+			label="Total Documents"
+			icon={FileText}
+			iconBgClass="bg-primary/10"
+			animationDelay="75ms"
+		/>
+		<StatCard
+			value={uniqueProjects}
+			label="Projects"
+			icon={Briefcase}
+			iconBgClass="bg-accent/80"
+			animationDelay="100ms"
+		/>
+		<StatCard
+			value={uniqueContributors}
+			label="Contributors"
+			icon={Users}
+			iconBgClass="bg-chart-1/10"
+			animationDelay="150ms"
+		/>
+		<StatCard
+			value={universities.length}
+			label="Universities"
+			icon={Building2}
+			iconBgClass="bg-chart-2/10"
+			animationDelay="200ms"
+		/>
 	</div>
 
 	<!-- University Breakdown Cards -->
@@ -149,123 +125,60 @@
 
 	<!-- Charts Grid -->
 	<div class="grid gap-6 lg:grid-cols-2">
-		<!-- Timeline (Stacked by Resource Type) -->
-		<Card class="col-span-full chart-card">
-			{#snippet children()}
-				<div class="chart-card-header">
-					<h3 class="chart-card-title">Documents Timeline by Type</h3>
-				</div>
-				<div class="chart-card-content h-[400px]">
-					{#if stackedTimelineData.length > 0}
-						<StackedTimeline data={stackedTimelineData} />
-					{:else}
-						<div class="h-full flex items-center justify-center text-muted-foreground">
-							<div class="text-center">
-								<Calendar class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" strokeWidth={1.5} />
-								<p>No timeline data available</p>
-							</div>
-						</div>
-					{/if}
-				</div>
-			{/snippet}
-		</Card>
+		<ChartCard title="Documents Timeline by Type" contentHeight="h-[400px]" class="col-span-full">
+			{#if stackedTimelineData.length > 0}
+				<StackedTimeline data={stackedTimelineData} />
+			{:else}
+				<EmptyState message="No timeline data available" icon={Calendar} />
+			{/if}
+		</ChartCard>
 
-		<!-- Resource Types Pie Chart -->
-		<Card class="chart-card">
-			{#snippet children()}
-				<div class="chart-card-header">
-					<h3 class="chart-card-title">Resource Types</h3>
-				</div>
-				<div class="chart-card-content h-[350px]">
-					{#if resourceTypesData.length > 0}
-						<PieChart data={resourceTypesData} />
-					{:else}
-						<div class="h-full flex items-center justify-center text-muted-foreground">
-							<div class="text-center">
-								<PieChartIcon class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" strokeWidth={1.5} />
-								<p>No data available</p>
-							</div>
-						</div>
-					{/if}
-				</div>
-			{/snippet}
-		</Card>
+		<ChartCard title="Resource Types">
+			{#if resourceTypesData.length > 0}
+				<PieChart data={resourceTypesData} />
+			{:else}
+				<EmptyState icon={PieChartIcon} />
+			{/if}
+		</ChartCard>
 
-		<!-- Top Subjects Bar Chart -->
-		<Card class="chart-card">
-			{#snippet children()}
-				<div class="chart-card-header">
-					<h3 class="chart-card-title">Top Subjects</h3>
-				</div>
-				<div class="chart-card-content h-[350px]">
-					{#if subjectsData.length > 0}
-						<BarChart data={subjectsData} maxItems={8} />
-					{:else}
-						<div class="h-full flex items-center justify-center text-muted-foreground">
-							<div class="text-center">
-								<BarChart3 class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" strokeWidth={1.5} />
-								<p>No data available</p>
-							</div>
-						</div>
-					{/if}
-				</div>
-			{/snippet}
-		</Card>
+		<ChartCard title="Top Subjects">
+			{#if subjectsData.length > 0}
+				<BarChart data={subjectsData} maxItems={8} />
+			{:else}
+				<EmptyState icon={BarChart3} />
+			{/if}
+		</ChartCard>
 
-		<!-- Word Cloud -->
-		<Card class="col-span-full chart-card">
-			{#snippet children()}
-				<div class="chart-card-header">
-					<h3 class="chart-card-title">Tags & Subjects</h3>
-					<div class="flex items-center gap-4">
-						<label for="home-wordcloud-slider" class="text-sm text-muted-foreground whitespace-nowrap">
-							Words: <span class="font-medium text-foreground">{wordCloudMaxWords}</span>
-						</label>
-						<input
-							id="home-wordcloud-slider"
-							type="range"
-							min="20"
-							max="200"
-							step="10"
-							bind:value={wordCloudMaxWords}
-							class="w-32 sm:w-48 h-1.5 bg-muted rounded-full appearance-none cursor-pointer accent-primary"
-						/>
-					</div>
-				</div>
-				<div class="chart-card-content h-[450px]">
-					{#if wordCloudData.length > 0}
-						<WordCloud data={wordCloudData} maxWords={wordCloudMaxWords} />
-					{:else}
-						<div class="h-full flex items-center justify-center text-muted-foreground">
-							<div class="text-center">
-								<Edit3 class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" strokeWidth={1.5} />
-								<p>No data available</p>
-							</div>
-						</div>
-					{/if}
+		<ChartCard title="Tags & Subjects" contentHeight="h-[450px]" class="col-span-full">
+			{#snippet headerExtra()}
+				<div class="flex items-center gap-4">
+					<label for="home-wordcloud-slider" class="text-sm text-muted-foreground whitespace-nowrap">
+						Words: <span class="font-medium text-foreground">{wordCloudMaxWords}</span>
+					</label>
+					<input
+						id="home-wordcloud-slider"
+						type="range"
+						min="20"
+						max="200"
+						step="10"
+						bind:value={wordCloudMaxWords}
+						class="w-32 sm:w-48 h-1.5 bg-muted rounded-full appearance-none cursor-pointer accent-primary"
+					/>
 				</div>
 			{/snippet}
-		</Card>
+			{#if wordCloudData.length > 0}
+				<WordCloud data={wordCloudData} maxWords={wordCloudMaxWords} />
+			{:else}
+				<EmptyState icon={Edit3} />
+			{/if}
+		</ChartCard>
 
-		<!-- Research Sections -->
-		<Card class="chart-card">
-			{#snippet children()}
-				<div class="chart-card-header">
-					<h3 class="chart-card-title">Research Sections</h3>
-				</div>
-				<div class="chart-card-content h-[350px]">
-					{#if researchSectionsData.length > 0}
-						<BarChart data={researchSectionsData} maxItems={6} />
-					{:else}
-						<div class="h-full flex items-center justify-center text-muted-foreground">
-							<div class="text-center">
-								<BookOpen class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" strokeWidth={1.5} />
-								<p>No data available</p>
-							</div>
-						</div>
-					{/if}
-				</div>
-			{/snippet}
-		</Card>
+		<ChartCard title="Research Sections">
+			{#if researchSectionsData.length > 0}
+				<BarChart data={researchSectionsData} maxItems={6} />
+			{:else}
+				<EmptyState icon={BookOpen} />
+			{/if}
+		</ChartCard>
 	</div>
 </div>

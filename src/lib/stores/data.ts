@@ -115,7 +115,17 @@ function createThemeStore() {
 	return {
 		subscribe,
 		set,
-		toggle: () => update((theme) => (theme === 'light' ? 'dark' : 'light')),
+		toggle: () => {
+			let newTheme: 'light' | 'dark';
+			update((current) => {
+				newTheme = current === 'light' ? 'dark' : 'light';
+				return newTheme;
+			});
+			if (typeof window !== 'undefined') {
+				localStorage.setItem('theme', newTheme!);
+				document.documentElement.classList.toggle('dark', newTheme! === 'dark');
+			}
+		},
 		init: () => {
 			if (typeof window !== 'undefined') {
 				const stored = localStorage.getItem('theme') as 'light' | 'dark' | null;

@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { Card, CardHeader, CardTitle, CardContent, Tabs, Select } from '$lib/components/ui';
+	import { StatCard, ChartCard, EmptyState, Card, CardContent, Tabs, Select } from '$lib/components/ui';
 	import { NetworkGraph } from '$lib/components/charts';
 	import { allCollections, persons, projects } from '$lib/stores/data';
 	import { buildContributorNetwork, buildPersonInstitutionNetwork, buildInstitutionCollaborationNetwork } from '$lib/utils/dataTransform';
-	import { universities } from '$lib/types';
+	import { universityOptions } from '$lib/types';
 	import type { CollectionItem } from '$lib/types';
+	import { Circle, Link, Tag, Building2, Users, Briefcase } from '@lucide/svelte';
 
 	const tabs = [
 		{ id: 'contributors', label: 'Contributors' },
@@ -18,12 +19,6 @@
 	let selectedUniversity = $state('all');
 	let maxNodes = $state(100);
 	let selectedResourceType = $state('all');
-
-	// University options
-	const universityOptions = [
-		{ value: 'all', label: 'All Universities' },
-		...universities.map((uni) => ({ value: uni.id, label: `${uni.code} - ${uni.name}` }))
-	];
 
 	// Get unique resource types from all collections
 	let resourceTypeOptions = $derived.by(() => {
@@ -63,58 +58,54 @@
 
 <div class="space-y-6">
 	<!-- Page Header -->
-	<div>
-		<h1 class="text-3xl font-bold">Network</h1>
-		<p class="text-muted-foreground mt-1">
+	<div class="animate-slide-in-up">
+		<h1 class="page-title">Network</h1>
+		<p class="page-subtitle">
 			Explore relationships between contributors, projects, and institutions
 		</p>
 	</div>
 
 	<!-- Filters -->
 	<Card>
-		{#snippet children()}
-			<CardContent class="pt-6">
-				{#snippet children()}
-					<div class="flex flex-wrap items-end gap-4">
-						<div class="w-48">
-							<span class="text-sm text-muted-foreground mb-1 block">University</span>
-							<Select
-								options={universityOptions}
-								bind:value={selectedUniversity}
-								placeholder="Select university"
-							/>
-						</div>
+		<CardContent class="pt-6">
+			<div class="flex flex-wrap items-end gap-4">
+				<div class="w-48">
+					<span class="text-sm text-muted-foreground mb-1 block">University</span>
+					<Select
+						options={universityOptions}
+						bind:value={selectedUniversity}
+						placeholder="Select university"
+					/>
+				</div>
 
-						<div class="w-48">
-							<span class="text-sm text-muted-foreground mb-1 block">Resource Type</span>
-							<Select
-								options={resourceTypeOptions}
-								bind:value={selectedResourceType}
-								placeholder="Select type"
-							/>
-						</div>
+				<div class="w-48">
+					<span class="text-sm text-muted-foreground mb-1 block">Resource Type</span>
+					<Select
+						options={resourceTypeOptions}
+						bind:value={selectedResourceType}
+						placeholder="Select type"
+					/>
+				</div>
 
-						<div class="w-48">
-							<span class="text-sm text-muted-foreground mb-1 block">
-								Max Nodes: <span class="font-medium">{maxNodes}</span>
-							</span>
-							<input
-								type="range"
-								min="20"
-								max="200"
-								step="10"
-								bind:value={maxNodes}
-								class="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
-							/>
-						</div>
+				<div class="w-48">
+					<span class="text-sm text-muted-foreground mb-1 block">
+						Max Nodes: <span class="font-medium">{maxNodes}</span>
+					</span>
+					<input
+						type="range"
+						min="20"
+						max="200"
+						step="10"
+						bind:value={maxNodes}
+						class="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+					/>
+				</div>
 
-						<div class="text-sm text-muted-foreground">
-							Showing <span class="font-medium text-foreground">{filteredCollections.length}</span> items
-						</div>
-					</div>
-				{/snippet}
-			</CardContent>
-		{/snippet}
+				<div class="text-sm text-muted-foreground">
+					Showing <span class="font-medium text-foreground">{filteredCollections.length}</span> items
+				</div>
+			</div>
+		</CardContent>
 	</Card>
 
 	<!-- Tabs -->
@@ -123,264 +114,138 @@
 			{#if tab === 'contributors'}
 				<!-- Contributor Network -->
 				<div class="grid gap-4 md:grid-cols-3 mb-6">
-					<Card>
-						{#snippet children()}
-							<CardContent class="pt-6">
-								{#snippet children()}
-									<div class="text-2xl font-bold">{contributorNetwork.nodes.length}</div>
-									<p class="text-sm text-muted-foreground">Nodes</p>
-								{/snippet}
-							</CardContent>
-						{/snippet}
-					</Card>
-
-					<Card>
-						{#snippet children()}
-							<CardContent class="pt-6">
-								{#snippet children()}
-									<div class="text-2xl font-bold">{contributorNetwork.links.length}</div>
-									<p class="text-sm text-muted-foreground">Connections</p>
-								{/snippet}
-							</CardContent>
-						{/snippet}
-					</Card>
-
-					<Card>
-						{#snippet children()}
-							<CardContent class="pt-6">
-								{#snippet children()}
-									<div class="text-2xl font-bold">{contributorNetwork.categories.length}</div>
-									<p class="text-sm text-muted-foreground">Categories</p>
-								{/snippet}
-							</CardContent>
-						{/snippet}
-					</Card>
+					<StatCard
+						value={contributorNetwork.nodes.length}
+						label="Nodes"
+						icon={Circle}
+						animationDelay="75ms"
+					/>
+					<StatCard
+						value={contributorNetwork.links.length}
+						label="Connections"
+						icon={Link}
+						animationDelay="150ms"
+					/>
+					<StatCard
+						value={contributorNetwork.categories.length}
+						label="Categories"
+						icon={Tag}
+						animationDelay="225ms"
+					/>
 				</div>
 
-				<Card>
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Contributor-Project Network{/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[600px]">
-							{#snippet children()}
-								{#if contributorNetwork.nodes.length > 0}
-									<NetworkGraph data={contributorNetwork} />
-								{:else}
-									<div class="h-full flex items-center justify-center text-muted-foreground">
-										No network data available
-									</div>
-								{/if}
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+				<ChartCard title="Contributor-Project Network" contentHeight="h-[600px]">
+					{#if contributorNetwork.nodes.length > 0}
+						<NetworkGraph data={contributorNetwork} />
+					{:else}
+						<EmptyState message="No network data available" />
+					{/if}
+				</ChartCard>
 
-				<Card class="mt-6">
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Network Legend{/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent>
-							{#snippet children()}
-								<div class="flex gap-6">
-									{#each contributorNetwork.categories as category, i}
-										<div class="flex items-center gap-2">
-											<div
-												class="w-4 h-4 rounded-full"
-												style="background-color: {i === 0 ? '#3b82f6' : '#10b981'}"
-											></div>
-											<span class="text-sm">{category.name}</span>
-										</div>
-									{/each}
-								</div>
-								<p class="text-sm text-muted-foreground mt-4">
-									Drag nodes to rearrange. Scroll to zoom. Click and drag background to pan.
-								</p>
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+				<ChartCard title="Network Legend" class="mt-6">
+					<div class="flex gap-6">
+						{#each contributorNetwork.categories as category, i}
+							<div class="flex items-center gap-2">
+								<div
+									class="w-4 h-4 rounded-full"
+									style="background-color: {i === 0 ? 'hsl(var(--chart-1))' : 'hsl(var(--chart-2))'}"
+								></div>
+								<span class="text-sm">{category.name}</span>
+							</div>
+						{/each}
+					</div>
+					<p class="text-sm text-muted-foreground mt-4">
+						Drag nodes to rearrange. Scroll to zoom. Click and drag background to pan.
+					</p>
+				</ChartCard>
 			{:else if tab === 'affiliations'}
 				<!-- Affiliation Network -->
 				<div class="grid gap-4 md:grid-cols-3 mb-6">
-					<Card>
-						{#snippet children()}
-							<CardContent class="pt-6">
-								{#snippet children()}
-									<div class="text-2xl font-bold">{affiliationNetwork.nodes.length}</div>
-									<p class="text-sm text-muted-foreground">Nodes</p>
-								{/snippet}
-							</CardContent>
-						{/snippet}
-					</Card>
-
-					<Card>
-						{#snippet children()}
-							<CardContent class="pt-6">
-								{#snippet children()}
-									<div class="text-2xl font-bold">{affiliationNetwork.links.length}</div>
-									<p class="text-sm text-muted-foreground">Connections</p>
-								{/snippet}
-							</CardContent>
-						{/snippet}
-					</Card>
-
-					<Card>
-						{#snippet children()}
-							<CardContent class="pt-6">
-								{#snippet children()}
-									<div class="text-2xl font-bold">{$persons.length}</div>
-									<p class="text-sm text-muted-foreground">Total Persons</p>
-								{/snippet}
-							</CardContent>
-						{/snippet}
-					</Card>
+					<StatCard
+						value={affiliationNetwork.nodes.length}
+						label="Nodes"
+						icon={Circle}
+						animationDelay="75ms"
+					/>
+					<StatCard
+						value={affiliationNetwork.links.length}
+						label="Connections"
+						icon={Link}
+						animationDelay="150ms"
+					/>
+					<StatCard
+						value={$persons.length}
+						label="Total Persons"
+						icon={Users}
+						animationDelay="225ms"
+					/>
 				</div>
 
-				<Card>
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Person-Institution Network{/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[600px]">
-							{#snippet children()}
-								{#if affiliationNetwork.nodes.length > 0}
-									<NetworkGraph data={affiliationNetwork} />
-								{:else}
-									<div class="h-full flex items-center justify-center text-muted-foreground">
-										No affiliation data available. Persons may not have institutional affiliations recorded.
-									</div>
-								{/if}
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+				<ChartCard title="Person-Institution Network" contentHeight="h-[600px]">
+					{#if affiliationNetwork.nodes.length > 0}
+						<NetworkGraph data={affiliationNetwork} />
+					{:else}
+						<EmptyState message="No affiliation data available. Persons may not have institutional affiliations recorded." />
+					{/if}
+				</ChartCard>
 
-				<Card class="mt-6">
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Network Legend{/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent>
-							{#snippet children()}
-								<div class="flex gap-6">
-									{#each affiliationNetwork.categories as category, i}
-										<div class="flex items-center gap-2">
-											<div
-												class="w-4 h-4 rounded-full"
-												style="background-color: {i === 0 ? '#3b82f6' : '#10b981'}"
-											></div>
-											<span class="text-sm">{category.name}</span>
-										</div>
-									{/each}
-								</div>
-								<p class="text-sm text-muted-foreground mt-4">
-									Drag nodes to rearrange. Scroll to zoom. Click and drag background to pan.
-								</p>
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+				<ChartCard title="Network Legend" class="mt-6">
+					<div class="flex gap-6">
+						{#each affiliationNetwork.categories as category, i}
+							<div class="flex items-center gap-2">
+								<div
+									class="w-4 h-4 rounded-full"
+									style="background-color: {i === 0 ? 'hsl(var(--chart-1))' : 'hsl(var(--chart-2))'}"
+								></div>
+								<span class="text-sm">{category.name}</span>
+							</div>
+						{/each}
+					</div>
+					<p class="text-sm text-muted-foreground mt-4">
+						Drag nodes to rearrange. Scroll to zoom. Click and drag background to pan.
+					</p>
+				</ChartCard>
 			{:else}
 				<!-- Institution Collaboration Network -->
 				<div class="grid gap-4 md:grid-cols-3 mb-6">
-					<Card>
-						{#snippet children()}
-							<CardContent class="pt-6">
-								{#snippet children()}
-									<div class="text-2xl font-bold">{institutionNetwork.nodes.length}</div>
-									<p class="text-sm text-muted-foreground">Institutions</p>
-								{/snippet}
-							</CardContent>
-						{/snippet}
-					</Card>
-
-					<Card>
-						{#snippet children()}
-							<CardContent class="pt-6">
-								{#snippet children()}
-									<div class="text-2xl font-bold">{institutionNetwork.links.length}</div>
-									<p class="text-sm text-muted-foreground">Collaborations</p>
-								{/snippet}
-							</CardContent>
-						{/snippet}
-					</Card>
-
-					<Card>
-						{#snippet children()}
-							<CardContent class="pt-6">
-								{#snippet children()}
-									<div class="text-2xl font-bold">{$projects.length}</div>
-									<p class="text-sm text-muted-foreground">Total Projects</p>
-								{/snippet}
-							</CardContent>
-						{/snippet}
-					</Card>
+					<StatCard
+						value={institutionNetwork.nodes.length}
+						label="Institutions"
+						icon={Building2}
+						animationDelay="75ms"
+					/>
+					<StatCard
+						value={institutionNetwork.links.length}
+						label="Collaborations"
+						icon={Link}
+						animationDelay="150ms"
+					/>
+					<StatCard
+						value={$projects.length}
+						label="Total Projects"
+						icon={Briefcase}
+						animationDelay="225ms"
+					/>
 				</div>
 
-				<Card>
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Institution Collaboration Network{/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[600px]">
-							{#snippet children()}
-								{#if institutionNetwork.nodes.length > 0}
-									<NetworkGraph data={institutionNetwork} />
-								{:else}
-									<div class="h-full flex items-center justify-center text-muted-foreground">
-										No collaboration data available. Institutions may not have shared projects.
-									</div>
-								{/if}
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+				<ChartCard title="Institution Collaboration Network" contentHeight="h-[600px]">
+					{#if institutionNetwork.nodes.length > 0}
+						<NetworkGraph data={institutionNetwork} />
+					{:else}
+						<EmptyState message="No collaboration data available. Institutions may not have shared projects." />
+					{/if}
+				</ChartCard>
 
-				<Card class="mt-6">
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}About this visualization{/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent>
-							{#snippet children()}
-								<p class="text-sm text-muted-foreground">
-									This network shows institutions that collaborate through shared research projects.
-									Connections are formed when institutions have team members working on the same project.
-									Node size reflects the number of collaborations. Thicker lines indicate more shared projects.
-								</p>
-								<p class="text-sm text-muted-foreground mt-4">
-									Drag nodes to rearrange. Scroll to zoom. Click and drag background to pan.
-								</p>
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+				<ChartCard title="About this visualization" class="mt-6">
+					<p class="text-sm text-muted-foreground">
+						This network shows institutions that collaborate through shared research projects.
+						Connections are formed when institutions have team members working on the same project.
+						Node size reflects the number of collaborations. Thicker lines indicate more shared projects.
+					</p>
+					<p class="text-sm text-muted-foreground mt-4">
+						Drag nodes to rearrange. Scroll to zoom. Click and drag background to pan.
+					</p>
+				</ChartCard>
 			{/if}
 		{/snippet}
 	</Tabs>

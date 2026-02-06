@@ -243,6 +243,12 @@ export const universities: University[] = [
 	{ id: 'ufba', name: 'Federal University of Bahia', code: 'UFB', folder: 'projects_metadata_ufba', logo: 'logos/UFBA.png' }
 ];
 
+// Shared dropdown options for university selectors
+export const universityOptions = [
+	{ value: 'all', label: 'All Universities' },
+	...universities.map((uni) => ({ value: uni.id, label: `${uni.code} - ${uni.name}` }))
+];
+
 // Filter state
 export interface FilterState {
 	dateRange: {

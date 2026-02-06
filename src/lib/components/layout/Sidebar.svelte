@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
 	import { Layers, ChevronsLeft, X, Home, Folder, BarChart3, Briefcase, Share2 } from '@lucide/svelte';
+	import type { Component } from 'svelte';
 
 	interface Props {
 		isOpen?: boolean;
@@ -18,12 +19,12 @@
 		onToggleCollapse
 	}: Props = $props();
 
-	const navItems = [
-		{ href: `${base}/`, label: 'Overview', icon: 'home' },
-		{ href: `${base}/collections`, label: 'Collections', icon: 'folder' },
-		{ href: `${base}/compare`, label: 'Compare', icon: 'bar-chart' },
-		{ href: `${base}/projects`, label: 'Projects', icon: 'briefcase' },
-		{ href: `${base}/network`, label: 'Network', icon: 'share-2' }
+	const navItems: { href: string; label: string; icon: Component }[] = [
+		{ href: `${base}/`, label: 'Overview', icon: Home },
+		{ href: `${base}/collections`, label: 'Collections', icon: Folder },
+		{ href: `${base}/compare`, label: 'Compare', icon: BarChart3 },
+		{ href: `${base}/projects`, label: 'Projects', icon: Briefcase },
+		{ href: `${base}/network`, label: 'Network', icon: Share2 }
 	];
 
 	function isActive(href: string) {
@@ -101,6 +102,7 @@
 			<div class="sidebar-group-label">Navigation</div>
 			<nav>
 				{#each navItems as item}
+					{@const Icon = item.icon}
 					<a
 						href={item.href}
 						class={cn('sidebar-nav-item', isActive(item.href) && 'active')}
@@ -108,17 +110,7 @@
 						title={isCollapsed ? item.label : undefined}
 					>
 						<span class="sidebar-nav-icon">
-							{#if item.icon === 'home'}
-								<Home />
-							{:else if item.icon === 'folder'}
-								<Folder />
-							{:else if item.icon === 'bar-chart'}
-								<BarChart3 />
-							{:else if item.icon === 'briefcase'}
-								<Briefcase />
-							{:else if item.icon === 'share-2'}
-								<Share2 />
-							{/if}
+							<Icon />
 						</span>
 						<span class="sidebar-nav-label">{item.label}</span>
 					</a>

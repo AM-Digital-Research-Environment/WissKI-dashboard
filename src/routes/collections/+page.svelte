@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
-	import { Card, CardHeader, CardTitle, CardContent, Badge, Select } from '$lib/components/ui';
+	import { StatCard, ChartCard, EmptyState, Badge, Select } from '$lib/components/ui';
 	import { StackedTimeline, BarChart, PieChart, WordCloud, LocationMap, SankeyChart, SunburstChart, ChordDiagram } from '$lib/components/charts';
 	import { allCollections } from '$lib/stores/data';
 	import {
@@ -19,18 +19,13 @@
 	import { loadEnrichedLocations, UNIVERSITY_COLLECTIONS } from '$lib/utils/dataLoader';
 	import { universities } from '$lib/types';
 	import type { CollectionItem, EnrichedLocationsData } from '$lib/types';
+	import { FileText, Layers, Users, MapPin, Calendar, BarChart3 } from '@lucide/svelte';
 
 	// Enriched location data for the map
 	let enrichedLocations = $state<EnrichedLocationsData | null>(null);
 
 	onMount(async () => {
-		console.log('Collections: Loading enriched locations...');
 		enrichedLocations = await loadEnrichedLocations(base);
-		console.log('Collections: Enriched locations loaded:', enrichedLocations ? 'yes' : 'no');
-		if (enrichedLocations) {
-			console.log('Collections: Countries:', Object.keys(enrichedLocations.countries).length);
-			console.log('Collections: Cities:', Object.keys(enrichedLocations.cities).length);
-		}
 	});
 
 	// Build a map of project IDs to full project names from the data
@@ -43,11 +38,11 @@
 		}, {} as Record<string, string>)
 	);
 
-	// Format collection ID to readable label (e.g., "UBT_ArtWorld2019" -> "ArtWorld 2019")
+	// Format collection ID to readable label
 	function formatCollectionLabel(name: string): string {
 		return name
-			.replace(/^(UBT|ULG|UJKZ|UFB)_/, '') // Remove university prefix
-			.replace(/(\d{4})$/, ' $1'); // Add space before year
+			.replace(/^(UBT|ULG|UJKZ|UFB)_/, '')
+			.replace(/(\d{4})$/, ' $1');
 	}
 
 	// Build grouped and sorted collection options
@@ -96,7 +91,7 @@
 			.sort((a, b) => b.value - a.value);
 	});
 
-	// Extract contributors (handle cases where name might not be an array)
+	// Extract contributors
 	let contributorsData = $derived(
 		countOccurrences(currentCollection, (item) => {
 			if (!item.name || !Array.isArray(item.name)) return null;
@@ -108,20 +103,19 @@
 	let sankeyData = $derived(buildSankeyData(currentCollection));
 	let sunburstData = $derived(buildSunburstData(currentCollection));
 	let subjectCoOccurrence = $derived(buildSubjectCoOccurrence(currentCollection, 2, 20));
-
 </script>
 
 <div class="space-y-6">
 	<!-- Page Header with Collection Selector -->
-	<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+	<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 animate-slide-in-up">
 		<div class="flex-1 min-w-0">
-			<h1 class="text-3xl font-bold">Collections</h1>
+			<h1 class="page-title">Collections</h1>
 			{#if selectedCollection !== 'all' && projectNameMap[selectedCollection]}
-				<p class="text-muted-foreground mt-1 line-clamp-2">
+				<p class="page-subtitle mt-1 line-clamp-2">
 					{projectNameMap[selectedCollection]}
 				</p>
 			{:else}
-				<p class="text-muted-foreground mt-1">
+				<p class="page-subtitle mt-1">
 					Browse collection metadata and visualizations
 				</p>
 			{/if}
@@ -137,368 +131,142 @@
 	</div>
 
 	<!-- Stats Cards -->
-			<div class="grid gap-4 md:grid-cols-4 mb-6">
-				<Card>
-					{#snippet children()}
-						<CardContent class="pt-6">
-							{#snippet children()}
-								<div class="text-2xl font-bold">{currentCollection.length}</div>
-								<p class="text-sm text-muted-foreground">Total Items</p>
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+	<div class="grid gap-4 md:grid-cols-4">
+		<StatCard value={currentCollection.length} label="Total Items" icon={FileText} animationDelay="75ms" />
+		<StatCard value={resourceTypesData.length} label="Resource Types" icon={Layers} iconBgClass="bg-chart-2/10" animationDelay="100ms" />
+		<StatCard value={contributorsData.length} label="Contributors" icon={Users} iconBgClass="bg-chart-1/10" animationDelay="150ms" />
+		<StatCard value={locationsData.length} label="Locations" icon={MapPin} iconBgClass="bg-chart-3/10" animationDelay="200ms" />
+	</div>
 
-				<Card>
-					{#snippet children()}
-						<CardContent class="pt-6">
-							{#snippet children()}
-								<div class="text-2xl font-bold">{resourceTypesData.length}</div>
-								<p class="text-sm text-muted-foreground">Resource Types</p>
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+	<!-- Charts Grid -->
+	<div class="grid gap-6 lg:grid-cols-2">
+		<ChartCard title="Items by Year" contentHeight="h-[420px]" class="col-span-full">
+			{#if timelineData.length > 0}
+				<StackedTimeline data={timelineData} />
+			{:else}
+				<EmptyState message="No timeline data available" icon={Calendar} />
+			{/if}
+		</ChartCard>
 
-				<Card>
-					{#snippet children()}
-						<CardContent class="pt-6">
-							{#snippet children()}
-								<div class="text-2xl font-bold">{contributorsData.length}</div>
-								<p class="text-sm text-muted-foreground">Contributors</p>
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+		<ChartCard title="Resource Types">
+			{#if resourceTypesData.length > 0}
+				<PieChart data={resourceTypesData} />
+			{:else}
+				<EmptyState />
+			{/if}
+		</ChartCard>
 
-				<Card>
-					{#snippet children()}
-						<CardContent class="pt-6">
-							{#snippet children()}
-								<div class="text-2xl font-bold">{locationsData.length}</div>
-								<p class="text-sm text-muted-foreground">Locations</p>
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
-			</div>
+		<ChartCard title="Subject Word Cloud" contentHeight="h-[450px]" class="col-span-full">
+			{#snippet headerExtra()}
+				<div class="flex items-center gap-4">
+					<label for="wordcloud-slider" class="text-sm text-muted-foreground whitespace-nowrap">
+						Words: {wordCloudMaxWords}
+					</label>
+					<input
+						id="wordcloud-slider"
+						type="range"
+						min="20"
+						max="200"
+						step="10"
+						bind:value={wordCloudMaxWords}
+						class="w-32 sm:w-48 h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+					/>
+				</div>
+			{/snippet}
+			{#if wordCloudData.length > 0}
+				<WordCloud data={wordCloudData} maxWords={wordCloudMaxWords} />
+			{:else}
+				<EmptyState />
+			{/if}
+		</ChartCard>
 
-			<!-- Charts Grid -->
-			<div class="grid gap-6 lg:grid-cols-2">
-				<!-- Timeline -->
-				<Card class="col-span-full">
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Items by Year{/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[420px]">
-							{#snippet children()}
-								{#if timelineData.length > 0}
-									<StackedTimeline data={timelineData} />
-								{:else}
-									<div class="h-full flex items-center justify-center text-muted-foreground">
-										No timeline data available
-									</div>
-								{/if}
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+		<ChartCard title="Geographic Origins (Map)" contentHeight="h-[500px]" class="col-span-full overflow-visible">
+			<LocationMap data={locationsData} items={currentCollection} {enrichedLocations} />
+		</ChartCard>
 
-				<!-- Resource Types -->
-				<Card>
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Resource Types{/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[350px]">
-							{#snippet children()}
-								{#if resourceTypesData.length > 0}
-									<PieChart data={resourceTypesData} />
-								{:else}
-									<div class="h-full flex items-center justify-center text-muted-foreground">
-										No data available
-									</div>
-								{/if}
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+		<ChartCard title="Geographic Origins (Chart)">
+			{#if locationsByCountry.length > 0}
+				<BarChart data={locationsByCountry} maxItems={10} />
+			{:else}
+				<EmptyState />
+			{/if}
+		</ChartCard>
 
-				<!-- Word Cloud -->
-				<Card class="col-span-full">
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-									<CardTitle>
-										{#snippet children()}Subject Word Cloud{/snippet}
-									</CardTitle>
-									<div class="flex items-center gap-4">
-										<label for="wordcloud-slider" class="text-sm text-muted-foreground whitespace-nowrap">
-											Words: {wordCloudMaxWords}
-										</label>
-										<input
-											id="wordcloud-slider"
-											type="range"
-											min="20"
-											max="200"
-											step="10"
-											bind:value={wordCloudMaxWords}
-											class="w-32 sm:w-48 h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
-										/>
-									</div>
-								</div>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[450px]">
-							{#snippet children()}
-								{#if wordCloudData.length > 0}
-									<WordCloud data={wordCloudData} maxWords={wordCloudMaxWords} />
-								{:else}
-									<div class="h-full flex items-center justify-center text-muted-foreground">
-										No data available
-									</div>
-								{/if}
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+		<ChartCard title="Languages">
+			{#if languagesData.length > 0}
+				<BarChart data={languagesData} maxItems={10} />
+			{:else}
+				<EmptyState />
+			{/if}
+		</ChartCard>
 
-				<!-- Geographic Origins Map -->
-				<Card class="col-span-full overflow-visible">
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Geographic Origins (Map){/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[500px] overflow-visible">
-							{#snippet children()}
-								<LocationMap data={locationsData} items={currentCollection} {enrichedLocations} />
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+		<ChartCard title="Top Contributors">
+			{#if contributorsData.length > 0}
+				<BarChart data={contributorsData} maxItems={10} />
+			{:else}
+				<EmptyState />
+			{/if}
+		</ChartCard>
 
-				<!-- Geographic Origins Bar Chart -->
-				<Card>
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Geographic Origins (Chart){/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[350px]">
-							{#snippet children()}
-								{#if locationsByCountry.length > 0}
-									<BarChart data={locationsByCountry} maxItems={10} />
-								{:else}
-									<div class="h-full flex items-center justify-center text-muted-foreground">
-										No data available
-									</div>
-								{/if}
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+		<ChartCard title="Top Subjects" contentHeight="h-[300px]" class="col-span-full">
+			{#if subjectsData.length > 0}
+				<BarChart data={subjectsData} maxItems={15} horizontal={false} />
+			{:else}
+				<EmptyState icon={BarChart3} />
+			{/if}
+		</ChartCard>
 
-				<!-- Languages -->
-				<Card>
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Languages{/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[350px]">
-							{#snippet children()}
-								{#if languagesData.length > 0}
-									<BarChart data={languagesData} maxItems={10} />
-								{:else}
-									<div class="h-full flex items-center justify-center text-muted-foreground">
-										No data available
-									</div>
-								{/if}
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+		<ChartCard
+			title="Subject Co-occurrence"
+			subtitle="Shows which subjects frequently appear together"
+			contentHeight="h-[550px]"
+			class="col-span-full"
+		>
+			{#if subjectCoOccurrence.names.length > 0}
+				<ChordDiagram data={subjectCoOccurrence} />
+			{:else}
+				<EmptyState message="Not enough subject data for co-occurrence analysis" />
+			{/if}
+		</ChartCard>
 
-				<!-- Top Contributors -->
-				<Card>
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Top Contributors{/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[350px]">
-							{#snippet children()}
-								{#if contributorsData.length > 0}
-									<BarChart data={contributorsData} maxItems={10} />
-								{:else}
-									<div class="h-full flex items-center justify-center text-muted-foreground">
-										No data available
-									</div>
-								{/if}
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+		<ChartCard title="Contributor &rarr; Project &rarr; Resource Type Flow" contentHeight="h-[450px]" class="col-span-full">
+			{#if sankeyData.links.length > 0}
+				<SankeyChart nodes={sankeyData.nodes} links={sankeyData.links} />
+			{:else}
+				<EmptyState message="No flow data available" />
+			{/if}
+		</ChartCard>
 
-				<!-- Top Subjects -->
-				<Card class="col-span-full">
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Top Subjects{/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[300px]">
-							{#snippet children()}
-								{#if subjectsData.length > 0}
-									<BarChart data={subjectsData} maxItems={15} horizontal={false} />
-								{:else}
-									<div class="h-full flex items-center justify-center text-muted-foreground">
-										No data available
-									</div>
-								{/if}
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
+		<ChartCard title="Resource Type &rarr; Language &rarr; Subject Hierarchy" contentHeight="h-[500px]" class="col-span-full">
+			{#if sunburstData.length > 0}
+				<SunburstChart data={sunburstData} />
+			{:else}
+				<EmptyState message="No hierarchy data available" />
+			{/if}
+		</ChartCard>
+	</div>
 
-				<!-- Subject Co-occurrence Chord Diagram -->
-				<Card class="col-span-full">
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-									<CardTitle>
-										{#snippet children()}Subject Co-occurrence{/snippet}
-									</CardTitle>
-									<p class="text-sm text-muted-foreground">
-										Shows which subjects frequently appear together
-									</p>
-								</div>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[550px]">
-							{#snippet children()}
-								{#if subjectCoOccurrence.names.length > 0}
-									<ChordDiagram data={subjectCoOccurrence} />
-								{:else}
-									<div class="h-full flex items-center justify-center text-muted-foreground">
-										Not enough subject data for co-occurrence analysis
-									</div>
-								{/if}
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
-
-				<!-- Sankey Diagram -->
-				<Card class="col-span-full">
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Contributor → Project → Resource Type Flow{/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[450px]">
-							{#snippet children()}
-								{#if sankeyData.links.length > 0}
-									<SankeyChart nodes={sankeyData.nodes} links={sankeyData.links} />
-								{:else}
-									<div class="h-full flex items-center justify-center text-muted-foreground">
-										No flow data available
-									</div>
-								{/if}
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
-
-				<!-- Sunburst Chart -->
-				<Card class="col-span-full">
-					{#snippet children()}
-						<CardHeader>
-							{#snippet children()}
-								<CardTitle>
-									{#snippet children()}Resource Type → Language → Subject Hierarchy{/snippet}
-								</CardTitle>
-							{/snippet}
-						</CardHeader>
-						<CardContent class="h-[500px]">
-							{#snippet children()}
-								{#if sunburstData.length > 0}
-									<SunburstChart data={sunburstData} />
-								{:else}
-									<div class="h-full flex items-center justify-center text-muted-foreground">
-										No hierarchy data available
-									</div>
-								{/if}
-							{/snippet}
-						</CardContent>
-					{/snippet}
-				</Card>
-			</div>
-
-			<!-- Recent Items -->
-			<Card class="mt-6">
-				{#snippet children()}
-					<CardHeader>
-						{#snippet children()}
-							<CardTitle>
-								{#snippet children()}Recent Items{/snippet}
-							</CardTitle>
-						{/snippet}
-					</CardHeader>
-					<CardContent>
-						{#snippet children()}
-							<div class="space-y-4">
-								{#each currentCollection.slice(0, 10) as item}
-									<div class="flex items-start gap-4 p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors">
-										<div class="flex-1 min-w-0">
-											<h4 class="font-medium truncate">
-												{item.titleInfo?.[0]?.title || 'Untitled'}
-											</h4>
-											<p class="text-sm text-muted-foreground truncate">
-												{item.project?.name || 'No project'}
-											</p>
-											<div class="flex flex-wrap gap-1 mt-2">
-												<Badge variant="secondary">{item.typeOfResource || 'Unknown'}</Badge>
-												{#each item.language?.slice(0, 2) || [] as lang}
-													<Badge variant="outline">{lang}</Badge>
-												{/each}
-											</div>
-										</div>
-									</div>
-								{/each}
-							</div>
-						{/snippet}
-					</CardContent>
-				{/snippet}
-			</Card>
+	<!-- Recent Items -->
+	<ChartCard title="Recent Items" contentHeight="">
+		<div class="space-y-4">
+			{#each currentCollection.slice(0, 10) as item}
+				<div class="flex items-start gap-4 p-3 rounded-lg border bg-card hover:bg-accent/50 transition-colors">
+					<div class="flex-1 min-w-0">
+						<h4 class="font-medium truncate">
+							{item.titleInfo?.[0]?.title || 'Untitled'}
+						</h4>
+						<p class="text-sm text-muted-foreground truncate">
+							{item.project?.name || 'No project'}
+						</p>
+						<div class="flex flex-wrap gap-1 mt-2">
+							<Badge variant="secondary">{item.typeOfResource || 'Unknown'}</Badge>
+							{#each item.language?.slice(0, 2) || [] as lang}
+								<Badge variant="outline">{lang}</Badge>
+							{/each}
+						</div>
+					</div>
+				</div>
+			{/each}
+		</div>
+	</ChartCard>
 </div>
