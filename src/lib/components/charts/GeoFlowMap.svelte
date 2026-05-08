@@ -150,9 +150,9 @@
 	function ensureLayers() {
 		if (!map) return;
 		const isDark = $theme === 'dark';
-		const lineColor = isDark ? '#7bd3cd' : '#2f9389';
-		const originColor = isDark ? '#d98559' : '#c15b1f';
-		const currentColor = isDark ? '#9a82cf' : '#764fba';
+		const lineColor = isDark ? '#67e4b2' : '#009460'; // Uni-Grün
+		const originColor = isDark ? '#eb9e47' : '#d57910'; // Braun (chart-2 — legend match)
+		const currentColor = isDark ? '#5581e7' : '#002999'; // Dunkelblau (chart-4 — legend match)
 
 		const linesData = buildLinesGeoJSON(data?.flows ?? []);
 		const pointsData = buildPointsGeoJSON(data?.flows ?? []);

@@ -8,6 +8,7 @@
 		height: 10px;
 	}
 
+	/* Light mode — warm-stone, matches the cream page surfaces. */
 	::-webkit-scrollbar-track {
 		background: hsl(var(--color-neutral-100));
 		border-radius: var(--radius-md);
@@ -24,17 +25,54 @@
 		background: hsl(var(--color-neutral-400));
 	}
 
+	/* Firefox / standards-track equivalent. Uses thumb + track keywords. */
+	* {
+		scrollbar-width: thin;
+		scrollbar-color: hsl(var(--color-neutral-300)) hsl(var(--color-neutral-100));
+	}
+
+	/* Dark mode — Uni-Grün-tinted to match the new forest dark surfaces.
+	   Track sits one step above body bg so it reads as a recessed channel,
+	   thumb sits at border-strong so it's grippable but quiet. */
 	.dark ::-webkit-scrollbar-track {
-		background: hsl(var(--color-neutral-900));
+		background: hsl(158 9% 8%);
 	}
 
 	.dark ::-webkit-scrollbar-thumb {
-		background: hsl(var(--color-neutral-700));
-		border-color: hsl(var(--color-neutral-900));
+		background: hsl(158 6% 22%);
+		border-color: hsl(158 9% 8%);
 	}
 
 	.dark ::-webkit-scrollbar-thumb:hover {
-		background: hsl(var(--color-neutral-600));
+		background: hsl(158 7% 30%);
+	}
+
+	.dark,
+	.dark * {
+		scrollbar-color: hsl(158 6% 22%) hsl(158 9% 8%);
+	}
+
+	/* Sidebar-scoped scrollbar — the sidebar is always dark (in both themes),
+	   so its scrollbar lives in the forest-dark family regardless of which
+	   theme the rest of the app is using. The slightly warmer hue (162° vs
+	   158°) matches the sidebar's own background and keeps the chrome
+	   visually unified. */
+	.sidebar-content::-webkit-scrollbar-track,
+	.sidebar::-webkit-scrollbar-track {
+		background: hsl(162 16% 9%);
+	}
+	.sidebar-content::-webkit-scrollbar-thumb,
+	.sidebar::-webkit-scrollbar-thumb {
+		background: hsl(162 12% 22%);
+		border-color: hsl(162 16% 9%);
+	}
+	.sidebar-content::-webkit-scrollbar-thumb:hover,
+	.sidebar::-webkit-scrollbar-thumb:hover {
+		background: hsl(162 12% 30%);
+	}
+	.sidebar-content,
+	.sidebar {
+		scrollbar-color: hsl(162 12% 22%) hsl(162 16% 9%);
 	}
 }
 

@@ -49,18 +49,18 @@
 		isGlobe = $bindable(false)
 	}: Props = $props();
 
-	// Color ramp — teal sequential. Tuned in HSL so the same ramp works light/dark
-	// once the basemap style swaps. The empty-fill stop sits closer to the
-	// surrounding land color in each theme so countries without data don't
-	// punch a hole in the map.
+	// Color ramp — Uni-Grün sequential (Africa Multiple brand). Tuned in HSL so
+	// the same ramp works light/dark once the basemap style swaps. The empty-fill
+	// stop sits closer to the surrounding land color in each theme so countries
+	// without data don't punch a hole in the map.
 	const RAMP = {
 		light: {
 			empty: '#e7e3df',
-			stops: ['#cbe6e3', '#9bd0cb', '#5cb6ae', '#2f9389', '#196b69'] as const
+			stops: ['#c9ede0', '#94e0c4', '#39d59c', '#0ab87b', '#00704d'] as const
 		},
 		dark: {
-			empty: '#2a221d',
-			stops: ['#1f4d4a', '#286e69', '#318b85', '#4ab5ae', '#7bd3cd'] as const
+			empty: '#202624',
+			stops: ['#0c4534', '#097150', '#1b986c', '#31c48e', '#67e4b2'] as const
 		}
 	} as const;
 
@@ -262,7 +262,7 @@
 				type: 'line',
 				source: SOURCE_ID,
 				paint: {
-					'line-color': isDark ? '#7bd3cd' : '#196b69',
+					'line-color': isDark ? '#67e4b2' : '#00704d',
 					'line-width': ['case', ['boolean', ['feature-state', 'hover'], false], 2.5, 0]
 				}
 			});

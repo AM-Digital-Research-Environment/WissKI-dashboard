@@ -4,11 +4,12 @@
  * =============================================================================
  *
  * "Scholarly Modernism" — A refined academic research visualization system
+ * anchored in the Africa Multiple Cluster of Excellence brand identity.
  *
  * Design Philosophy:
- * - Warm stone/slate neutrals (not cold grays)
- * - Deep viridian/teal primary (scholarly authority)
- * - Copper/amber accents (warmth and richness)
+ * - Warm stone neutrals (not cold grays) — pair naturally with the cluster's earth accents
+ * - Uni-Grün primary (#009260) — the cluster's signature green, scholarly authority
+ * - Braun / Gelb / Hellblau / Dunkelblau / Gold — brand accents seeded across the chart palette
  * - Layered depth with refined shadows
  * - Typographic excellence with character
  *
@@ -41,30 +42,33 @@
 		--color-neutral-900: 18 22% 11%; /* Near black */
 		--color-neutral-950: 16 30% 6%; /* Deepest dark */
 
-		/* --- Primary Palette (Deep Viridian / Teal — scholarly, modern) --- */
-		--color-primary-50: 168 46% 96%;
-		--color-primary-100: 170 48% 90%;
-		--color-primary-200: 172 46% 82%;
-		--color-primary-300: 174 44% 68%;
-		--color-primary-400: 176 42% 50%;
-		--color-primary-500: 174 52% 38%; /* Brand mid */
-		--color-primary-600: 176 58% 32%; /* Brand hover (light mode) */
-		--color-primary-700: 178 62% 26%; /* Brand default (light mode — AA-safe) */
-		--color-primary-800: 180 65% 20%;
-		--color-primary-900: 182 68% 16%;
-		--color-primary-950: 184 72% 10%;
+		/* --- Primary Palette (Uni-Grün — Africa Multiple Cluster signature green) ---
+		   Anchored on brand hex #009260 (HSL 159 100% 29%). Saturation eases off at
+		   the lightness extremes so the tints don't read garish. */
+		--color-primary-50: 152 60% 96%;
+		--color-primary-100: 154 58% 90%;
+		--color-primary-200: 156 55% 80%;
+		--color-primary-300: 157 55% 65%;
+		--color-primary-400: 158 60% 48%; /* Dark-mode default — lifted for contrast */
+		--color-primary-500: 159 100% 29%; /* Brand mid — Uni-Grün #009260 */
+		--color-primary-600: 160 100% 25%; /* Brand hover (light mode) */
+		--color-primary-700: 161 100% 22%; /* Brand default (light mode — AA-safe ≈5.4:1) */
+		--color-primary-800: 162 95% 17%;
+		--color-primary-900: 163 90% 13%;
+		--color-primary-950: 164 80% 8%;
 
-		/* --- Accent Palette (Copper / Amber — warmth, richness) --- */
-		--color-accent-50: 36 80% 96%;
-		--color-accent-100: 34 78% 90%;
-		--color-accent-200: 32 74% 80%;
-		--color-accent-300: 28 72% 66%;
-		--color-accent-400: 24 68% 52%;
-		--color-accent-500: 22 72% 44%;
-		--color-accent-600: 20 76% 36%;
-		--color-accent-700: 18 78% 28%;
-		--color-accent-800: 16 80% 22%;
-		--color-accent-900: 14 82% 18%;
+		/* --- Accent Palette (Braun — brand earth accent, warmth) ---
+		   Anchored on brand hex #D57912 (HSL 32 86% 45%). */
+		--color-accent-50: 34 84% 96%;
+		--color-accent-100: 33 82% 90%;
+		--color-accent-200: 32 78% 80%;
+		--color-accent-300: 32 80% 66%;
+		--color-accent-400: 32 84% 54%;
+		--color-accent-500: 32 86% 45%; /* Brand mid — Braun #D57912 */
+		--color-accent-600: 31 88% 38%;
+		--color-accent-700: 30 90% 30%;
+		--color-accent-800: 28 90% 22%;
+		--color-accent-900: 26 88% 16%;
 
 		/* --- Success (Moss / Emerald — reads as "scholarly green", not neon) --- */
 		--color-success-100: 150 38% 88%;
@@ -74,11 +78,12 @@
 		--color-success-600: 160 52% 28%;
 		--color-success-950: 166 55% 9%;
 
-		/* --- Warning (Honey / Amber) --- */
-		--color-warning-100: 44 90% 89%;
-		--color-warning-500: 36 88% 44%;
-		--color-warning-600: 32 86% 38%;
-		--color-warning-950: 24 86% 12%;
+		/* --- Warning (Gelb — brand yellow anchor #F59C08 at 500; 600 darkened for
+		   AA-safe text-on-warning surfaces) --- */
+		--color-warning-100: 41 92% 89%;
+		--color-warning-500: 38 94% 50%; /* Brand Gelb — icon / accent use */
+		--color-warning-600: 36 92% 38%; /* Semantic warning bg — AA against white */
+		--color-warning-950: 28 92% 12%;
 
 		/* --- Danger / Destructive (Deep Garnet — AA-safe at default) --- */
 		--color-danger-100: 352 70% 92%;
@@ -194,8 +199,12 @@
 			0 2px 4px -1px hsl(var(--color-neutral-900) / 0.05),
 			0 12px 24px -6px hsl(var(--color-neutral-900) / 0.08);
 
-		/* Glow (focus, hover-emphasis) */
+		/* Glow (focus, hover-emphasis) — primary is Uni-Grün, accent is Braun.
+		   Use the accent variant on warm "tactile" moments (hovering a brand
+		   plaque, a curated-collection card) where the green primary would
+		   compete with active-state cues. */
 		--shadow-glow: 0 0 0 4px hsl(var(--color-primary-500) / 0.18);
+		--shadow-glow-accent: 0 0 0 4px hsl(var(--color-accent-500) / 0.22);
 
 		/* =========================================================================
 		   6. MOTION TOKENS
@@ -267,17 +276,22 @@
 		--chart-h-xl: 500px;
 		--chart-h-2xl: 600px;
 
-		/* --- Sidebar Semantic Colors --- */
-		--sidebar: var(--color-neutral-900);
+		/* --- Sidebar Semantic Colors ---
+		   The sidebar is always dark (in both light and dark mode), so its tones
+		   live independently of the warm-stone neutral palette. We use a
+		   brand-tinted forest dark — an imperceptible Uni-Grün undertone at very
+		   low saturation reads as neutral but anchors the chrome to the cluster
+		   identity instead of feeling like a generic dark-brown box. */
+		--sidebar: 162 16% 9%; /* #131b18 — forest dark */
 		--sidebar-foreground: var(--color-neutral-100);
 		--sidebar-primary: var(--color-primary-400);
 		--sidebar-primary-foreground: var(--color-neutral-950);
-		--sidebar-accent: var(--color-neutral-800);
+		--sidebar-accent: 162 14% 14%; /* #1f2926 — hover surface */
 		--sidebar-accent-foreground: var(--color-neutral-100);
-		--sidebar-border: var(--color-neutral-800);
+		--sidebar-border: 162 12% 16%; /* #242e2b — quiet seams */
 		--sidebar-ring: var(--color-primary-500);
-		--sidebar-muted: var(--color-neutral-500);
-		--sidebar-muted-foreground: var(--color-neutral-300); /* bumped to pass AA on sidebar */
+		--sidebar-muted: 162 6% 38%;
+		--sidebar-muted-foreground: var(--color-neutral-300); /* AA-safe on sidebar */
 
 		/* =========================================================================
 		   DECORATIVE TOKENS
@@ -307,6 +321,15 @@
 			hsl(var(--color-accent-500)) 0%,
 			hsl(var(--color-accent-700)) 100%
 		);
+		/* Brand-spanning gradient — Uni-Grün → Braun.
+		   Reserved for hero / marketing surfaces where we want the cluster's
+		   full warm-cool span on display. */
+		--gradient-brand: linear-gradient(
+			135deg,
+			hsl(var(--color-primary-600)) 0%,
+			hsl(var(--color-primary-700)) 45%,
+			hsl(var(--color-accent-600)) 100%
+		);
 
 		/* Borders */
 		--border-subtle: 1px solid hsl(var(--color-neutral-100));
@@ -324,7 +347,7 @@
 		--surface-card: var(--color-neutral-0);
 		--surface-elevated: var(--color-neutral-0);
 		--surface-overlay: var(--color-neutral-0);
-		--surface-sidebar: var(--color-neutral-900);
+		--surface-sidebar: 162 16% 9%; /* matches --sidebar — forest dark */
 
 		/* --- Card --- */
 		--card: var(--color-neutral-0);
@@ -390,19 +413,19 @@
 		   10. DATA VISUALIZATION PALETTE
 		   ========================================================================= */
 
-		/* --- Categorical palette — tuned to Scholarly Modernism identity.
-		   10 hues, each AA-legible on warm cream background (≥3.0 for UI chart use),
-		   spaced for categorical separability. HSL values mirrored in tokens.ts. --- */
-		--chart-1: 174 52% 38%; /* Teal (brand)      #2f9389 */
-		--chart-2: 22 72% 44%; /* Copper (accent)    #c25e23 */
-		--chart-3: 36 88% 44%; /* Honey              #d18d11 */
-		--chart-4: 262 44% 52%; /* Iris               #7b5bbd */
-		--chart-5: 348 70% 50%; /* Garnet             #d92656 */
-		--chart-6: 202 62% 42%; /* Slate blue         #2874a3 */
-		--chart-7: 150 38% 40%; /* Moss               #407e5c */
-		--chart-8: 320 44% 50%; /* Plum               #b74691 */
-		--chart-9: 14 58% 48%; /* Brick              #c35a3a */
-		--chart-10: 42 34% 38%; /* Ochre              #7f6b3f */
+		/* --- Categorical palette — Africa Multiple Cluster brand colors at slots 1–6,
+		   complementary tones at 7–10. Each slot is tuned to read on the warm cream
+		   background (≥3.0:1 for graphical UI use). HSL values mirrored in tokens.ts. --- */
+		--chart-1: 159 100% 29%; /* Uni-Grün (brand)   #009260 */
+		--chart-2: 32 86% 45%; /* Braun (brand)        #d57912 */
+		--chart-3: 38 94% 47%; /* Gelb (brand)         #f0980b */
+		--chart-4: 224 100% 30%; /* Dunkelblau (brand)#002a99 */
+		--chart-5: 201 87% 45%; /* Hellblau (brand, darkened for cream-bg legibility) #0e8acd */
+		--chart-6: 40 56% 50%; /* Gold (brand)         #c79938 */
+		--chart-7: 262 44% 52%; /* Iris (complement)   #7b5bbd */
+		--chart-8: 348 70% 50%; /* Garnet (complement) #d9264a */
+		--chart-9: 150 38% 40%; /* Moss (secondary green) #407e5c */
+		--chart-10: 14 58% 48%; /* Brick (warm complement) #c35a3a */
 
 		/* --- Sequential (for heatmaps, choropleths) — primary ramp --- */
 		--chart-seq-1: var(--color-primary-100);
@@ -430,20 +453,20 @@
 		--chart-tooltip-bg: var(--color-neutral-0);
 		--chart-tooltip-border: var(--color-neutral-200);
 
-		/* --- Location Type Colors --- */
-		--location-city: var(--chart-1); /* Teal */
-		--location-region: var(--chart-3); /* Honey */
-		--location-country: var(--chart-7); /* Moss */
-		--location-current: var(--chart-4); /* Iris */
+		/* --- Location Type Colors — preserve semantics across the new chart slots --- */
+		--location-city: var(--chart-1); /* Uni-Grün — primary location identity */
+		--location-region: var(--chart-3); /* Gelb */
+		--location-country: var(--chart-9); /* Moss — secondary green */
+		--location-current: var(--chart-7); /* Iris — distinct accent for "you are here" */
 
-		/* --- Research Section Colors — keep distinct hues, align to scholarly palette --- */
-		--rs-affiliations: var(--chart-6); /* Slate blue */
-		--rs-arts-aesthetics: var(--chart-4); /* Iris */
-		--rs-knowledges: var(--chart-7); /* Moss */
-		--rs-learning: var(--chart-3); /* Honey */
-		--rs-mobilities: var(--chart-1); /* Teal */
-		--rs-moralities: var(--chart-5); /* Garnet */
-		--rs-external: var(--chart-10); /* Ochre — neutral, set apart from the 6 sections */
+		/* --- Research Section Colors — six sections × six brand colors, tightly aligned --- */
+		--rs-affiliations: var(--chart-4); /* Dunkelblau */
+		--rs-arts-aesthetics: var(--chart-7); /* Iris — kept */
+		--rs-knowledges: var(--chart-9); /* Moss — kept */
+		--rs-learning: var(--chart-3); /* Gelb */
+		--rs-mobilities: var(--chart-1); /* Uni-Grün */
+		--rs-moralities: var(--chart-8); /* Garnet — kept */
+		--rs-external: var(--chart-6); /* Gold — neutral, set apart from the 6 sections */
 	}
 
 	/* ===========================================================================
@@ -451,9 +474,12 @@
 	   =========================================================================== */
 
 	.dark {
-		/* Gradients */
-		--gradient-page: linear-gradient(180deg, hsl(var(--color-neutral-950)) 0%, hsl(16 30% 4%) 100%);
-		--gradient-sidebar: linear-gradient(180deg, hsl(16 30% 8%) 0%, hsl(16 30% 4%) 100%);
+		/* Gradients — page + sidebar shifted off warm-stone onto a brand-tinted
+		   forest dark. The undertone is Uni-Grün at very low saturation so
+		   surfaces read as deep neutral while staying anchored to the cluster
+		   identity. */
+		--gradient-page: linear-gradient(180deg, hsl(158 10% 6%) 0%, hsl(156 12% 4%) 100%);
+		--gradient-sidebar: linear-gradient(180deg, hsl(162 16% 9%) 0%, hsl(160 22% 5%) 100%);
 		--gradient-primary: linear-gradient(
 			135deg,
 			hsl(var(--color-primary-500)) 0%,
@@ -464,23 +490,29 @@
 			hsl(var(--color-accent-400)) 0%,
 			hsl(var(--color-accent-600)) 100%
 		);
+		--gradient-brand: linear-gradient(
+			135deg,
+			hsl(var(--color-primary-500)) 0%,
+			hsl(var(--color-primary-700)) 45%,
+			hsl(var(--color-accent-500)) 100%
+		);
 
-		/* --- Surfaces --- */
-		--background: var(--color-neutral-950);
+		/* --- Surfaces (Uni-Grün-tinted dark — replaces warm-stone) --- */
+		--background: 158 10% 6%; /* #0e1110 */
 		--foreground: var(--color-neutral-100);
 
-		--surface-ground: var(--color-neutral-900);
-		--surface-card: var(--color-neutral-900);
-		--surface-elevated: var(--color-neutral-800);
-		--surface-overlay: var(--color-neutral-800);
-		--surface-sidebar: var(--color-neutral-950);
+		--surface-ground: 158 9% 8%;
+		--surface-card: 158 7% 11%; /* #1a1e1d */
+		--surface-elevated: 158 6% 15%;
+		--surface-overlay: 158 6% 15%;
+		--surface-sidebar: 162 16% 9%; /* matches --sidebar */
 
 		/* --- Card --- */
-		--card: var(--color-neutral-900);
+		--card: 158 7% 11%;
 		--card-foreground: var(--color-neutral-100);
 
 		/* --- Popover --- */
-		--popover: var(--color-neutral-900);
+		--popover: 158 7% 11%;
 		--popover-foreground: var(--color-neutral-100);
 
 		/* --- Primary (lightened for dark bg contrast: 7.8:1) --- */
@@ -491,10 +523,10 @@
 		--primary-muted: var(--color-primary-950);
 		--primary-text: var(--color-primary-300);
 
-		/* --- Secondary --- */
-		--secondary: var(--color-neutral-800);
+		/* --- Secondary (matched to new dark surface family) --- */
+		--secondary: 158 7% 17%;
 		--secondary-foreground: var(--color-neutral-100);
-		--secondary-hover: var(--color-neutral-700);
+		--secondary-hover: 158 6% 22%;
 
 		/* --- Accent --- */
 		--accent: var(--color-accent-900);
@@ -502,7 +534,7 @@
 		--accent-hover: var(--color-accent-800);
 
 		/* --- Muted --- */
-		--muted: var(--color-neutral-800);
+		--muted: 158 7% 17%;
 		--muted-foreground: var(--color-neutral-300);
 
 		/* --- Destructive --- */
@@ -520,36 +552,36 @@
 		--warning-foreground: var(--color-neutral-950);
 		--warning-muted: var(--color-warning-950);
 
-		/* --- Border & Input --- */
-		--border: var(--color-neutral-800);
-		--border-muted: var(--color-neutral-800);
-		--border-strong: var(--color-neutral-700);
-		--input: var(--color-neutral-800);
+		/* --- Border & Input (subtle Uni-Grün-tinted seams) --- */
+		--border: 158 5% 18%;
+		--border-muted: 158 4% 15%;
+		--border-strong: 158 6% 22%;
+		--input: 158 5% 18%;
 		--input-focus: var(--color-primary-400);
 
 		/* --- Ring --- */
 		--ring: var(--color-primary-400);
 		--ring-offset: var(--color-neutral-950);
 
-		/* --- Chart palette (dark mode — lift lightness ~12-15% for legibility) --- */
-		--chart-1: 174 52% 54%; /* Teal */
-		--chart-2: 22 78% 58%; /* Copper */
-		--chart-3: 36 88% 62%; /* Honey */
-		--chart-4: 262 58% 72%; /* Iris */
-		--chart-5: 348 76% 66%; /* Garnet */
-		--chart-6: 202 68% 58%; /* Slate blue */
-		--chart-7: 150 42% 58%; /* Moss */
-		--chart-8: 320 56% 66%; /* Plum */
-		--chart-9: 14 68% 64%; /* Brick */
-		--chart-10: 42 44% 58%; /* Ochre */
+		/* --- Chart palette (dark mode — lift lightness ~12-20% for legibility) --- */
+		--chart-1: 159 65% 50%; /* Uni-Grün */
+		--chart-2: 32 80% 55%; /* Braun */
+		--chart-3: 38 95% 60%; /* Gelb */
+		--chart-4: 222 75% 62%; /* Dunkelblau */
+		--chart-5: 201 90% 65%; /* Hellblau */
+		--chart-6: 40 64% 65%; /* Gold */
+		--chart-7: 262 58% 72%; /* Iris */
+		--chart-8: 348 76% 66%; /* Garnet */
+		--chart-9: 150 42% 58%; /* Moss */
+		--chart-10: 14 68% 64%; /* Brick */
 
 		/* --- Chart text / grid (bumped for dark-bg legibility) --- */
 		--chart-text: var(--color-neutral-100);
 		--chart-text-muted: var(--color-neutral-200);
 		--chart-axis: var(--color-neutral-400);
-		--chart-grid: var(--color-neutral-800);
-		--chart-tooltip-bg: var(--color-neutral-900);
-		--chart-tooltip-border: var(--color-neutral-700);
+		--chart-grid: 158 5% 18%; /* matches --border */
+		--chart-tooltip-bg: 158 7% 11%; /* matches --card */
+		--chart-tooltip-border: 158 6% 22%;
 
 		/* --- Shadows (deeper, cooler for dark bg) --- */
 		--shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.3);
@@ -562,9 +594,10 @@
 			0 0 0 1px rgb(255 255 255 / 0.05), 0 2px 4px -1px rgb(0 0 0 / 0.35),
 			0 12px 24px -6px rgb(0 0 0 / 0.5);
 		--shadow-glow: 0 0 0 4px hsl(var(--color-primary-400) / 0.25);
+		--shadow-glow-accent: 0 0 0 4px hsl(var(--color-accent-400) / 0.3);
 
 		/* Borders */
-		--border-subtle: 1px solid hsl(var(--color-neutral-800));
-		--border-decorative: 1px solid hsl(var(--color-neutral-700));
+		--border-subtle: 1px solid hsl(158 5% 18%);
+		--border-decorative: 1px solid hsl(158 6% 22%);
 	}
 }

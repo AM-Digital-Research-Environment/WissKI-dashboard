@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { theme } from '$lib/stores/data';
 	import Button from '$lib/components/ui/button.svelte';
 	import { Menu, Sun, Moon, Maximize, Minimize } from '@lucide/svelte';
@@ -59,17 +60,24 @@
 		{/snippet}
 	</Button>
 
-	<!-- Page title area -->
+	<!-- Page title area: cluster wordmark + product name -->
 	<div class="flex-1 flex items-center gap-3 min-w-0">
-		<div class="hidden lg:flex items-center gap-3">
-			<div
-				class="h-6 w-1 rounded-full bg-gradient-to-b from-primary to-primary/40 flex-shrink-0"
-			></div>
-			<h1 class="header-title truncate">Africa Multiple Interactive Research Atlas</h1>
-		</div>
-		<h1 class="lg:hidden text-lg font-semibold font-display truncate text-center w-full">
+		<a
+			href="https://www.africamultiple.uni-bayreuth.de/"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="header-brand flex-shrink-0"
+			aria-label="Africa Multiple Cluster of Excellence"
+		>
+			<img src="{base}/logos/africamultiple.webp" alt="Africa Multiple Cluster of Excellence" />
+		</a>
+		<span aria-hidden="true" class="header-divider hidden lg:block"></span>
+		<h1 class="hidden lg:block header-title truncate">
 			Africa Multiple Interactive Research Atlas
 		</h1>
+		<!-- Mobile: AMIRA (the app's short name, set in app.html and manifest.json).
+		     Avoids truncating the long product name on narrow screens. -->
+		<h1 class="lg:hidden font-display font-bold tracking-tight text-foreground flex-1">AMIRA</h1>
 	</div>
 
 	<!-- Right-side toggles grouped so the theme + fullscreen buttons sit close
@@ -112,3 +120,54 @@
 		</Button>
 	</div>
 </header>
+
+<style>
+	/* Africa Multiple wordmark plaque — gives the dark-grey "multiple" letters
+	   a consistent reading surface in both light and dark themes. The plaque
+	   is white-with-warmth so it sits gracefully on the cream light-mode
+	   background without a hard edge. */
+	.header-brand {
+		display: inline-flex;
+		align-items: center;
+		padding: 4px 8px;
+		border-radius: var(--radius-md);
+		background: #fff;
+		box-shadow: 0 0 0 1px hsl(var(--color-neutral-200) / 0.4);
+		opacity: 0.95;
+		transition:
+			opacity 160ms ease,
+			box-shadow 160ms ease;
+	}
+	.header-brand:hover {
+		opacity: 1;
+		/* Warm Braun ring on hover — the brand's earth accent says "this is
+		   the institutional link" without competing with the green primary
+		   that signals app state elsewhere. */
+		box-shadow:
+			0 0 0 1px hsl(var(--color-accent-500) / 0.55),
+			var(--shadow-glow-accent);
+	}
+	.header-brand img {
+		display: block;
+		height: 24px;
+		width: auto;
+	}
+	@media (min-width: 1024px) {
+		.header-brand img {
+			height: 28px;
+		}
+	}
+
+	/* Vertical separator between the cluster brand and the product title */
+	.header-divider {
+		width: 1px;
+		height: 24px;
+		background: linear-gradient(
+			180deg,
+			transparent 0%,
+			hsl(var(--border)) 30%,
+			hsl(var(--border)) 70%,
+			transparent 100%
+		);
+	}
+</style>

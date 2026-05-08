@@ -13,47 +13,48 @@
  */
 
 /* =============================================================================
-   CHART COLOR PALETTE — "Scholarly Modernism"
-   Categorical palette aligned to the brand identity (teal + copper roots).
-   Hex values derived from the HSL definitions of --chart-1..--chart-10 in tokens.css.
+   CHART COLOR PALETTE — Africa Multiple Cluster brand
+   Slots 1–6 are the cluster's six brand colors; 7–10 are complementary tones
+   that fill out a 10-step categorical palette.
+   Hex values mirror the HSL definitions of --chart-1..--chart-10 in tokens.css.
    ============================================================================= */
 
 export const CHART_COLORS = [
-	'#2f9389', // 1  Teal       — brand
-	'#c15b1f', // 2  Copper     — accent
-	'#d3840d', // 3  Honey
-	'#764fba', // 4  Iris
-	'#d9264a', // 5  Garnet
-	'#297dae', // 6  Slate blue
-	'#3f8d66', // 7  Moss
-	'#b84792', // 8  Plum
-	'#c15533', // 9  Brick
-	'#826e40' // 10 Ochre
+	'#009460', // 1  Uni-Grün   — brand primary
+	'#d57910', // 2  Braun      — brand accent
+	'#e99607', // 3  Gelb       — brand yellow
+	'#002999', // 4  Dunkelblau — brand dark blue
+	'#0f91d7', // 5  Hellblau   — brand light blue (darkened for cream-bg legibility)
+	'#c79738', // 6  Gold       — brand gold
+	'#764fba', // 7  Iris       — complement
+	'#d9264a', // 8  Garnet     — complement
+	'#3f8d66', // 9  Moss       — secondary green
+	'#c15533' // 10 Brick      — warm complement
 ] as const;
 
 /**
  * Extended palette (16 colors) for visualizations with many categories.
- * Extends the core palette with complementary desaturated/muted variants.
+ * Adds lifted-lightness variants of the six brand colors.
  */
 export const CHART_COLORS_EXTENDED = [
 	...CHART_COLORS,
-	'#52a8a1', // Teal light
-	'#d98559', // Copper light
-	'#e0a544', // Honey light
-	'#9a82cf', // Iris light
-	'#e36079', // Garnet light
-	'#5a9cc5' // Slate blue light
+	'#22c38b', // Uni-Grün soft
+	'#e99e49', // Braun light
+	'#f7b23b', // Gelb light
+	'#2d59d2', // Dunkelblau soft
+	'#53b5ea', // Hellblau light
+	'#d8b674' // Gold light
 ] as const;
 
 /**
- * Reduced palette (5 colors) for simple visualizations
+ * Reduced palette (5 colors) for simple visualizations — brand-led subset.
  */
 export const CHART_COLORS_SIMPLE = [
-	'#2f9389', // Teal
-	'#c15b1f', // Copper
-	'#d3840d', // Honey
-	'#764fba', // Iris
-	'#d9264a' // Garnet
+	'#009460', // Uni-Grün
+	'#d57910', // Braun
+	'#e99607', // Gelb
+	'#002999', // Dunkelblau
+	'#d9264a' // Garnet — complementary punch
 ] as const;
 
 /* =============================================================================
@@ -63,10 +64,10 @@ export const CHART_COLORS_SIMPLE = [
    ============================================================================= */
 
 export const LOCATION_COLORS = {
-	city: CHART_COLORS[0], // Teal    — matches --location-city / --chart-1
-	region: CHART_COLORS[2], // Honey   — matches --location-region / --chart-3
-	country: CHART_COLORS[6], // Moss    — matches --location-country / --chart-7
-	current: CHART_COLORS[3] // Iris    — matches --location-current / --chart-4
+	city: CHART_COLORS[0], // Uni-Grün — matches --location-city / --chart-1
+	region: CHART_COLORS[2], // Gelb     — matches --location-region / --chart-3
+	country: CHART_COLORS[8], // Moss     — matches --location-country / --chart-9
+	current: CHART_COLORS[6] // Iris     — matches --location-current / --chart-7
 } as const;
 
 /**
@@ -101,22 +102,22 @@ export const THEME_COLORS = {
 		popover: '#fdfdfc',
 		popoverForeground: '#221a16',
 
-		// Semantic (deep viridian primary — darkened for AA, copper accent)
-		primary: '#196b69', // --color-primary-700
+		// Semantic (Uni-Grün primary — AA-safe; Braun accent)
+		primary: '#00704d', // --color-primary-700
 		primaryForeground: '#f9f8f6', // --color-neutral-50
 		secondary: '#f2f0ee', // --color-neutral-100
 		secondaryForeground: '#302621', // --color-neutral-800
 		muted: '#f2f0ee',
 		mutedForeground: '#766960', // --color-neutral-500
-		accent: '#f9e8d2', // --color-accent-100
-		accentForeground: '#65230b', // --color-accent-800
+		accent: '#fae8d1', // --color-accent-100
+		accentForeground: '#6b3506', // --color-accent-800
 		destructive: '#a91936', // --color-danger-600 — AA-safe
 		destructiveForeground: '#f9f8f6',
 
 		// UI elements
 		border: '#e4e1dd', // --color-neutral-200
 		input: '#e4e1dd',
-		ring: '#2f9389', // --color-primary-500
+		ring: '#009460', // --color-primary-500 — Uni-Grün
 
 		// Chart specific
 		chartText: '#463b35', // --color-neutral-700
@@ -127,38 +128,38 @@ export const THEME_COLORS = {
 		chartTooltipBorder: '#e4e1dd'
 	},
 	dark: {
-		// Surfaces
-		background: '#140d0b', // --color-neutral-950
+		// Surfaces — Uni-Grün-tinted dark family (replaces warm-stone in dark mode)
+		background: '#0e1110', // 158 10% 6%
 		foreground: '#f2f0ee', // --color-neutral-100
-		card: '#221a16', // --color-neutral-900
+		card: '#1a1e1d', // 158 7% 11%
 		cardForeground: '#f2f0ee',
-		popover: '#221a16',
+		popover: '#1a1e1d',
 		popoverForeground: '#f2f0ee',
 
-		// Semantic
-		primary: '#4ab5ae', // --color-primary-400
-		primaryForeground: '#140d0b',
-		secondary: '#302621', // --color-neutral-800
+		// Semantic (Uni-Grün lifted for dark-bg legibility)
+		primary: '#31c48e', // --color-primary-400
+		primaryForeground: '#0e1110',
+		secondary: '#282e2c', // 158 7% 17%
 		secondaryForeground: '#f2f0ee',
-		muted: '#302621',
-		mutedForeground: '#c8c2bc', // --color-neutral-300 — AA on neutral-900
-		accent: '#541a08', // --color-accent-900
-		accentForeground: '#f2cfa6', // --color-accent-200
+		muted: '#282e2c',
+		mutedForeground: '#c8c2bc', // --color-neutral-300 — AA on dark surfaces
+		accent: '#4d2405', // --color-accent-900
+		accentForeground: '#f4cfa4', // --color-accent-200
 		destructive: '#c7233f', // --color-danger-500
 		destructiveForeground: '#f9f8f6',
 
 		// UI elements
-		border: '#302621',
-		input: '#302621',
-		ring: '#4ab5ae',
+		border: '#2c302f', // 158 5% 18%
+		input: '#2c302f',
+		ring: '#31c48e',
 
 		// Chart specific — bumped for legibility on dark surfaces
-		chartText: '#f2f0ee', // --color-neutral-100 (was 200)
-		chartTextMuted: '#e4e1dd', // --color-neutral-200 (was 300)
-		chartAxis: '#938980', // --color-neutral-400 (was 500 — too dim)
-		chartGrid: '#302621', // --color-neutral-800
-		chartTooltipBg: 'rgba(34, 26, 22, 0.96)',
-		chartTooltipBorder: '#463b35'
+		chartText: '#f2f0ee', // --color-neutral-100
+		chartTextMuted: '#e4e1dd', // --color-neutral-200
+		chartAxis: '#938980', // --color-neutral-400
+		chartGrid: '#2c302f', // matches border
+		chartTooltipBg: 'rgba(26, 30, 29, 0.96)', // matches card
+		chartTooltipBorder: '#363a39'
 	}
 } as const;
 
@@ -236,7 +237,7 @@ export function getChartEmphasisShadow(isDark: boolean): string {
 
 export function getMarkerBorderColor(isDark: boolean): string {
 	// Thin ring around map markers / scatter dots — matches surface color.
-	return isDark ? 'rgba(34, 26, 22, 0.65)' : 'rgba(253, 253, 252, 0.7)';
+	return isDark ? 'rgba(26, 30, 29, 0.65)' : 'rgba(253, 253, 252, 0.7)';
 }
 
 export function getMarkerTextShadow(isDark: boolean): string {
@@ -282,8 +283,8 @@ export function legendTextStyle(isDark: boolean) {
  */
 export function getHeatmapRange(isDark: boolean): [string, string] {
 	return isDark
-		? ['#463b35' /* neutral-700 */, '#4ab5ae' /* primary-400 */]
-		: ['#f2f0ee' /* neutral-100 */, '#196b69' /* primary-700 */];
+		? ['#363a39' /* dark border-strong — distinct from card bg */, '#31c48e' /* primary-400 */]
+		: ['#f2f0ee' /* neutral-100 */, '#00704d' /* primary-700 — Uni-Grün AA */];
 }
 
 /* =============================================================================
