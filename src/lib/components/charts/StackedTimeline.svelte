@@ -16,7 +16,7 @@
 	import { cn } from '$lib/utils/cn';
 	import { CHART_COLORS, axisLabelStyle, legendTextStyle } from '$lib/styles';
 	import { theme } from '$lib/stores/data';
-	import { buildTitle, buildGrid, buildDataZoom, stackedFormatter } from './utils';
+	import { buildTitle, buildGrid, buildDataZoom, buildAxisName, stackedFormatter } from './utils';
 
 	echarts.use([
 		EBarChart,
@@ -88,7 +88,9 @@
 		grid: buildGrid({
 			// Top = title (~24px) + legend (~28px) + breathing room.
 			// Bottom = rotated year labels (~32px) + slider (~38px) when shown.
-			left: '3%',
+			// Left budgets ~50px so the rotated y-axis name + tick labels
+			// fit without colliding with the legend at the top.
+			left: 56,
 			right: '4%',
 			bottom: needsZoom ? 78 : 36,
 			top: title ? 64 : 36
@@ -108,9 +110,8 @@
 		},
 		yAxis: {
 			type: 'value',
-			name: 'Count',
-			axisLabel: { ...labelStyle },
-			nameTextStyle: { ...labelStyle }
+			...buildAxisName('Count', 'y', { baseStyle: labelStyle }),
+			axisLabel: { ...labelStyle }
 		},
 		dataZoom: needsZoom
 			? buildDataZoom({

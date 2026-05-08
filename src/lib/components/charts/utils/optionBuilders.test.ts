@@ -7,7 +7,8 @@ import {
 	buildTooltip,
 	buildLegend,
 	buildVisualMap,
-	buildAxisLabel
+	buildAxisLabel,
+	buildAxisName
 } from './optionBuilders';
 
 describe('buildTitle', () => {
@@ -239,5 +240,43 @@ describe('buildAxisLabel', () => {
 		expect(r).toEqual({ rotate: 35 });
 		expect(r).not.toHaveProperty('fontSize');
 		expect(r).not.toHaveProperty('width');
+	});
+});
+
+describe('buildAxisName', () => {
+	it('defaults to a y-axis: middle anchor, rotated 90°, sane gap', () => {
+		expect(buildAxisName('Count')).toEqual({
+			name: 'Count',
+			nameLocation: 'middle',
+			nameRotate: 90,
+			nameGap: 36,
+			nameTextStyle: {}
+		});
+	});
+
+	it('switches defaults for an x-axis (no rotation, smaller gap)', () => {
+		expect(buildAxisName('Year', 'x')).toEqual({
+			name: 'Year',
+			nameLocation: 'middle',
+			nameRotate: 0,
+			nameGap: 30,
+			nameTextStyle: {}
+		});
+	});
+
+	it('spreads baseStyle into nameTextStyle', () => {
+		expect(
+			buildAxisName('Count', 'y', { baseStyle: { color: '#333', fontSize: 11 } })
+		).toMatchObject({
+			nameTextStyle: { color: '#333', fontSize: 11 }
+		});
+	});
+
+	it('honours rotate / gap / location overrides', () => {
+		expect(buildAxisName('Count', 'y', { rotate: 0, gap: 12, location: 'end' })).toMatchObject({
+			nameLocation: 'end',
+			nameRotate: 0,
+			nameGap: 12
+		});
 	});
 });

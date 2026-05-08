@@ -23,7 +23,7 @@
 	import { cn } from '$lib/utils/cn';
 	import { CHART_COLORS, axisLabelStyle } from '$lib/styles';
 	import { theme } from '$lib/stores/data';
-	import { buildTitle, buildGrid } from './utils';
+	import { buildTitle, buildGrid, buildAxisName } from './utils';
 	import type { BoxPlotGroup } from '$lib/types';
 
 	echarts.use([
@@ -107,7 +107,8 @@
 			trigger: 'item'
 		},
 		grid: buildGrid({
-			left: '3%',
+			// Budget enough left margin for the rotated y-axis name + tick labels.
+			left: 56,
 			right: '4%',
 			top: title ? '15%' : '6%',
 			bottom: '10%'
@@ -126,9 +127,8 @@
 		},
 		yAxis: {
 			type: 'value',
-			name: valueAxisLabel,
+			...buildAxisName(valueAxisLabel, 'y', { baseStyle: labelStyle }),
 			axisLabel: { ...labelStyle },
-			nameTextStyle: { ...labelStyle },
 			splitLine: { show: true }
 		},
 		series: [

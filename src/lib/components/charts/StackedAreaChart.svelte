@@ -31,6 +31,7 @@
 		buildTooltip,
 		buildLegend,
 		buildAxisLabel,
+		buildAxisName,
 		stackedFormatter
 	} from './utils';
 	import type { StackedAreaDataPoint } from '$lib/types';
@@ -94,7 +95,9 @@
 		grid: buildGrid({
 			// Top = title (~24px) + legend (~28px) + breathing room.
 			// Bottom = rotated year labels (~32px) + slider (~38px).
-			left: '3%',
+			// Left budgets ~50px so the rotated y-axis name + tick labels
+			// fit without colliding with the legend at the top.
+			left: 56,
 			right: '4%',
 			bottom: 78,
 			top: title ? 64 : 36
@@ -114,9 +117,8 @@
 		},
 		yAxis: {
 			type: 'value',
-			name: 'Count',
-			axisLabel: buildAxisLabel({ baseStyle: labelStyle }),
-			nameTextStyle: { ...labelStyle }
+			...buildAxisName('Count', 'y', { baseStyle: labelStyle }),
+			axisLabel: buildAxisLabel({ baseStyle: labelStyle })
 		},
 		dataZoom: buildDataZoom({
 			start: 0,

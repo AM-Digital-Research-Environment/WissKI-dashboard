@@ -21,13 +21,15 @@ export {
 	buildLegend,
 	buildVisualMap,
 	buildAxisLabel,
+	buildAxisName,
 	type TitleOptions,
 	type GridOptions,
 	type DataZoomOptions,
 	type TooltipOptions,
 	type LegendOptions,
 	type VisualMapOptions,
-	type AxisLabelOptions
+	type AxisLabelOptions,
+	type AxisNameOptions
 } from './optionBuilders';
 
 // Tooltip formatters

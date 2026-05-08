@@ -14,7 +14,7 @@
 	import { cn } from '$lib/utils/cn';
 	import { CHART_COLORS, axisLabelStyle } from '$lib/styles';
 	import { theme } from '$lib/stores/data';
-	import { buildTitle, buildGrid, buildDataZoom, itemCountFormatter } from './utils';
+	import { buildTitle, buildGrid, buildDataZoom, buildAxisName, itemCountFormatter } from './utils';
 
 	echarts.use([
 		EBarChart,
@@ -47,7 +47,9 @@
 			formatter: itemCountFormatter
 		},
 		grid: buildGrid({
-			left: '3%',
+			// Left budgets ~50px so the rotated y-axis name + tick labels
+			// fit cleanly on narrow viewports.
+			left: 56,
 			right: '4%',
 			// Match StackedTimeline: leave room for the DataZoom slider plus
 			// the rotated year labels when the slider is active.
@@ -70,9 +72,8 @@
 		},
 		yAxis: {
 			type: 'value',
-			name: 'Count',
-			axisLabel: { ...labelStyle },
-			nameTextStyle: { ...labelStyle }
+			...buildAxisName('Count', 'y', { baseStyle: labelStyle }),
+			axisLabel: { ...labelStyle }
 		},
 		series: [
 			{

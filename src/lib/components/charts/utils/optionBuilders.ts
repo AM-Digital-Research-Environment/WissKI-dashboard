@@ -116,6 +116,20 @@ export interface AxisLabelOptions {
 	baseStyle?: Record<string, unknown>;
 }
 
+export interface AxisNameOptions {
+	/** Anchor along the axis. Defaults to `'middle'` so the name sits centered
+	 *  along the axis line — out of the way of legends parked at top/bottom. */
+	location?: 'start' | 'middle' | 'end';
+	/** Rotation in degrees. Defaults to `90` for y-axis (reads bottom-to-top,
+	 *  the standard scientific-chart convention). Pass `0` for an x-axis name. */
+	rotate?: number;
+	/** Pixel gap between the axis line and the name. Defaults to `36` for y-axis
+	 *  (room for 3-digit tick labels) and `30` for x-axis. */
+	gap?: number;
+	/** Base style to spread onto `nameTextStyle` (typically the theme `labelStyle`). */
+	baseStyle?: Record<string, unknown>;
+}
+
 /* =============================================================================
    BUILDER FUNCTIONS
    ============================================================================= */
@@ -346,4 +360,44 @@ export function buildAxisLabel(options: AxisLabelOptions = {}): Record<string, u
 	if (hideOverlap !== undefined) label.hideOverlap = hideOverlap;
 	if (margin !== undefined) label.margin = margin;
 	return label;
+}
+
+/**
+ * Build a cartesian-axis `name` config (a partial axis object to be spread
+ * onto an `xAxis` / `yAxis`). Returns `name`, `nameLocation`, `nameRotate`,
+ * `nameGap`, and `nameTextStyle`.
+ *
+ * **Why this exists.** The ECharts default `nameLocation: 'end'` parks a
+ * y-axis name at the top of the axis — the same coordinates as a top-aligned
+ * legend, which causes legend items to render *over* the axis name (visible
+ * as e.g. "Count" overlapping with "Violence" on the StackedAreaChart's
+ * subjectTrends panel). Anchoring the name in the middle of the axis with a
+ * 90° rotation is the standard scientific-chart convention and dodges the
+ * collision regardless of where the legend sits.
+ *
+ * Callers using this on a y-axis should usually budget `~50px` for `grid.left`
+ * (rather than the global `'3%'` default) so the rotated name + tick labels
+ * don't get clipped on narrow viewports.
+ */
+export function buildAxisName(
+	name: string,
+	axis: 'x' | 'y' = 'y',
+	options: AxisNameOptions = {}
+): {
+	name: string;
+	nameLocation: 'start' | 'middle' | 'end';
+	nameRotate: number;
+	nameGap: number;
+	nameTextStyle: Record<string, unknown>;
+} {
+	const { location = 'middle', baseStyle = {} } = options;
+	const rotate = options.rotate ?? (axis === 'y' ? 90 : 0);
+	const gap = options.gap ?? (axis === 'y' ? 36 : 30);
+	return {
+		name,
+		nameLocation: location,
+		nameRotate: rotate,
+		nameGap: gap,
+		nameTextStyle: { ...baseStyle }
+	};
 }
