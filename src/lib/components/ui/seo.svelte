@@ -35,7 +35,20 @@
 	const ORG_NAME = 'Africa Multiple Cluster of Excellence';
 	const ORG_ALT_NAME = 'Africa Multiple';
 	const ORG_URL = 'https://www.africamultiple.uni-bayreuth.de/';
-	const ORG_LOGO = `${SITE_URL}/logos/africamultiple.webp`;
+	// PNG (not WebP) — Google's logo guidelines and several knowledge-graph
+	// crawlers still treat PNG/JPG/GIF as the safe set for the
+	// `Organization.logo` ImageObject.
+	const ORG_LOGO = `${SITE_URL}/logos/africamultiple.png`;
+	const ORG_LOGO_WIDTH = 1200;
+	const ORG_LOGO_HEIGHT = 295;
+	// Default OG share image — a 1200x630 PNG (the canonical OG aspect ratio)
+	// with the cluster wordmark centered on white. Replaces the panoramic
+	// 1200x295 wordmark which platforms either letterboxed or skipped in
+	// favour of an unrelated image scraped from the page body.
+	const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;
+	const DEFAULT_OG_IMAGE_WIDTH = 1200;
+	const DEFAULT_OG_IMAGE_HEIGHT = 630;
+	const DEFAULT_OG_IMAGE_ALT = 'Africa Multiple Cluster of Excellence — AMIRA';
 	// Stable `@id` URIs so cross-references (`isPartOf`, `publisher`, `about`)
 	// resolve inside the same `@graph`.
 	const WEBSITE_ID = `${SITE_URL}/#website`;
@@ -84,7 +97,10 @@
 		return SITE_URL + (path === '/' ? '/' : path) + search;
 	});
 
-	let imageUrl = $derived(image ?? `${SITE_URL}${base}/logos/africamultiple.webp`);
+	let imageUrl = $derived(image ?? DEFAULT_OG_IMAGE);
+	// When a page passes its own `image` prop we don't know its dimensions —
+	// only emit width/height/type meta when serving the default OG card.
+	let isDefaultImage = $derived(imageUrl === DEFAULT_OG_IMAGE);
 	let mergedKeywords = $derived(Array.from(new Set([...keywords, ...DEFAULT_KEYWORDS])));
 
 	// Schema.org type for the per-page node. WebPage is the right default —
@@ -120,7 +136,10 @@
 		logo: {
 			'@type': 'ImageObject',
 			url: ORG_LOGO,
-			contentUrl: ORG_LOGO
+			contentUrl: ORG_LOGO,
+			width: ORG_LOGO_WIDTH,
+			height: ORG_LOGO_HEIGHT,
+			caption: ORG_NAME
 		},
 		sameAs: ['https://www.africamultiple.uni-bayreuth.de/']
 	};
@@ -181,6 +200,13 @@
 	<meta property="og:description" content={description} />
 	<meta property="og:url" content={canonicalUrl} />
 	<meta property="og:image" content={imageUrl} />
+	<meta property="og:image:secure_url" content={imageUrl} />
+	{#if isDefaultImage}
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:width" content={String(DEFAULT_OG_IMAGE_WIDTH)} />
+		<meta property="og:image:height" content={String(DEFAULT_OG_IMAGE_HEIGHT)} />
+		<meta property="og:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
+	{/if}
 	<meta property="og:locale" content="en_US" />
 	{#if publishedTime}
 		<meta property="article:published_time" content={publishedTime} />
@@ -194,6 +220,9 @@
 	<meta name="twitter:title" content={fullTitle} />
 	<meta name="twitter:description" content={description} />
 	<meta name="twitter:image" content={imageUrl} />
+	{#if isDefaultImage}
+		<meta name="twitter:image:alt" content={DEFAULT_OG_IMAGE_ALT} />
+	{/if}
 
 	<!-- Structured Data. Wrapped in `<svelte:element>` so the script source is
 	     bound through Svelte's reactive system, and content is JSON-stringified

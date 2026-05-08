@@ -25,12 +25,15 @@
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="google-site-verification" content="G6UcKXoXKJcLu3NneUY57WfnAK0NFXqEyvLmXFx0OvE" />
 		<!--
-			Favicon link tags ordered for Google Search:
-			Google picks the highest-quality crawlable favicon and recommends >48x48.
-			Lead with a 192x192 PNG so Googlebot doesn't fall back to the 32x32.
-			Includes a `shortcut icon` alias for older crawlers that look for that
-			exact rel value.
-			https://developers.google.com/search/docs/appearance/favicon-in-search
+			Favicon link tags ordered for Google Search.
+			Google picks the highest-quality crawlable favicon and recommends a
+			multiple of 48 (https://developers.google.com/search/docs/appearance/favicon-in-search).
+			192x192 is listed first so Googlebot prefers it over the 48x48
+			fallback. The 48x48 entry is the smallest size Google explicitly
+			recommends; older browser tabs use it before falling back to the
+			higher-resolution PNGs. The deprecated `shortcut icon` alias was
+			removed — modern crawlers ignore it and it duplicated the 192x192
+			signal.
 		-->
 		<link
 			rel="icon"
@@ -44,14 +47,103 @@
 			sizes="512x512"
 			href="%sveltekit.assets%/icons/icon-512x512.png"
 		/>
-		<link rel="icon" type="image/png" sizes="32x32" href="%sveltekit.assets%/favicon.png" />
-		<link rel="shortcut icon" type="image/png" href="%sveltekit.assets%/icons/icon-192x192.png" />
+		<link rel="icon" type="image/png" sizes="48x48" href="%sveltekit.assets%/favicon.png" />
 		<link
 			rel="apple-touch-icon"
 			sizes="180x180"
 			href="%sveltekit.assets%/icons/apple-touch-icon.png"
 		/>
 		<link rel="manifest" href="%sveltekit.assets%/manifest.json" />
+
+		<!--
+			Open Graph + Twitter card defaults.
+
+			Why these live in app.html instead of only the SEO component:
+			the site runs with `ssr = false` (see src/routes/+layout.ts), so
+			pre-rendering produces a shell HTML with no `<svelte:head>` output.
+			Non-JS crawlers (Twitter, Slack, LinkedIn, Facebook, Bing's first
+			pass, Google's first pass) only ever see this file. The SEO
+			component still updates these client-side for Google's WRS pass and
+			for in-app navigation; crawlers prefer the first occurrence so
+			these static defaults remain authoritative for the homepage.
+
+			Absolute URLs are required by the OG spec.
+		-->
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Africa Multiple Interactive Research Atlas" />
+		<meta property="og:title" content="Africa Multiple Interactive Research Atlas" />
+		<meta
+			property="og:description"
+			content="Research metadata from the Africa Multiple Cluster of Excellence — an international research consortium at the University of Bayreuth linking partner centres across Africa, Brazil, and Germany."
+		/>
+		<meta property="og:url" content="https://amira.africamultiple.uni-bayreuth.de/" />
+		<meta property="og:image" content="https://amira.africamultiple.uni-bayreuth.de/og-image.png" />
+		<meta
+			property="og:image:secure_url"
+			content="https://amira.africamultiple.uni-bayreuth.de/og-image.png"
+		/>
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Africa Multiple Cluster of Excellence — AMIRA" />
+		<meta property="og:locale" content="en_US" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="Africa Multiple Interactive Research Atlas" />
+		<meta
+			name="twitter:description"
+			content="Research metadata from the Africa Multiple Cluster of Excellence — an international research consortium at the University of Bayreuth linking partner centres across Africa, Brazil, and Germany."
+		/>
+		<meta
+			name="twitter:image"
+			content="https://amira.africamultiple.uni-bayreuth.de/og-image.png"
+		/>
+		<meta name="twitter:image:alt" content="Africa Multiple Cluster of Excellence — AMIRA" />
+
+		<!--
+			Static JSON-LD: WebSite + Organization with crawlable logo. Mirrors
+			the SEO component's nodes so the brand entity is visible to every
+			crawler without waiting for JS to execute. Helps Google associate
+			the favicon and search-result image with the cluster rather than
+			inheriting them from the parent uni-bayreuth.de Knowledge Graph
+			entity.
+		-->
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@graph": [
+					{
+						"@type": "WebSite",
+						"@id": "https://amira.africamultiple.uni-bayreuth.de/#website",
+						"name": "Africa Multiple Interactive Research Atlas",
+						"alternateName": ["AMIRA", "Africa Multiple Atlas"],
+						"url": "https://amira.africamultiple.uni-bayreuth.de/",
+						"description": "Research metadata from the Africa Multiple Cluster of Excellence — an international research consortium at the University of Bayreuth linking partner centres across Africa, Brazil, and Germany.",
+						"inLanguage": "en",
+						"publisher": {
+							"@id": "https://amira.africamultiple.uni-bayreuth.de/#organization"
+						}
+					},
+					{
+						"@type": "Organization",
+						"@id": "https://amira.africamultiple.uni-bayreuth.de/#organization",
+						"name": "Africa Multiple Cluster of Excellence",
+						"alternateName": "Africa Multiple",
+						"url": "https://www.africamultiple.uni-bayreuth.de/",
+						"logo": {
+							"@type": "ImageObject",
+							"url": "https://amira.africamultiple.uni-bayreuth.de/logos/africamultiple.png",
+							"contentUrl": "https://amira.africamultiple.uni-bayreuth.de/logos/africamultiple.png",
+							"width": 1200,
+							"height": 295,
+							"caption": "Africa Multiple Cluster of Excellence"
+						},
+						"sameAs": ["https://www.africamultiple.uni-bayreuth.de/"]
+					}
+				]
+			}
+		</script>
+
 		%sveltekit.head%
 	</head>
 	<body
