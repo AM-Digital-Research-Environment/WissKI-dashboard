@@ -29,7 +29,19 @@
 	let initRaf: number | null = null;
 	let resizeObserver: ResizeObserver | null = null;
 	let resizeTimeout: ReturnType<typeof setTimeout> | null = null;
+	let updateTimeout: ReturnType<typeof setTimeout> | null = null;
 	const chartRegistry = getChartRegistry();
+
+	// Stable color per word — echarts-wordcloud is recomputed on every
+	// data/maxWords change, and re-randomising colours each pass made
+	// surviving words visibly flicker as the slider was dragged.
+	function colorFor(name: string) {
+		let hash = 0;
+		for (let i = 0; i < name.length; i++) {
+			hash = (hash * 31 + name.charCodeAt(i)) | 0;
+		}
+		return CHART_COLORS[Math.abs(hash) % CHART_COLORS.length];
+	}
 
 	function getOption() {
 		const slicedData = data.slice(0, maxWords);
@@ -98,8 +110,7 @@
 					shrinkToFit: true,
 					textStyle: {
 						fontFamily: FONT_FAMILY.sans,
-						fontWeight: 'bold',
-						color: () => CHART_COLORS[Math.floor(Math.random() * CHART_COLORS.length)]
+						fontWeight: 'bold'
 					},
 					emphasis: {
 						textStyle: {
@@ -111,7 +122,7 @@
 						name: d.name,
 						value: d.value,
 						textStyle: {
-							color: CHART_COLORS[Math.floor(Math.random() * CHART_COLORS.length)]
+							color: colorFor(d.name)
 						}
 					}))
 				}
@@ -157,14 +168,28 @@
 		resizeObserver.observe(chartContainer);
 	}
 
+	function renderNow() {
+		if (!chartInstance) return;
+		applyTheme();
+		// Wipe the canvas before re-laying out. echarts-wordcloud chunks its
+		// placement via setTimeout(0); without clear(), a previous chain can
+		// keep painting while the new one starts, leaving stale words behind
+		// the new layout.
+		chartInstance.clear();
+		chartInstance.setOption(getOption(), true);
+	}
+
 	$effect(() => {
 		$theme;
 		data;
 		maxWords;
-		if (chartInstance) {
-			applyTheme();
-			chartInstance.setOption(getOption(), true);
-		}
+		if (!chartInstance) return;
+		// Debounce: dragging the range slider fires input events at ~60Hz.
+		// Each layout pass does collision detection over every word, so
+		// without coalescing, several layouts overlap on the canvas and the
+		// words pile on top of each other.
+		if (updateTimeout) clearTimeout(updateTimeout);
+		updateTimeout = setTimeout(renderNow, 120);
 	});
 
 	onMount(() => {
@@ -184,6 +209,10 @@
 		if (resizeTimeout) {
 			clearTimeout(resizeTimeout);
 			resizeTimeout = null;
+		}
+		if (updateTimeout) {
+			clearTimeout(updateTimeout);
+			updateTimeout = null;
 		}
 		resizeObserver?.disconnect();
 		resizeObserver = null;
