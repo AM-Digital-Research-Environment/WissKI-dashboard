@@ -17,7 +17,7 @@ import { join } from 'node:path';
 
 export const prerender = true;
 
-const SITE = 'https://am-digital-research-environment.github.io/amira';
+const SITE = 'https://amira.africamultiple.uni-bayreuth.de';
 
 interface Route {
 	path: string;

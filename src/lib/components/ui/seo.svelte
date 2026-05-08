@@ -10,10 +10,10 @@
 	// https://developers.google.com/search/docs/appearance/site-names
 	const SITE_NAME = 'Africa Multiple Interactive Research Atlas';
 	const SITE_ALTERNATE_NAMES = ['AMIRA', 'Africa Multiple Atlas'];
-	// SITE_URL already includes the base path (/amira), so when we build the
-	// canonical URL we strip the same base from $page.url.pathname to avoid
-	// duplicating it (e.g. /amira/amira/people).
-	const SITE_URL = 'https://am-digital-research-environment.github.io/amira';
+	// Custom domain at the apex — `paths.base` is empty, so canonical URLs are
+	// just SITE_URL + the route path. The `if (base && …)` strip below is a
+	// defensive no-op kept in case BASE_PATH is ever re-introduced.
+	const SITE_URL = 'https://amira.africamultiple.uni-bayreuth.de';
 	const DEFAULT_DESCRIPTION =
 		'Research metadata from the Africa Multiple Cluster of Excellence — an international research consortium at the University of Bayreuth linking partner centres across Africa, Brazil, and Germany.';
 	// Baseline keywords applied to every page, augmented per route by the

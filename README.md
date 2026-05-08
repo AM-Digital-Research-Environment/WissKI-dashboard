@@ -2,7 +2,7 @@
 
 Interactive research atlas for the [Africa Multiple Cluster of Excellence](https://www.africamultiple.uni-bayreuth.de/), exposing the cluster's WissKI/MongoDB archive as a browsable, analysable, visually-rich web app. Built with SvelteKit 5, ECharts 6, MapLibre GL 5, and Tailwind CSS 4 — shipped as an installable static PWA to GitHub Pages.
 
-**Live:** <https://am-digital-research-environment.github.io/amira/>
+**Live:** <https://amira.africamultiple.uni-bayreuth.de/>
 
 ## Scope
 
@@ -408,9 +408,10 @@ Regenerate everything after a metadata refresh:
 
 Deploys automatically to GitHub Pages on push to `main`:
 
-- **Workflow:** [.github/workflows/deploy.yml](.github/workflows/deploy.yml) — `npm ci` → `npm run build` with `BASE_PATH=/${{ github.event.repository.name }}` → `actions/upload-pages-artifact` → `actions/deploy-pages`
+- **Workflow:** [.github/workflows/deploy.yml](.github/workflows/deploy.yml) — `npm ci` → `npm run build` → `actions/upload-pages-artifact` → `actions/deploy-pages`
 - **Adapter:** [`@sveltejs/adapter-static`](https://svelte.dev/docs/kit/adapter-static) pre-renders every route into `build/`
-- **Live URL:** <https://am-digital-research-environment.github.io/amira/>
+- **Custom domain:** `static/CNAME` pins the site to `amira.africamultiple.uni-bayreuth.de`; `paths.base` stays empty so all asset URLs resolve at the apex
+- **Live URL:** <https://amira.africamultiple.uni-bayreuth.de/>
 - **CI:** [.github/workflows/ci.yml](.github/workflows/ci.yml) runs `npm run format:check`, `npm run lint`, `npm run check`, and `npm run build` on every push and PR
 
 ## Credits

@@ -37,8 +37,6 @@ jobs:
         uses: actions/configure-pages@v6
 
       - name: Build
-        env:
-          BASE_PATH: '/${{ github.event.repository.name }}'
         run: npm run build
 
       - name: Upload artifact

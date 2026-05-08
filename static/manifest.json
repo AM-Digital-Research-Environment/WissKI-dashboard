@@ -2,7 +2,7 @@
 	"name": "Africa Multiple Interactive Research Atlas",
 	"short_name": "AMIRA",
 	"description": "Browse and visualize research metadata from the Africa Multiple Cluster of Excellence and its Africa Multiple Research Centres",
-	"id": "/amira/",
+	"id": "/",
 	"start_url": "./",
 	"scope": "./",
 	"display": "standalone",
