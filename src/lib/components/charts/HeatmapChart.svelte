@@ -56,7 +56,8 @@
 
 	// Narrow viewports can't fit the vertical visualMap on the right without
 	// the legend overlapping the cells. Watch the container and flip the
-	// legend to a horizontal strip below the chart when it gets tight.
+	// legend to a horizontal strip *above* the chart when it gets tight —
+	// putting it below the plot collides with the rotated x-axis labels.
 	let containerEl: HTMLDivElement | null = $state(null);
 	let isNarrow = $state(false);
 
@@ -86,11 +87,14 @@
 		grid: buildGrid({
 			left: '3%',
 			right: isNarrow ? '3%' : '8%',
-			top: title ? '12%' : '3%',
-			// `containLabel: true` (default in buildGrid) already reserves space
-			// for the rotated x-axis labels. On narrow viewports we move the
-			// visualMap to the bottom so reserve extra room there.
-			bottom: isNarrow ? '18%' : '3%'
+			// On narrow viewports the visualMap is anchored at the top (out of
+			// the way of the rotated x-axis labels), so reserve a fixed pixel
+			// budget — the visualMap height (~62px: bar + handles + min/max
+			// labels) doesn't scale with chart height, so a percentage clips
+			// it on shorter charts. `outerBoundsMode: 'auto'` then expands the
+			// bottom to fit the rotated x-axis labels.
+			top: isNarrow ? 75 : title ? '12%' : '3%',
+			bottom: '3%'
 		}),
 		xAxis: {
 			type: 'category',
@@ -120,6 +124,7 @@
 					max: maxValue,
 					colors: effectiveColorRange,
 					orient: 'horizontal',
+					position: 'top',
 					offset: 4,
 					itemWidth: 14,
 					itemHeight: 110,
