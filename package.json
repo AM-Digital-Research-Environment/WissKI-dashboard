@@ -31,7 +31,7 @@
 	"dependencies": {
 		"@lucide/svelte": "^1.16.0",
 		"clsx": "^2.1.1",
-		"echarts": "^6.0.0",
+		"echarts": "^6.1.0",
 		"echarts-wordcloud": "^2.1.0",
 		"maplibre-gl": "^5.24.0",
 		"tailwind-merge": "^3.6.0"
