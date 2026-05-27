@@ -30,6 +30,13 @@
 
 	let citationTail = $derived(formatCitationTail(publication));
 
+	// Source data occasionally contains the same keyword twice on a single
+	// publication (seen on some book entries). Dedupe so the keyed {#each}
+	// below doesn't throw `each_key_duplicate` and we don't render dup chips.
+	let uniqueKeywords = $derived(
+		publication.keywords ? Array.from(new Set(publication.keywords)) : []
+	);
+
 	// Long abstracts collapse to a 3-line snippet by default and expand on
 	// click. The threshold is intentionally generous (450 chars ≈ 3 lines at
 	// our type scale) so anything shorter shows in full without UI chrome.
@@ -117,9 +124,9 @@
 		{/if}
 
 		<!-- Keywords -->
-		{#if publication.keywords && publication.keywords.length > 0}
+		{#if uniqueKeywords.length > 0}
 			<div class="flex flex-wrap gap-1.5">
-				{#each publication.keywords as kw (kw)}
+				{#each uniqueKeywords as kw (kw)}
 					{#if onKeywordClick}
 						<button
 							type="button"
