@@ -68,10 +68,16 @@ EP3_TYPE_MAP = {
     "book": "book",
     "book_section": "chapter",
     "conference_item": "conference",
-    "thesis": "thesis",
+    # ERef and EPub both expose only ``type=thesis`` with no sub-type element,
+    # and every cluster thesis to date is a doctoral dissertation (ERef shows
+    # "Publikationsform: Dissertation", EPub shows "Dissertation (Ohne
+    # Angabe)"). We surface that as ``doctoral_thesis``; a future masters
+    # thesis would have to be re-classified manually since EP3 XML doesn't
+    # carry the distinction.
+    "thesis": "doctoral_thesis",
     "working_paper": "working_paper",
-    "periodical_part": "periodical",
-    "review": "review",
+    "periodical_part": "journal_issue",
+    "review": "book_review",
     "online": "online",
     "monograph": "report",
     "patent": "patent",
@@ -87,8 +93,8 @@ BIBTEX_TYPE_MAP = {
     "inbook": "chapter",
     "inproceedings": "conference",
     "proceedings": "conference",
-    "phdthesis": "thesis",
-    "mastersthesis": "thesis",
+    "phdthesis": "doctoral_thesis",
+    "mastersthesis": "masters_thesis",
     "misc": "other",
     "techreport": "report",
     "unpublished": "other",
@@ -923,7 +929,7 @@ def find_duplicate_index(
             # parent / sibling chapter sharing a book DOI. Don't merge.
             continue
         if cand_isbn and normalize_isbn(p.isbn) == cand_isbn:
-            if cand_type == p.type and cand_type in {"book", "periodical"}:
+            if cand_type == p.type and cand_type in {"book", "journal_issue"}:
                 return i
         if (
             cand_title

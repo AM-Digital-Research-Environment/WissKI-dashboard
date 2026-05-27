@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-06T05:46:04.395227+00:00",
+  "generated_at": "2026-05-27T07:31:04.719650+00:00",
   "sources": [
     {
       "name": "eref",
@@ -7,7 +7,7 @@
       "bibtex_url": "https://eref.uni-bayreuth.de/cgi/exportview/projekt/EXC_2052=3A_Africa_Multiple=3A_Reconfiguring_African_Studies/BibTeX/EXC_2052=3A_Africa_Multiple=3A_Reconfiguring_African_Studies.bib",
       "rss_url": "https://eref.uni-bayreuth.de/cgi/exportview/projekt/EXC_2052=3A_Africa_Multiple=3A_Reconfiguring_African_Studies/RSS2/EXC_2052=3A_Africa_Multiple=3A_Reconfiguring_African_Studies.xml",
       "view_url": "https://eref.uni-bayreuth.de/view/projekt/EXC_2052=3A_Africa_Multiple=3A_Reconfiguring_African_Studies.html",
-      "fetched_count": 127
+      "fetched_count": 157
     },
     {
       "name": "epub",
@@ -15,37 +15,67 @@
       "bibtex_url": "https://epub.uni-bayreuth.de/cgi/exportview/divisions/340050/BibTeX/340050.bib",
       "rss_url": "https://epub.uni-bayreuth.de/cgi/exportview/divisions/340050/RSS2/340050.xml",
       "view_url": "https://epub.uni-bayreuth.de/view/divisions/340050.html",
-      "fetched_count": 50
+      "fetched_count": 52
     }
   ],
   "stats": {
-    "total": 146,
+    "total": 177,
     "by_type": {
-      "article": 51,
-      "chapter": 19,
-      "periodical": 3,
-      "book": 9,
+      "article": 77,
+      "chapter": 23,
+      "journal_issue": 3,
+      "book": 10,
       "working_paper": 30,
       "conference": 26,
-      "thesis": 4,
+      "doctoral_thesis": 4,
       "other": 1,
-      "review": 2,
+      "book_review": 2,
       "online": 1
     },
     "by_source": {
-      "eref": 127,
-      "epub": 50
+      "eref": 157,
+      "epub": 52
     },
     "by_source_only": {
-      "eref": 96,
-      "epub": 19,
-      "both": 31
+      "eref": 125,
+      "epub": 20,
+      "both": 32
     },
-    "cross_listed": 31,
-    "matched_contributors": 170,
-    "total_contributors": 325
+    "cross_listed": 32,
+    "matched_contributors": 205,
+    "total_contributors": 393
   },
   "publications": [
+    {
+      "id": "eref-95983",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "European Migration Control and the Migrant Smuggling Enterprise in West Africa : Using the Concept of Biometricycle to Explain the \"Corporate Smuggling\" Dimensions",
+      "year": 2026,
+      "quarter": 1,
+      "deposited_at": "2026-02-04T08:41:50+00:00",
+      "authors": [
+        {
+          "raw": "Iwuoha, Victor",
+          "normalized": "Iwuoha, Victor",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "journal": "Society",
+      "doi": "10.1007/s12115-026-01169-1",
+      "issn": "1936-4725",
+      "abstract": "This article discusses the European migration control system and its connection to the facilitation of migrant smuggling in West Africa. Using Nigeria’s experience, the paper explores the key developments that contributed to the expansion of the migrant smuggling business, namely, the European biometric ID systems, the digitalization of external borders, and intensive border securitization. These key measures are linked to the emergence and deepening of the operations of the new identity and document fraud cartel in Nigeria, a sub-component of the smuggling business model. I delineate a new conceptual framework, “biometric border paradox,” to depict the contradiction of the European migration control system in its external borders in Africa. The problem is linked to the new form of biometric ID and travel document fraud in corporate (government) agencies: the “corporate smugglers.” I coin two key concepts to describe this modality: “biometricycle” and “biometricyclists,” which refer to a tricycle-smuggling network that operates through the biometric ID system, involving three groups: local identity-faking entrepreneurs, IT experts, and corporate officials within the government’s biometric ID sector and immigration service. Vulnerable migrants who do not comply with the new biometric ID systems fall victim to biometric ID and travel document fraud, which exposes them to certain types of identity conflicts, state criminalization, and loss of social integration.",
+      "language": "eng",
+      "url": "https://doi.org/10.1007/s12115-026-01169-1",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/95983/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/95983/BibTeX/ubt_eref-eprint-95983.bib",
+      "bibtex_raw": "@article{ubt_eref95983,\n author = {Iwuoha, Victor},\n issn = {1936-4725},\n journal = {Society},\n month = {Januar},\n title = {European Migration Control and the Migrant Smuggling Enterprise in West Africa : Using the Concept of Biometricycle to Explain the \"Corporate Smuggling\" Dimensions},\n url = {https://doi.org/10.1007/s12115-026-01169-1},\n year = {2026}\n}\n"
+    },
     {
       "id": "eref-96022",
       "source": "eref",
@@ -147,6 +177,103 @@
       "bibtex_raw": "@article{ubt_eref96022,\n author = {Daley, Patricia and Ndlovu-Gatsheni, Sabelo J. and Kimari, Wangui and Obeng-Odoom, Franklin and Tamale, Sylvia and Bauriedl, Sybille and Bawa, Sylvia and Carstensen-Egwuom, Inken and Adeniyi-Ogunyankin, Grace and Al-Bulushi, Yousuf and Ouma, Stefan},\n issn = {1467-8330},\n journal = {Antipode},\n keyword = {decoloniality; Africa; commons; decolonial Marxism; Afro-feminism; de?ant\nscholarship},\n number = {2},\n title = {African Decolonial Theory : A Conversation},\n url = {https://eref.uni-bayreuth.de/id/eprint/96022/},\n volume = {58},\n year = {2026}\n}\n"
     },
     {
+      "id": "eref-96977",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "The ambiguities of rapid enlargement in regional organisations and prospects for East African regional integration",
+      "year": 2026,
+      "quarter": 2,
+      "deposited_at": "2026-05-07T05:12:20+00:00",
+      "authors": [
+        {
+          "raw": "Stroh, Alexander",
+          "normalized": "Stroh, Alexander",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "journal": "The Round Table : The Commonwealth Journal of International Affairs and Policy Studies",
+      "volume": "115",
+      "issue": "2",
+      "pages": "241–259",
+      "doi": "10.1080/00358533.2026.2641039",
+      "issn": "1474-029X",
+      "keywords": [
+        "Regional integration",
+        "East Africa",
+        "enlargement",
+        "deepening",
+        "institutional reform"
+      ],
+      "abstract": "This article explores the implications of the East African Community’s rapid enlargement from three to eight members – including conflict-affected countries. By assessing institutional and political consequences of the EAC’s widening, considering experiences from the European Union and ASEAN, the study argues that enlargement does not inherently impede deepening but requires strategic institutional adaptations. The EAC stands at the crossroads between its federalist ambitions and an even more intergovernmentalist model. The outcome will hinge on the management of security issues and the political willingness to pool sovereignty. Indecision risks leading the community into a widening gap between treaty ambitions and political reality.",
+      "language": "eng",
+      "url": "https://doi.org/10.1080/00358533.2026.2641039",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/96977/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/96977/BibTeX/ubt_eref-eprint-96977.bib",
+      "bibtex_raw": "@article{ubt_eref96977,\n author = {Stroh, Alexander},\n issn = {1474-029X},\n journal = {The Round Table : The Commonwealth Journal of International Affairs and Policy Studies},\n keyword = {Regional integration; East Africa; enlargement; deepening; institutional reform},\n number = {2},\n pages = {241–259},\n title = {The ambiguities of rapid enlargement in regional organisations and prospects for East African regional integration},\n url = {https://www.tandfonline.com/doi/full/10.1080/00358533.2026.2641039},\n volume = {115},\n year = {2026}\n}\n"
+    },
+    {
+      "id": "eref-97114",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "chapter",
+      "raw_type": "book_section",
+      "title": "Border Markets in Africa",
+      "year": 2026,
+      "quarter": 2,
+      "deposited_at": "2026-05-18T03:41:06+00:00",
+      "authors": [
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        },
+        {
+          "raw": "Donko, Kamal",
+          "normalized": "Donko, Kamal",
+          "person_id": "681b582340126ae8675c1c5a",
+          "person_name": "Donko, Kamal"
+        }
+      ],
+      "book_editors": [
+        {
+          "raw": "Walther, Olivier",
+          "normalized": "Walther, Olivier",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Moyo, Inocent",
+          "normalized": "Moyo, Inocent",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Soi, Isabella",
+          "normalized": "Soi, Isabella",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "booktitle": "Routledge Handbook of African Borderlands",
+      "pages": "206–220",
+      "address": "London",
+      "doi": "10.4324/9781003519775",
+      "isbn": "978-1-032-85779-4",
+      "language": "eng",
+      "url": "https://doi.org/10.4324/9781003519775",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/97114/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/97114/BibTeX/ubt_eref-eprint-97114.bib",
+      "bibtex_raw": "@incollection{ubt_eref97114,\n address = {London},\n author = {Doevenspeck, Martin and Donko, Kamal},\n booktitle = {Routledge Handbook of African Borderlands},\n isbn = {978-1-032-85779-4},\n pages = {206–220},\n title = {Border Markets in Africa},\n url = {https://eref.uni-bayreuth.de/id/eprint/97114/},\n year = {2026}\n}\n"
+    },
+    {
       "id": "eref-94917",
       "source": "eref",
       "sources": [
@@ -192,12 +319,123 @@
       "bibtex_raw": "@incollection{ubt_eref94917,\n address = {London ; New York},\n author = {Fendler, Ute},\n booktitle = {Transoceanic and Transmedial Imaginaries in the Indian Ocean},\n isbn = {978-1-032-95550-6},\n publisher = {Routledge},\n title = {\"Ceux qu'on jette à la mer ...\" : Tidalectic Memories of the Ocean},\n url = {https://eref.uni-bayreuth.de/id/eprint/94917/},\n year = {2026}\n}\n"
     },
     {
+      "id": "eref-97008",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "A comparison of observed and perceived seasonal climate regimes in a rural socio-ecological system in the northeastern South Africa",
+      "year": 2026,
+      "quarter": 2,
+      "deposited_at": "2026-05-11T04:07:11+00:00",
+      "authors": [
+        {
+          "raw": "Rusere, Farirai",
+          "normalized": "Rusere, Farirai",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Hounguè, Nina Rholan",
+          "normalized": "Hounguè, Nina Rholan",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Mkuhlani, Siyabusa",
+          "normalized": "Mkuhlani, Siyabusa",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Soropa, Gabriel",
+          "normalized": "Soropa, Gabriel",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Hunter, Lori",
+          "normalized": "Hunter, Lori",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Twine, Wayne",
+          "normalized": "Twine, Wayne",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Samimi, Cyrus",
+          "normalized": "Samimi, Cyrus",
+          "person_id": "66cef3d1dfdd582069547546",
+          "person_name": "Samimi, Cyrus"
+        }
+      ],
+      "journal": "Regional Environmental Change",
+      "volume": "26",
+      "doi": "10.1007/s10113-026-02591-1",
+      "issn": "1436-378X",
+      "keywords": [
+        "Climate change",
+        "Rural socio-ecological system",
+        "Observed and perceived seasonal climate regimes"
+      ],
+      "abstract": "This study investigated perceptions of climate change among residents of 12 villages in Bushbuckridge, Mpumalanga, South Africa, through household surveys and focus group discussions. These perceptions were compared with climatic trends derived from Skukuza meteorological station data (1981–2023), focusing on summer seasonal temperature and rainfall patterns. The analysis of meteorological station data revealed significant increases in seasonal maximum temperatures, a marked decline in the number of wet days, and high interannual variability in total seasonal rainfall. While local perceptions aligned with recorded trends of rising temperatures, delayed onset of the rainy season, and more erratic rainfall patterns, discrepancies emerged regarding total rainfall amounts; participants perceived an overall decline, whereas meteorological data showed no statistically significant long-term trend in seasonal rainfall totals. These findings highlight the value of integrating local knowledge into climate change research. Local perceptions provide critical insights into micro-level climate impacts, such as changes in rainfall frequency and intensity, that may not be evident in observational data. Combining these perspectives with scientific measurements can enhance the design of culturally relevant and effective climate adaptation strategies. This approach fosters stronger community engagement and ensures that policies address both the observed and perceived impacts of climate change, thereby supporting more sustainable and inclusive responses at local and national scales.",
+      "language": "eng",
+      "url": "https://doi.org/10.1007/s10113-026-02591-1",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/97008/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/97008/BibTeX/ubt_eref-eprint-97008.bib",
+      "bibtex_raw": "@article{ubt_eref97008,\n author = {Rusere, Farirai and Hounguè, Nina Rholan and Mkuhlani, Siyabusa and Soropa, Gabriel and Hunter, Lori and Twine, Wayne and Samimi, Cyrus},\n issn = {1436-378X},\n journal = {Regional Environmental Change},\n keyword = {Climate change; Rural socio-ecological system; Observed and perceived seasonal climate regimes},\n title = {A comparison of observed and perceived seasonal climate regimes in a rural socio-ecological system in the northeastern South Africa},\n url = {https://doi.org/10.1007/s10113-026-02591-1},\n volume = {26},\n year = {2026}\n}\n"
+    },
+    {
+      "id": "eref-96011",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "European Biometric Border System, Securitization and (Im)mobilities in West Africa",
+      "year": 2026,
+      "quarter": 1,
+      "deposited_at": "2026-02-06T07:43:38+00:00",
+      "authors": [
+        {
+          "raw": "Iwuoha, Victor",
+          "normalized": "Iwuoha, Victor",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Edgar, Alistair D.",
+          "normalized": "Edgar, Alistair D.",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "journal": "Alternatives : Global, Local, Political",
+      "volume": "51",
+      "issue": "2",
+      "pages": "145–156",
+      "doi": "10.1177/03043754241287603",
+      "issn": "2163-3150",
+      "abstract": "This article interrogates the European biometric ID system and securitisation measures in West African borders which have become detrimental to, first, African migrants and, second, both African and European security objectives. Using the Niger’s experience, we demonstrate how migrants’ identity problems as well as their atomisation and loosening of their social integration are directly linked to the criminalising and dehumanising border security practices they now face. This article reveals the multiple forms and effects of the unimpeded European biometric/digital control over African territorial borderlands and (im)mobilities. First is the subversion of African states’ administrative, decisional, sovereign and territorial prerogatives by way of enacting digital territorial borderscapes that enforce migrants’ identity de(re)construction. Second, the use of ‘biometric power’ to facilitate a specific modality of neoliberal biometric power relations which perpetuates global inequalities in biometric identification and (im)mobility governance. Lastly, migrants’ recourse to agentic mechanisms to contest the European biometric ID system, via discoveries and implantation of parallel border routes.",
+      "language": "eng",
+      "url": "https://doi.org/10.1177/03043754241287603",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/96011/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/96011/BibTeX/ubt_eref-eprint-96011.bib",
+      "bibtex_raw": "@article{ubt_eref96011,\n author = {Iwuoha, Victor and Edgar, Alistair D.},\n issn = {2163-3150},\n journal = {Alternatives : Global, Local, Political},\n number = {2},\n pages = {145–156},\n title = {European Biometric Border System, Securitization and (Im)mobilities in West Africa},\n url = {https://doi.org/10.1177/03043754241287603},\n volume = {51},\n year = {2026}\n}\n"
+    },
+    {
       "id": "eref-96910",
       "source": "eref",
       "sources": [
         "eref"
       ],
-      "type": "periodical",
+      "type": "journal_issue",
       "raw_type": "periodical_part",
       "title": "Grenzen internalisieren",
       "year": 2026,
@@ -563,6 +801,42 @@
       "bibtex_raw": "@book{ubt_eref94916,\n address = {London ; New York},\n editor = {Ute Fendler and Clarissa Vierke},\n isbn = {978-1-032-95550-6},\n publisher = {Routledge},\n title = {Transoceanic and Transmedial Imaginaries in the Indian Ocean},\n url = {https://eref.uni-bayreuth.de/id/eprint/94916/},\n year = {2026}\n}\n"
     },
     {
+      "id": "eref-95325",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Violence in the Borderlands of Burkina Faso, Niger, and Benin: Regional Integration Without ECOWAS",
+      "year": 2025,
+      "quarter": 4,
+      "deposited_at": "2025-11-26T06:03:30+00:00",
+      "authors": [
+        {
+          "raw": "Donko, Kamal",
+          "normalized": "Donko, Kamal",
+          "person_id": "681b582340126ae8675c1c5a",
+          "person_name": "Donko, Kamal"
+        },
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        }
+      ],
+      "journal": "Society",
+      "doi": "10.1007/s12115-025-01153-1",
+      "issn": "1936-4725",
+      "abstract": "The article examines how communities in the tri-border region of Burkina Faso, Niger, and Benin manage security and cooperation after the weakening of Economic Community of West African States (ECOWAS) and the rise of the Alliance of Sahel States (AES). Using interviews, observations, and social network analysis, the study reveals that, in the absence of strong state or regional authority, local actors—such as chiefs, market women, religious leaders, and youth groups—develop their hybrid systems for resolving disputes, ensuring security, and managing cross-border trade. While these informal and locally rooted arrangements often fill gaps left by formal institutions and can be effective and innovative, they also have serious limitations. They may exclude outsiders, reinforce old hierarchies, and sometimes escalate tensions or insecurity. Digital tools like WhatsApp are increasingly important, but access is unequal. The article argues that real regional integration and security depend on recognizing and supporting these local practices, while also addressing their shortcomings and not just relying on top-down solutions from organizations like ECOWAS. The experience of these borderlands challenges traditional ideas about borders and governance, showing that both resilience and vulnerability coexist in complex ways.",
+      "language": "eng",
+      "url": "https://doi.org/10.1007/s12115-025-01153-1",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/95325/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/95325/BibTeX/ubt_eref-eprint-95325.bib",
+      "bibtex_raw": "@article{ubt_eref95325,\n author = {Donko, Kamal and Doevenspeck, Martin},\n issn = {1936-4725},\n journal = {Society},\n month = {November},\n title = {Violence in the Borderlands of Burkina Faso, Niger, and Benin: Regional Integration Without ECOWAS},\n url = {https://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8947-7},\n year = {2025}\n}\n"
+    },
+    {
       "id": "eref-94882",
       "source": "eref",
       "sources": [
@@ -833,12 +1107,58 @@
       "bibtex_raw": "@article{ubt_eref93917,\n author = {Rusere, Farirai and Mkuhlani, Siyabusa and Soropa, Gabriel and Hunter, Lori and Twine, Wayne and Samimi, Cyrus},\n issn = {2571-581X},\n journal = {Frontiers in Sustainable Food Systems},\n keyword = {deagrarianizing; agrarianizing; subsistence farming; agrarian transitions; rural\nhouseholds},\n title = {Agrarian transitions in rural Bushbuckridge, Mpumalanga province, South Africa: understanding dynamics and determinants},\n url = {https://eref.uni-bayreuth.de/id/eprint/93917/},\n volume = {9},\n year = {2025}\n}\n"
     },
     {
+      "id": "eref-94544",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Biometric coloniality: digital consensus and the biometric state in Africa",
+      "year": 2025,
+      "quarter": 3,
+      "deposited_at": "2025-08-27T04:07:27+00:00",
+      "authors": [
+        {
+          "raw": "Iwuoha, Victor",
+          "normalized": "Iwuoha, Victor",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        }
+      ],
+      "journal": "Third World Quarterly",
+      "volume": "46",
+      "issue": "12",
+      "pages": "1413–1438",
+      "doi": "10.1080/01436597.2025.2539731",
+      "issn": "1360-2241",
+      "keywords": [
+        "biometric coloniality",
+        "digital consensus",
+        "biometric ID system",
+        "biometric state",
+        "ID4D"
+      ],
+      "abstract": "This article frames the concept of biometric coloniality of power in the Global South – to explain how alliances of powerful global institutions, big tech companies and the compliant emerging biometric states operate on the basis of a lucrative digital consensus to carry out techno-­capitalist biometric ID interventions, which reproduce colonial relations of domination. We use Nigeria’s experience and examples from other African countries to demonstrate that the emergence of biometric states is linked to specific interconnected spaces of biometric data struggle and exploitation where the uses/abuses of biometric data are performed and contested. This article maps out new biometric orders of power at multiple levels/scales, and explicitly draws out ways biometric categories and social hierarchies are used to produce racialised and gendered subjects. The article argues that biometric coloniality inherently creates a biometric state with a peculiar character of biometric dysfunctionality and authoritarianism, both effectively institutionalised to the exclusion and disempowerment of the citizens/biometric subjects. We conclude that the chain of unbridled extraction of digital data, its commodification and dispossession, which is bounded by digital consensus, can only be broken by the conscious awakening of digital subjects.",
+      "language": "eng",
+      "url": "https://doi.org/10.1080/01436597.2025.2539731",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/94544/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/94544/BibTeX/ubt_eref-eprint-94544.bib",
+      "bibtex_raw": "@article{ubt_eref94544,\n author = {Iwuoha, Victor and Doevenspeck, Martin},\n issn = {1360-2241},\n journal = {Third World Quarterly},\n keyword = {biometric coloniality; digital consensus; biometric ID system; biometric state; ID4D},\n number = {12},\n pages = {1413–1438},\n title = {Biometric coloniality: digital consensus and the biometric state in Africa},\n url = {https://doi.org/10.1080/01436597.2025.2539731},\n volume = {46},\n year = {2025}\n}\n"
+    },
+    {
       "id": "eref-95296",
       "source": "eref",
       "sources": [
         "eref"
       ],
-      "type": "periodical",
+      "type": "journal_issue",
       "raw_type": "periodical_part",
       "title": "Camp Memories : Silencing, contesting and memorializing past encampments in Africa and beyond",
       "year": 2025,
@@ -949,9 +1269,41 @@
       "bibtex_raw": "@article{ubt_eref94401,\n author = {Mauluka, Gift},\n issn = {2948-0094},\n journal = {Journal of Humanities},\n keyword = {Child Labour; Malawi; Children's Rights; Legal Frameworks; Community Perspectives},\n number = {1},\n pages = {92–117},\n title = {Community Beliefs vis-à-vis Legal Frameworks for Child Labour in Malawi},\n url = {https://www.ajol.info/index.php/jh/article/view/299630},\n volume = {33},\n year = {2025}\n}\n"
     },
     {
+      "id": "eref-93879",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Dürfen wir das? Eine Exkursion in Benin",
+      "year": 2025,
+      "quarter": 2,
+      "deposited_at": "2025-06-03T03:55:11+00:00",
+      "authors": [
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        }
+      ],
+      "journal": "Geographische Rundschau",
+      "volume": "77",
+      "issue": "6",
+      "pages": "34–37",
+      "issn": "0016-7460",
+      "language": "ger",
+      "url": "https://eref.uni-bayreuth.de/id/eprint/93879/",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/93879/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/93879/BibTeX/ubt_eref-eprint-93879.bib",
+      "bibtex_raw": "@article{ubt_eref93879,\n author = {Doevenspeck, Martin},\n issn = {0016-7460},\n journal = {Geographische Rundschau},\n number = {6},\n pages = {34–37},\n title = {Dürfen wir das? Eine Exkursion in Benin},\n url = {https://eref.uni-bayreuth.de/id/eprint/93879/},\n volume = {77},\n year = {2025}\n}\n"
+    },
+    {
       "id": "eref-94660",
       "source": "eref",
       "sources": [
+        "epub",
         "eref"
       ],
       "type": "article",
@@ -993,8 +1345,100 @@
       "language": "eng",
       "url": "https://doi.org/10.1177/17506980251359585",
       "eref_url": "https://eref.uni-bayreuth.de/id/eprint/94660/",
+      "epub_url": "https://epub.uni-bayreuth.de/id/eprint/9333/",
       "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/94660/BibTeX/ubt_eref-eprint-94660.bib",
-      "bibtex_raw": "@article{ubt_eref94660,\n author = {Hameršak, Marijana and Lingelbach, Jochen},\n issn = {1750-6999},\n journal = {Memory Studies},\n keyword = {camps; Croatia; Dalmatia; Egypt; memories; refugees; Yugoslavia},\n number = {5},\n pages = {1189–1213},\n title = {El Shatt: Memories of a Yugoslav Partisan refugee camp travelling from North Africa to Croatia},\n url = {https://journals.sagepub.com/doi/10.1177/17506980251359585},\n volume = {18},\n year = {2025}\n}\n"
+      "bibtex_raw": "@article{ubt_eref94660,\n author = {Hameršak, Marijana and Lingelbach, Jochen},\n issn = {1750-6999},\n journal = {Memory Studies},\n keyword = {camps; Croatia; Dalmatia; Egypt; memories; refugees; Yugoslavia},\n number = {5},\n pages = {1189–1213},\n title = {El Shatt: Memories of a Yugoslav Partisan refugee camp travelling from North Africa to Croatia},\n url = {https://nbn-resolving.org/urn:nbn:de:bvb:703-epub-9333-4},\n volume = {18},\n year = {2025}\n}\n"
+    },
+    {
+      "id": "eref-96008",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "European Biometric Borders and (Im)Mobilities in West Africa : Reflections on Migrant Strategies for Border Circumvention and Subversion",
+      "year": 2025,
+      "quarter": 1,
+      "deposited_at": "2026-02-06T07:53:14+00:00",
+      "authors": [
+        {
+          "raw": "Iwuoha, Victor",
+          "normalized": "Iwuoha, Victor",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "journal": "Politics & Policy",
+      "volume": "53",
+      "issue": "1",
+      "doi": "10.1111/polp.12653",
+      "issn": "1747-1346",
+      "keywords": [
+        "biometric borders",
+        "biometric ID",
+        "deborderization",
+        "digital identity",
+        "European externalization strategies",
+        "migration control",
+        "security",
+        "West Africa",
+        "Fronteras biométricas",
+        "identificación biométrica",
+        "movilidad",
+        "migración",
+        "securitización",
+        "África Occidental",
+        "Níger",
+        "reborderización",
+        "生物特征边界",
+        "生物特征ID",
+        "流动性",
+        "迁移",
+        "安全化",
+        "西非",
+        "尼日尔",
+        "再边界化"
+      ],
+      "abstract": "This article argues that the European biometric ID installations and securitization practices at West African borders harm African migrants and compromise the security goals of Europe and Africa. Using Niger's experience, I contend that migrants' poor adaption to the biometric border processes is closely connected to their identity conflicts, as well as their atomization and weakening of their social integration. The new border security measures are implicated in the state's criminalizing and dehumanizing practices which migrants and borderbrokers experience every day. I coin two concepts, namely, biometric reborderization and agentic deborderization, to draw close attention to ways by which the European biometric projects are significantly reconfiguring African borders. These borders now represent both a dynamic space for migration control, and contested sites of biometric circumvention and subversion by biometric noncompliant migrants who constantly negotiate alternative means for mobilities. Moral mobility agents contest/circumvent European biometric reborderization via the use of parallel border routes. Related Articles Byrne, Jennifer. 2016. “Contextual Identity among Liberian Refugees in Ghana: Identity Salience in a Protracted Refugee Situation.” Politics & Policy 44(4): 751–82. https://doi.org/10.1111/polp.12169. Djeufack Dongmo, Aristophane, and Désiré Avom. 2024. “Urbanization, Civil Conflict, and the Severity of Food Insecurity in Africa.” Politics & Policy 52(1): 140–68. https://doi.org/10.1111/polp.12572. Garrett, Terence M., and Arthur J. Sementelli. 2023. “Revisiting the Policy Implications of COVID-19, Asylum Seekers, and Migrants on the Mexico–U.S. Border: Creating (and Maintaining) States of Exception in the Trump and Biden Administrations.” Politics & Policy 51(3): 458–75. https://doi.org/10.1111/polp.12537.",
+      "language": "eng",
+      "url": "https://doi.org/10.1111/polp.12653",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/96008/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/96008/BibTeX/ubt_eref-eprint-96008.bib",
+      "bibtex_raw": "@article{ubt_eref96008,\n author = {Iwuoha, Victor},\n issn = {1747-1346},\n journal = {Politics \\& Policy},\n keyword = {biometric borders; biometric ID; deborderization; digital identity; European externalization strategies; migration control; security; West Africa; Fronteras biométricas; identificación biométrica; movilidad; migración; securitización; África Occidental; Níger; reborderización; ??????; ????ID; ???; ??; ???; ??; ???; ????},\n number = {1},\n title = {European Biometric Borders and (Im)Mobilities in West Africa : Reflections on Migrant Strategies for Border Circumvention and Subversion},\n url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/polp.12653},\n volume = {53},\n year = {2025}\n}\n"
+    },
+    {
+      "id": "eref-96009",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "European Biometric ID Program in West Africa : Between European External Border Securitization and ECOWAS Free Movement",
+      "year": 2025,
+      "quarter": 1,
+      "deposited_at": "2026-02-06T07:23:07+00:00",
+      "authors": [
+        {
+          "raw": "Iwuoha, Victor",
+          "normalized": "Iwuoha, Victor",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "journal": "African Security",
+      "volume": "18",
+      "issue": "3",
+      "pages": "229–260",
+      "publisher": "Routledge",
+      "doi": "10.1080/19392206.2025.2491206",
+      "issn": "1939-2214",
+      "language": "eng",
+      "url": "https://doi.org/10.1080/19392206.2025.2491206",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/96009/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/96009/BibTeX/ubt_eref-eprint-96009.bib",
+      "bibtex_raw": "@article{ubt_eref96009,\n author = {Iwuoha, Victor},\n issn = {1939-2214},\n journal = {African Security},\n number = {3},\n pages = {229–260},\n publisher = {Routledge},\n title = {European Biometric ID Program in West Africa : Between European External Border Securitization and ECOWAS Free Movement},\n url = {https://doi.org/10.1080/19392206.2025.2491206},\n volume = {18},\n year = {2025}\n}\n"
     },
     {
       "id": "eref-93936",
@@ -1143,7 +1587,7 @@
       "sources": [
         "eref"
       ],
-      "type": "thesis",
+      "type": "doctoral_thesis",
       "raw_type": "thesis",
       "title": "An integrated childhood perspective : Contextualising legal and non-legal approaches to tackle child labour in Malawi",
       "year": 2025,
@@ -1172,7 +1616,7 @@
       "url": "http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8631-7",
       "eref_url": "https://eref.uni-bayreuth.de/id/eprint/95087/",
       "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/95087/BibTeX/ubt_eref-eprint-95087.bib",
-      "bibtex_raw": "@unpublished{ubt_eref95087,\n address = {Bayreuth},\n author = {Mauluka, Gift},\n keyword = {Child Labour; Legal Frameworks; Children's Rights; Performative Analysis; Malawi; Integrated Childhood Perspective},\n note = {Unveröffentlicht},\n school = {ARRAY(0x5f1931fb24c0)},\n title = {An integrated childhood perspective : Contextualising legal and non-legal approaches to tackle child labour in Malawi},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8631-7},\n year = {2025}\n}\n"
+      "bibtex_raw": "@unpublished{ubt_eref95087,\n address = {Bayreuth},\n author = {Mauluka, Gift},\n keyword = {Child Labour; Legal Frameworks; Children's Rights; Performative Analysis; Malawi; Integrated Childhood Perspective},\n note = {Unveröffentlicht},\n school = {ARRAY(0x587db91a0940)},\n title = {An integrated childhood perspective : Contextualising legal and non-legal approaches to tackle child labour in Malawi},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8631-7},\n year = {2025}\n}\n"
     },
     {
       "id": "eref-96784",
@@ -1326,6 +1770,57 @@
       "eref_url": "https://eref.uni-bayreuth.de/id/eprint/95295/",
       "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/95295/BibTeX/ubt_eref-eprint-95295.bib",
       "bibtex_raw": "@article{ubt_eref95295,\n author = {Lingelbach, Jochen},\n issn = {1750-6999},\n journal = {Memory Studies},\n note = {Publisher: SAGE Publications},\n number = {5},\n pages = {1133–1151},\n title = {Introduction: Camp memories in Africa and beyond},\n url = {https://doi.org/10.1177/17506980251379674},\n volume = {18},\n year = {2025}\n}\n"
+    },
+    {
+      "id": "eref-95015",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "chapter",
+      "raw_type": "book_section",
+      "title": "Les Chauffeurs de moto-taxis, militants de la campagne politique dans l'est de la RDC",
+      "year": 2025,
+      "quarter": 4,
+      "deposited_at": "2025-10-28T07:14:37+00:00",
+      "authors": [
+        {
+          "raw": "Müller, Carsten",
+          "normalized": "Müller, Carsten",
+          "person_id": "686e5ec1fb8dbc53e2415081",
+          "person_name": "Muller, Carol"
+        },
+        {
+          "raw": "Morisho, Nene",
+          "normalized": "Morisho, Nene",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        }
+      ],
+      "book_editors": [
+        {
+          "raw": "Kakule Kinombe, Charles",
+          "normalized": "Kakule Kinombe, Charles",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "booktitle": "Conflits, villes et médias numériques : les nouveaux défis de l'Afrique des Grands Lacs",
+      "pages": "129–160",
+      "publisher": "Generis Publishing",
+      "address": "Bukavo",
+      "isbn": "979-8-89966-230-0",
+      "language": "fre",
+      "url": "https://eref.uni-bayreuth.de/id/eprint/95015/",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/95015/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/95015/BibTeX/ubt_eref-eprint-95015.bib",
+      "bibtex_raw": "@incollection{ubt_eref95015,\n address = {Bukavo},\n author = {Müller, Carsten and Morisho, Nene and Doevenspeck, Martin},\n booktitle = {Conflits, villes et médias numériques : les nouveaux défis de l'Afrique des Grands Lacs},\n isbn = {979-8-89966-230-0},\n pages = {129–160},\n publisher = {Generis Publishing},\n title = {Les Chauffeurs de moto-taxis, militants de la campagne politique dans l'est de la RDC},\n url = {https://eref.uni-bayreuth.de/id/eprint/95015/},\n year = {2025}\n}\n"
     },
     {
       "id": "eref-93888",
@@ -1496,7 +1991,7 @@
         "epub",
         "eref"
       ],
-      "type": "thesis",
+      "type": "doctoral_thesis",
       "raw_type": "thesis",
       "title": "Money, Finance, and the Political Economy of Development in Ghana",
       "year": 2025,
@@ -1526,7 +2021,7 @@
       "eref_url": "https://eref.uni-bayreuth.de/id/eprint/95088/",
       "epub_url": "https://epub.uni-bayreuth.de/id/eprint/8627/",
       "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/95088/BibTeX/ubt_eref-eprint-95088.bib",
-      "bibtex_raw": "@unpublished{ubt_eref95088,\n address = {Bayreuth},\n author = {Akolgo, Isaac Abotebuno},\n keyword = {Ghana; Financial System; Debt; Monetary Policy; Financial Technology; Africa},\n note = {Unveröffentlicht},\n school = {ARRAY(0x5f1931fb2610)},\n title = {Money, Finance, and the Political Economy of Development in Ghana},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8627-4},\n year = {2025}\n}\n"
+      "bibtex_raw": "@unpublished{ubt_eref95088,\n address = {Bayreuth},\n author = {Akolgo, Isaac Abotebuno},\n keyword = {Ghana; Financial System; Debt; Monetary Policy; Financial Technology; Africa},\n note = {Unveröffentlicht},\n school = {ARRAY(0x587db91a0ac0)},\n title = {Money, Finance, and the Political Economy of Development in Ghana},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8627-4},\n year = {2025}\n}\n"
     },
     {
       "id": "eref-94455",
@@ -1534,7 +2029,7 @@
       "sources": [
         "eref"
       ],
-      "type": "thesis",
+      "type": "doctoral_thesis",
       "raw_type": "thesis",
       "title": "Moving towards power? Mobilities and the Political Mobilization of Motorcyclists in Uganda Kenya and Eastern DRC",
       "year": 2025,
@@ -1564,7 +2059,7 @@
       "url": "http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8533-2",
       "eref_url": "https://eref.uni-bayreuth.de/id/eprint/94455/",
       "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/94455/BibTeX/ubt_eref-eprint-94455.bib",
-      "bibtex_raw": "@unpublished{ubt_eref94455,\n address = {Bayreuth},\n author = {Müller, Carsten},\n keyword = {Mobility; Political Mobilisation; Uganda; Kenya; Congo; public transport, power},\n note = {Unveröffentlicht},\n school = {ARRAY(0x5f1931fb2640)},\n title = {Moving towards power? Mobilities and the Political Mobilization of Motorcyclists in Uganda Kenya and Eastern DRC},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8533-2},\n year = {2025}\n}\n"
+      "bibtex_raw": "@unpublished{ubt_eref94455,\n address = {Bayreuth},\n author = {Müller, Carsten},\n keyword = {Mobility; Political Mobilisation; Uganda; Kenya; Congo; public transport, power},\n note = {Unveröffentlicht},\n school = {ARRAY(0x587db91a0af0)},\n title = {Moving towards power? Mobilities and the Political Mobilization of Motorcyclists in Uganda Kenya and Eastern DRC},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8533-2},\n year = {2025}\n}\n"
     },
     {
       "id": "eref-94677",
@@ -1909,7 +2404,7 @@
       "sources": [
         "eref"
       ],
-      "type": "periodical",
+      "type": "journal_issue",
       "raw_type": "periodical_part",
       "title": "The Worlds around Taiwo Shango (1965) : A West German-Nigerian TV film",
       "year": 2025,
@@ -2407,6 +2902,392 @@
       "bibtex_raw": "@article{ubt_eref67656,\n author = {Schönfeld, Mirco and Pfeffer, Jürgen},\n issn = {0378-8733},\n journal = {Social Networks},\n keyword = {Attributed network; Betweenness centrality; Closeness centrality; Contextual embeddedness},\n pages = {93–103},\n title = {Shortest path-based centrality metrics in attributed graphs with node-individual context constraints},\n url = {https://eref.uni-bayreuth.de/id/eprint/67656/},\n volume = {77},\n year = {2024}\n}\n"
     },
     {
+      "id": "eref-91486",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Analyse du travail des enfants et des normes sociales dans les mines artisanales de cobalt en RDC",
+      "year": 2024,
+      "quarter": 1,
+      "deposited_at": "2025-01-07T10:33:59+00:00",
+      "authors": [
+        {
+          "raw": "Batano, Godelive Kusimwa",
+          "normalized": "Batano, Godelive Kusimwa",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "journal": "Revue Dezan",
+      "volume": "12",
+      "issue": "2",
+      "pages": "95–121",
+      "issn": "1840-717X",
+      "language": "fre",
+      "url": "https://eref.uni-bayreuth.de/id/eprint/91486/",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/91486/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/91486/BibTeX/ubt_eref-eprint-91486.bib",
+      "bibtex_raw": "@article{ubt_eref91486,\n author = {Batano, Godelive Kusimwa},\n issn = {1840-717X},\n journal = {Revue Dezan},\n number = {2},\n pages = {95–121},\n title = {Analyse du travail des enfants et des normes sociales dans les mines artisanales de cobalt en RDC},\n url = {https://eref.uni-bayreuth.de/id/eprint/91486/},\n volume = {12},\n year = {2024}\n}\n"
+    },
+    {
+      "id": "eref-89877",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "chapter",
+      "raw_type": "book_section",
+      "title": "Consentient Citizenship and the Making of Infrastructural Frontiers in East Africa",
+      "year": 2024,
+      "quarter": 3,
+      "deposited_at": "2024-07-01T11:00:16+00:00",
+      "authors": [
+        {
+          "raw": "Kinyera, Paddy Banya",
+          "normalized": "Kinyera, Paddy Banya",
+          "person_id": "66e30be03b69c7ab8b200e0b",
+          "person_name": "Kinyera, Paddy Banya"
+        },
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        }
+      ],
+      "book_editors": [
+        {
+          "raw": "Vierke, Clarissa",
+          "normalized": "Vierke, Clarissa",
+          "person_id": "681b582340126ae8675c1cdb",
+          "person_name": "Vierke, Clarissa"
+        },
+        {
+          "raw": "Seesemann, Rüdiger",
+          "normalized": "Seesemann, Rüdiger",
+          "person_id": "681b582340126ae8675c1ccb",
+          "person_name": "Seesemann, Rüdiger"
+        },
+        {
+          "raw": "Kroeker, Lena",
+          "normalized": "Kroeker, Lena",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "booktitle": "Africa*n Relations : Modalities Reflected",
+      "series": "University of Bayreuth African Studies Online",
+      "volume": "11",
+      "pages": "77–100",
+      "address": "Bayreuth",
+      "language": "eng",
+      "url": "https://eref.uni-bayreuth.de/id/eprint/89877/",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/89877/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/89877/BibTeX/ubt_eref-eprint-89877.bib",
+      "bibtex_raw": "@incollection{ubt_eref89877,\n address = {Bayreuth},\n author = {Kinyera, Paddy Banya and Doevenspeck, Martin},\n booktitle = {Africa*n Relations : Modalities Reflected},\n pages = {77–100},\n series = {University of Bayreuth African Studies Online},\n title = {Consentient Citizenship and the Making of Infrastructural Frontiers in East Africa},\n url = {https://eref.uni-bayreuth.de/id/eprint/89877/},\n volume = {11},\n year = {2024}\n}\n"
+    },
+    {
+      "id": "eref-96014",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Counterterrorism in the Lake Chad Region : An analysis of the fragmented efforts in Nigeria's fight against Boko Haram",
+      "year": 2024,
+      "quarter": 1,
+      "deposited_at": "2026-02-06T09:48:45+00:00",
+      "authors": [
+        {
+          "raw": "Iwuoha, Victor",
+          "normalized": "Iwuoha, Victor",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Uwaechie, Onyinyeomachukwu",
+          "normalized": "Uwaechie, Onyinyeomachukwu",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Obi, Kelechukwu C.",
+          "normalized": "Obi, Kelechukwu C.",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Ani, Casimir C.",
+          "normalized": "Ani, Casimir C.",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Obiorji, Josephine N.",
+          "normalized": "Obiorji, Josephine N.",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "journal": "Ikenga : International Journal of the Institute of African Studies",
+      "volume": "25",
+      "issue": "2",
+      "pages": "1–26",
+      "doi": "10.53836/ijia/2024/25/2/003",
+      "issn": "2714-4321",
+      "language": "eng",
+      "url": "https://doi.org/10.53836/ijia/2024/25/2/003",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/96014/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/96014/BibTeX/ubt_eref-eprint-96014.bib",
+      "bibtex_raw": "@article{ubt_eref96014,\n author = {Iwuoha, Victor and Uwaechie, Onyinyeomachukwu and Obi, Kelechukwu C. and Ani, Casimir C. and Obiorji, Josephine N.},\n issn = {2714-4321},\n journal = {Ikenga : International Journal of the Institute of African Studies},\n number = {2},\n pages = {1–26},\n title = {Counterterrorism in the Lake Chad Region : An analysis of the fragmented efforts in Nigeria's fight against Boko Haram},\n url = {https://eref.uni-bayreuth.de/id/eprint/96014/},\n volume = {25},\n year = {2024}\n}\n"
+    },
+    {
+      "id": "eref-89635",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Frontières troublées, paix possible : réinventer la médiation dans le nord du Bénin face aux défis du terrorisme",
+      "year": 2024,
+      "quarter": 2,
+      "deposited_at": "2024-05-29T04:29:50+00:00",
+      "authors": [
+        {
+          "raw": "Donko, Kamal",
+          "normalized": "Donko, Kamal",
+          "person_id": "681b582340126ae8675c1c5a",
+          "person_name": "Donko, Kamal"
+        },
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        }
+      ],
+      "journal": "Revue Internationale de la Recherche Scientifique",
+      "volume": "2",
+      "issue": "3",
+      "pages": "929–944",
+      "doi": "10.5281/zenodo.11288158",
+      "issn": "2958-8413",
+      "keywords": [
+        "médiation de conflits",
+        "dynamiques foncières",
+        "identités culturelles",
+        "zones frontalières"
+      ],
+      "abstract": "Cet article explore l'intersection de la géographie des conflits et de la médiation sociale, avec un focus particulier sur les zones frontalières du nord du Bénin, à travers une approche qualitative. Il examine comment les dynamiques foncières, les identités culturelles et les tensions ethniques interagissent dans un contexte de conflits territoriaux exacerbés par l'émergence de groupes armés et d'activités terroristes. S'appuyant sur la théorie de la transformation des conflits de Lederach, J. P. (1995), l'étude utilise des méthodes qualitatives pour analyser les défis de la médiation et évaluer l'efficacité des pratiques traditionnelles face à ces complexités. L'article propose des stratégies de médiation innovantes, basées sur des analyses qualitatives approfondies des perspectives locales et des dynamiques socioculturelles, promouvant une approche de médiation flexible et inclusive. Ces stratégies recommandent l'implication d'acteurs infra-étatiques et non étatiques, soulignant la nécessité de réinventer les pratiques de médiation pour établir une paix durable. Les orientations pratiques dérivées de l'analyse qualitative offrent des perspectives précieuses pour les médiateurs et les décideurs dans des contextes de conflit intense.",
+      "language": "fre",
+      "url": "https://doi.org/10.5281/zenodo.11288158",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/89635/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/89635/BibTeX/ubt_eref-eprint-89635.bib",
+      "bibtex_raw": "@article{ubt_eref89635,\n author = {Donko, Kamal and Doevenspeck, Martin},\n issn = {2958-8413},\n journal = {Revue Internationale de la Recherche Scientifique},\n keyword = {médiation de conflits; dynamiques foncières; identités culturelles; zones frontalières},\n number = {3},\n pages = {929–944},\n title = {Frontières troublées, paix possible : réinventer la médiation dans le nord du Bénin face aux défis du terrorisme},\n url = {https://www.revue-irs.com/index.php/home/article/view/249},\n volume = {2},\n year = {2024}\n}\n"
+    },
+    {
+      "id": "eref-89831",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Impact du terrorisme sur l'éducation : fermeture d'écoles au Burkina Faso, Niger et Nord Benin",
+      "year": 2024,
+      "quarter": 2,
+      "deposited_at": "2024-06-25T05:28:17+00:00",
+      "authors": [
+        {
+          "raw": "Donko, Kamal",
+          "normalized": "Donko, Kamal",
+          "person_id": "681b582340126ae8675c1c5a",
+          "person_name": "Donko, Kamal"
+        },
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        },
+        {
+          "raw": "Ouedraogo, Serge Noël",
+          "normalized": "Ouedraogo, Serge Noël",
+          "person_id": "69c545a804f9b5b393831c19",
+          "person_name": "Ouédraogo, Serge Noel"
+        }
+      ],
+      "journal": "Zaouli : Revue Ivoirienne des Arts, des Sciences de l'Information et du Patrimoine",
+      "volume": "7",
+      "pages": "108–125",
+      "issn": "2788-9343",
+      "language": "fre",
+      "url": "https://eref.uni-bayreuth.de/id/eprint/89831/",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/89831/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/89831/BibTeX/ubt_eref-eprint-89831.bib",
+      "bibtex_raw": "@article{ubt_eref89831,\n author = {Donko, Kamal and Doevenspeck, Martin and Ouedraogo, Serge Noël},\n issn = {2788-9343},\n journal = {Zaouli : Revue Ivoirienne des Arts, des Sciences de l'Information et du Patrimoine},\n pages = {108–125},\n title = {Impact du terrorisme sur l'éducation : fermeture d'écoles au\nBurkina Faso, Niger et Nord Benin},\n url = {https://eref.uni-bayreuth.de/id/eprint/89831/},\n volume = {7},\n year = {2024}\n}\n"
+    },
+    {
+      "id": "eref-96956",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "book",
+      "raw_type": "book",
+      "title": "Informality and Courts : Comparative Perspectives",
+      "year": 2024,
+      "quarter": 2,
+      "deposited_at": "2026-05-06T03:54:55+00:00",
+      "editors": [
+        {
+          "raw": "Björn Dressel",
+          "normalized": "Dressel, Björn",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Raul Sanchez-Urribarri",
+          "normalized": "Sanchez-Urribarri, Raul",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Alexander Stroh",
+          "normalized": "Stroh, Alexander",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "pages": "328",
+      "publisher": "Edinburgh University Press",
+      "address": "Edinburgh",
+      "isbn": "9781399535267",
+      "keywords": [
+        "constitutional law",
+        "courts",
+        "informal institutions",
+        "judges",
+        "judicial independence",
+        "judicial studies"
+      ],
+      "abstract": "This volume explores an understudied aspect of courts: The extent to which informal institutions and relational networks (e.g., professional, clientelist, family etc.) relations affect how courts are organised and operate. For instance, to what extent can ‘good personal relations’ outweigh professional merits in judicial appointment processes? Or in what ways do international or domestic judicial networks help protect courts against other branches of power?",
+      "language": "eng",
+      "url": "https://eref.uni-bayreuth.de/id/eprint/96956/",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/96956/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/96956/BibTeX/ubt_eref-eprint-96956.bib",
+      "bibtex_raw": "@book{ubt_eref96956,\n address = {Edinburgh},\n editor = {Björn Dressel and Raul Sanchez-Urribarri and Alexander Stroh},\n isbn = {9781399535267},\n keyword = {constitutional law; courts; informal institutions; judges; judicial independence; judicial studies},\n publisher = {Edinburgh University Press},\n title = {Informality and Courts : Comparative Perspectives},\n url = {https://eref.uni-bayreuth.de/id/eprint/96956/},\n year = {2024}\n}\n"
+    },
+    {
+      "id": "eref-96982",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "chapter",
+      "raw_type": "book_section",
+      "title": "Informality and Multi-level Judicial Appointment Processes in African Regional Courts",
+      "year": 2024,
+      "quarter": 2,
+      "deposited_at": "2026-05-07T05:29:37+00:00",
+      "authors": [
+        {
+          "raw": "Stroh, Alexander",
+          "normalized": "Stroh, Alexander",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Kisakye, Diana",
+          "normalized": "Kisakye, Diana",
+          "person_id": "6798e44e3877b2fdcae3adb3",
+          "person_name": "Kisakye, Diana"
+        }
+      ],
+      "book_editors": [
+        {
+          "raw": "Dressel, Björn",
+          "normalized": "Dressel, Björn",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Sanchez-Urribarri, Raul",
+          "normalized": "Sanchez-Urribarri, Raul",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Stroh, Alexander",
+          "normalized": "Stroh, Alexander",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "booktitle": "Informality and Courts : Comparative Perspectives",
+      "pages": "246–266",
+      "publisher": "Edinburgh University Press",
+      "address": "Edinburgh",
+      "isbn": "978-1-399-53527-4",
+      "keywords": [
+        "constitutional law",
+        "courts",
+        "informal institutions",
+        "judges",
+        "judical independence",
+        "judical studies"
+      ],
+      "language": "eng",
+      "url": "https://www.jstor.org/stable/10.3366/jj.17381668.19",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/96982/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/96982/BibTeX/ubt_eref-eprint-96982.bib",
+      "bibtex_raw": "@incollection{ubt_eref96982,\n address = {Edinburgh},\n author = {Stroh, Alexander and Kisakye, Diana},\n booktitle = {Informality and Courts : Comparative Perspectives},\n isbn = {978-1-399-53527-4},\n keyword = {constitutional law; courts; informal institutions; judges; judical independence; judical studies},\n pages = {246–266},\n publisher = {Edinburgh University Press},\n title = {Informality and Multi-level Judicial Appointment Processes in African Regional Courts},\n url = {https://www.jstor.org/stable/10.3366/jj.17381668.19},\n year = {2024}\n}\n"
+    },
+    {
+      "id": "eref-96980",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Informality and Relations in International Judicial Appointments : Evidence from Sub-regional Courts in Africa",
+      "year": 2024,
+      "quarter": 2,
+      "deposited_at": "2026-05-07T05:20:59+00:00",
+      "authors": [
+        {
+          "raw": "Kisakye, Diana",
+          "normalized": "Kisakye, Diana",
+          "person_id": "6798e44e3877b2fdcae3adb3",
+          "person_name": "Kisakye, Diana"
+        },
+        {
+          "raw": "Stroh, Alexander",
+          "normalized": "Stroh, Alexander",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "journal": "The African Review",
+      "volume": "53",
+      "issue": "1-2",
+      "pages": "110–136",
+      "doi": "10.1163/1821889x-bja10139",
+      "issn": "1821-889X",
+      "abstract": "Informality in international judicial selection practices has been acknowledged but rarely systematically researched. Described as “design innovations” that are hard to grasp, national judicial appointments to international courts (ICs), even in the most established democracies, are permeated by opacity and secretiveness that remains puzzling to researchers and the legal complex alike. This article presents evidence from three African sub-regional courts to reify the informal dimension of international judicial appointments. Drawing on qualitative research that employs two country case studies, Uganda and Malawi, we demonstrate how the particularly thin formal selection rules leave much leverage to informalities at various levels of governance. Through interviews and judicial biographical data, we reconstruct judicial appointment practices and their dynamics to account for relevant informalities and relations that shed light on the selection of judges to ICs. We argue that appointment practices are less ad hoc or arbitrary than they often appear but mirror the states’ commitment to regional integration, political assessment of the respective regional organisation, and perceptions of the courts’ relevance and ambitions in relation to the political appointers and selectors. Moreover, we raise new concerns about the risk of more silent and subtle backlash against bold regional courts.",
+      "language": "eng",
+      "url": "https://doi.org/10.1163/1821889x-bja10139",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/96980/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/96980/BibTeX/ubt_eref-eprint-96980.bib",
+      "bibtex_raw": "@article{ubt_eref96980,\n author = {Kisakye, Diana and Stroh, Alexander},\n issn = {1821-889X},\n journal = {The African Review},\n number = {1-2},\n pages = {110–136},\n title = {Informality and Relations in International Judicial Appointments : Evidence from Sub-regional Courts in Africa},\n url = {https://eref.uni-bayreuth.de/id/eprint/96980/},\n volume = {53},\n year = {2024}\n}\n"
+    },
+    {
       "id": "eref-90403",
       "source": "eref",
       "sources": [
@@ -2563,6 +3444,57 @@
       "bibtex_raw": "@book{ubt_eref90305,\n address = {Leiden},\n editor = {Katharina Schramm and Sabelo J. Ndlovu-Gatsheni},\n isbn = {978-90-04-70144-1},\n keyword = {African Studies; decolonisation; post-colonialism; Africa Multiple; Anthropologie; Katharina Schramm; Sabelo Ndlovu-Gatsheni},\n publisher = {Brill},\n series = {Africa Multiple},\n title = {Knowing - Unknowing : African Studies at the Crossroads},\n url = {https://brill.com/display/title/70492?language=en},\n volume = {4},\n year = {2024}\n}\n"
     },
     {
+      "id": "eref-91311",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "L'oléoduc par le bas : enjeux socio-économiques et récits locaux sur une méga infrastructure dans le nord du Bénin",
+      "year": 2024,
+      "quarter": 4,
+      "deposited_at": "2024-12-03T06:50:13+00:00",
+      "authors": [
+        {
+          "raw": "Donko, Kamal",
+          "normalized": "Donko, Kamal",
+          "person_id": "681b582340126ae8675c1c5a",
+          "person_name": "Donko, Kamal"
+        },
+        {
+          "raw": "Aboudou, Ramanou Y. M. A.",
+          "normalized": "Aboudou, Ramanou Y. M. A.",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        }
+      ],
+      "journal": "Suds",
+      "volume": "289",
+      "pages": "247–273",
+      "doi": "10.4000/12qn8",
+      "issn": "3001-591X",
+      "keywords": [
+        "oil pipeline",
+        "Niger",
+        "Benin",
+        "subaltern perspective",
+        "development"
+      ],
+      "abstract": "Cet article adopte une perspective subalterne pour analyser les enjeux socio-économiques du projet de construction du plus long oléoduc d’Afrique reliant le Niger au Bénin. L’approche met l’accent sur la manière dont les populations locales du nord du Bénin perçoivent ce projet, un aspect souvent négligé dans les discours conventionnels, tout en tenant compte des enjeux socio-économiques associés. La réalisation du projet, confiée à la West African Oil Pipeline Company - Bénin (WAPCO-Bénin), filiale de la China National Petroleum Company (CNPC), est financée à hauteur de 45 milliards d’euros. L’article s’appuie sur une ethnographie multisite collectant des récits et des discours des communautés locales, révélant une diversité de points de vue allant de l’enthousiasme pour les opportunités économiques à des préoccupations concernant les pertes de terres agricoles et les impacts environnementaux. La construction de l’oléoduc a généré des retombées économiques positives, telles que la création d’emplois et des compensations financières. Cependant, des tensions subsistent en raison d’une communication insuffisante et tardive des autorités, ainsi que des contestations sur les modalités de compensation et de participation des populations locales dans le processus décisionnel. En privilégiant une analyse « par le bas », l’article apporte une contribution significative à la compréhension des dynamiques locales, soulignant l’importance d’une gouvernance transparente et participative pour assurer l’acceptabilité sociale et le succès des projets d’infrastructure en intégrant pleinement les communautés locales.",
+      "language": "fre",
+      "url": "https://doi.org/10.4000/12qn8",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/91311/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/91311/BibTeX/ubt_eref-eprint-91311.bib",
+      "bibtex_raw": "@article{ubt_eref91311,\n author = {Donko, Kamal and Aboudou, Ramanou Y. M. A. and Doevenspeck, Martin},\n issn = {3001-591X},\n journal = {Suds},\n keyword = {oil pipeline; Niger; Benin; subaltern perspective; development},\n pages = {247–273},\n title = {L'oléoduc par le bas : enjeux socio-économiques et récits locaux sur une méga infrastructure dans le nord du Bénin},\n url = {https://eref.uni-bayreuth.de/id/eprint/91311/},\n volume = {289},\n year = {2024}\n}\n"
+    },
+    {
       "id": "eref-94839",
       "source": "eref",
       "sources": [
@@ -2638,12 +3570,44 @@
       "bibtex_raw": "@misc{ubt_eref88696,\n author = {Stroh, Alexander and Kisakye, Diana},\n keyword = {Appointment Rules; African REC courts},\n note = {Online Appendix to \"Informality and Multi-level Judicial Appointment Processes in African Regional Courts\" by Alexander Stroh and Diana Kisakye (2024)},\n title = {Major structural elements and appointment criteria to African Regional Courts with references to Treaty and protocol regulations : (as of January 2024)},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-7471-3},\n year = {2024}\n}\n"
     },
     {
+      "id": "eref-96013",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "New Perspectives on Contemporary African Security, Governance, Quality of Life, and Gender/Sexuality : Introduction to Special Issue",
+      "year": 2024,
+      "quarter": 1,
+      "deposited_at": "2026-02-06T07:57:31+00:00",
+      "authors": [
+        {
+          "raw": "Iwuoha, Victor",
+          "normalized": "Iwuoha, Victor",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "journal": "Society",
+      "volume": "61",
+      "issue": "5",
+      "pages": "477–478",
+      "doi": "10.1007/s12115-024-01020-5",
+      "issn": "1936-4725",
+      "language": "eng",
+      "url": "https://doi.org/10.1007/s12115-024-01020-5",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/96013/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/96013/BibTeX/ubt_eref-eprint-96013.bib",
+      "bibtex_raw": "@article{ubt_eref96013,\n author = {Iwuoha, Victor},\n issn = {1936-4725},\n journal = {Society},\n number = {5},\n pages = {477–478},\n title = {New Perspectives on Contemporary African Security, Governance, Quality of Life, and Gender/Sexuality : Introduction to Special Issue},\n url = {https://doi.org/10.1007/s12115-024-01020-5},\n volume = {61},\n year = {2024}\n}\n"
+    },
+    {
       "id": "eref-91495",
       "source": "eref",
       "sources": [
         "eref"
       ],
-      "type": "review",
+      "type": "book_review",
       "raw_type": "review",
       "title": "Pinxteren, Bert van: Language and Education in Africa : A fresh approach to the debates on language, education, and cultural identity. Leiden, 2022",
       "year": 2024,
@@ -2769,6 +3733,47 @@
       "epub_url": "https://epub.uni-bayreuth.de/id/eprint/7815/",
       "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/90146/BibTeX/ubt_eref-eprint-90146.bib",
       "bibtex_raw": "@misc{ubt_eref90146,\n address = {Bayreuth},\n author = {Abdoulaye, Ibrahim Bachir},\n editor = {Usman Ahmad and Monika Christine Rohmer},\n keyword = {Islam; Niger; Hayrat Vakfi; Nur movement; Turkey},\n series = {University of Bayreuth African Studies Working Papers},\n title = {Turkish Islamic Actors in Africa : the Case Study of Hayrat Vakfi in Niger},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-7815-3},\n volume = {50},\n year = {2024}\n}\n"
+    },
+    {
+      "id": "eref-89921",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "(Un)leashed potentials: an activist-centered perspective on the political mobilization of motorcycle taxi drivers in eastern DRC",
+      "year": 2024,
+      "quarter": 3,
+      "deposited_at": "2024-07-10T03:45:10+00:00",
+      "authors": [
+        {
+          "raw": "Müller, Carsten",
+          "normalized": "Müller, Carsten",
+          "person_id": "686e5ec1fb8dbc53e2415081",
+          "person_name": "Muller, Carol"
+        }
+      ],
+      "journal": "Journal of Eastern African Studies",
+      "volume": "18",
+      "issue": "3",
+      "pages": "366–387",
+      "doi": "10.1080/17531055.2024.2375078",
+      "issn": "1753-1063",
+      "keywords": [
+        "Political mobilization",
+        "motorcycle taxis",
+        "campaign activists",
+        "Africa",
+        "D.R. Congo",
+        "Kivu"
+      ],
+      "abstract": "The re-emergence of competitive elections in Africa has sparked new interest in political mobilization on the continent. Much of this literature focusses on political actors and the strategies they use to mobilize. If the campaign activists are reviewed at all, they are often categorized by their ethnic or religious affiliation. Thereby, abilities and potentials for political participation, which are important within conceptual literature on political mobilization, are side-lined. This article uses an activist-centered perspective to review the political mobilization of motorcycle taxi drivers, eastern Congo. Based on empirical research in 2020 and 2021, it evaluates the mobilization potentials of the so-called motards and their deployment during political action. The article finds that motards possess unique potentials for participating in political campaigns due to their mobility and large social networks but only partially deploy them. While their mobility potential is widely utilized, the mobilization of their social networks is hampered by a lack of allegiances and infrequent contacts with politicians. Based on the research findings, the article advocates expanding the perception of political mobilization in Africa by reflecting on the preconditions of mobilizability such as enabling potentials, interactions with activists and aligned political strategies.",
+      "language": "eng",
+      "url": "https://doi.org/10.1080/17531055.2024.2375078",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/89921/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/89921/BibTeX/ubt_eref-eprint-89921.bib",
+      "bibtex_raw": "@article{ubt_eref89921,\n author = {Müller, Carsten},\n issn = {1753-1063},\n journal = {Journal of Eastern African Studies},\n keyword = {Political mobilization; motorcycle taxis; campaign activists; Africa; D.R. Congo; Kivu},\n number = {3},\n pages = {366–387},\n title = {(Un)leashed potentials: an activist-centered perspective on the political mobilization of motorcycle taxi drivers in eastern DRC},\n url = {https://eref.uni-bayreuth.de/id/eprint/89921/},\n volume = {18},\n year = {2024}\n}\n"
     },
     {
       "id": "eref-89922",
@@ -3053,6 +4058,49 @@
       "bibtex_raw": "@article{ubt_eref86402,\n author = {Li, Qirui and Samimi, Cyrus},\n issn = {2071-1050},\n journal = {Sustainability},\n keyword = {temporary moves; permanent migration; vulnerability; risk reduction; mobility management; Africa},\n number = {15},\n title = {Assessing Human Mobility and Its Climatic and Socioeconomic Factors for Sustainable Development in Sub-Saharan Africa},\n url = {https://eref.uni-bayreuth.de/id/eprint/86402/},\n volume = {15},\n year = {2023}\n}\n"
     },
     {
+      "id": "eref-86812",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Bewaffnete Konflikte in westafrikanischen Grenzräumen",
+      "year": 2023,
+      "quarter": 3,
+      "deposited_at": "2023-09-11T05:38:58+00:00",
+      "authors": [
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        },
+        {
+          "raw": "Donko, Kamal",
+          "normalized": "Donko, Kamal",
+          "person_id": "681b582340126ae8675c1c5a",
+          "person_name": "Donko, Kamal"
+        },
+        {
+          "raw": "Iwuoha, Victor",
+          "normalized": "Iwuoha, Victor",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "journal": "Geographische Rundschau",
+      "volume": "75",
+      "issue": "9",
+      "pages": "20–24",
+      "issn": "0016-7460",
+      "language": "ger",
+      "url": "https://eref.uni-bayreuth.de/id/eprint/86812/",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/86812/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/86812/BibTeX/ubt_eref-eprint-86812.bib",
+      "bibtex_raw": "@article{ubt_eref86812,\n author = {Doevenspeck, Martin and Donko, Kamal and Iwuoha, Victor},\n issn = {0016-7460},\n journal = {Geographische Rundschau},\n number = {9},\n pages = {20–24},\n title = {Bewaffnete Konflikte in westafrikanischen Grenzräumen},\n url = {https://eref.uni-bayreuth.de/id/eprint/86812/},\n volume = {75},\n year = {2023}\n}\n"
+    },
+    {
       "id": "eref-88005",
       "source": "eref",
       "sources": [
@@ -3130,6 +4178,90 @@
       "eref_url": "https://eref.uni-bayreuth.de/id/eprint/88005/",
       "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/88005/BibTeX/ubt_eref-eprint-88005.bib",
       "bibtex_raw": "@incollection{ubt_eref88005,\n address = {Berlin},\n author = {Mark-Thiesen, Cassandra},\n booktitle = {Clio Guide : Ein Handbuch zu digitalen Ressourcen für die Geschichtswissenschaften. 3. Auflage},\n title = {Clio-Guide : Afrika},\n url = {https://guides.clio-online.de/guides/regionen/afrika/2023},\n year = {2023}\n}\n"
+    },
+    {
+      "id": "eref-86027",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Contrôle des migrations et dynamiques transfrontalières au Sahel : le cas de Kantchari/Makalondi (Burkina-Faso/Niger)",
+      "year": 2023,
+      "quarter": 3,
+      "deposited_at": "2023-08-07T05:09:05+00:00",
+      "authors": [
+        {
+          "raw": "Donko, Kamal",
+          "normalized": "Donko, Kamal",
+          "person_id": "681b582340126ae8675c1c5a",
+          "person_name": "Donko, Kamal"
+        },
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        },
+        {
+          "raw": "Nassi, Karl Martial",
+          "normalized": "Nassi, Karl Martial",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Imorou, Abou-Bakari",
+          "normalized": "Imorou, Abou-Bakari",
+          "person_id": "681b582340126ae8675c1c74",
+          "person_name": "Imorou, Abou-Bakari"
+        }
+      ],
+      "journal": "Revue Dezan",
+      "volume": "11",
+      "issue": "1",
+      "pages": "83–113",
+      "issn": "1840-717X",
+      "language": "fre",
+      "url": "https://eref.uni-bayreuth.de/id/eprint/86027/",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/86027/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/86027/BibTeX/ubt_eref-eprint-86027.bib",
+      "bibtex_raw": "@article{ubt_eref86027,\n author = {Donko, Kamal and Doevenspeck, Martin and Nassi, Karl Martial and Imorou, Abou-Bakari},\n issn = {1840-717X},\n journal = {Revue Dezan},\n number = {1},\n pages = {83–113},\n title = {Contrôle des migrations et dynamiques transfrontalières au Sahel : le cas de Kantchari/Makalondi (Burkina-Faso/Niger)},\n url = {https://eref.uni-bayreuth.de/id/eprint/86027/},\n volume = {11},\n year = {2023}\n}\n"
+    },
+    {
+      "id": "eref-76607",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Dilemmas of \"biometric nationality\" : migration control, biometric ID technology and political mobilisation of migrants in West Africa",
+      "year": 2023,
+      "quarter": 2,
+      "deposited_at": "2023-05-30T07:23:38+00:00",
+      "authors": [
+        {
+          "raw": "Iwuoha, Victor",
+          "normalized": "Iwuoha, Victor",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        }
+      ],
+      "journal": "Territory, Politics, Governance",
+      "doi": "10.1080/21622671.2023.2205885",
+      "issn": "2162-268X",
+      "language": "eng",
+      "url": "https://doi.org/10.1080/21622671.2023.2205885",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/76607/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/76607/BibTeX/ubt_eref-eprint-76607.bib",
+      "bibtex_raw": "@article{ubt_eref76607,\n author = {Iwuoha, Victor and Doevenspeck, Martin},\n issn = {2162-268X},\n journal = {Territory, Politics, Governance},\n note = {Erschienen in Band 13, 3, 2025, S. 279-304},\n title = {Dilemmas of \"biometric nationality\" : migration control, biometric ID technology and political mobilisation of migrants in West Africa},\n url = {https://eref.uni-bayreuth.de/id/eprint/76607/},\n year = {2023}\n}\n"
     },
     {
       "id": "eref-88691",
@@ -3358,6 +4490,124 @@
       "eref_url": "https://eref.uni-bayreuth.de/id/eprint/88064/",
       "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/88064/BibTeX/ubt_eref-eprint-88064.bib",
       "bibtex_raw": "@article{ubt_eref88064,\n author = {Akolgo, Isaac Abotebuno},\n issn = {1467-7660},\n journal = {Development and Change},\n number = {5},\n pages = {1264–1295},\n title = {Ghana's Debt Crisis and the Political Economy of Financial Dependence in Africa : History Repeating Itself?},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-7353-8},\n volume = {54},\n year = {2023}\n}\n"
+    },
+    {
+      "id": "eref-73994",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Governing Petro-(im)mobilities: the making of right-of-way for Uganda's East African Crude Oil pipeline",
+      "year": 2023,
+      "quarter": 1,
+      "deposited_at": "2023-02-27T07:02:54+00:00",
+      "authors": [
+        {
+          "raw": "Kinyera, Paddy Banya",
+          "normalized": "Kinyera, Paddy Banya",
+          "person_id": "66e30be03b69c7ab8b200e0b",
+          "person_name": "Kinyera, Paddy Banya"
+        },
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        }
+      ],
+      "journal": "Mobilities",
+      "volume": "18",
+      "issue": "6",
+      "pages": "968–984",
+      "doi": "10.1080/17450101.2023.2171804",
+      "issn": "1745-0101",
+      "language": "eng",
+      "url": "https://doi.org/10.1080/17450101.2023.2171804",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/73994/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/73994/BibTeX/ubt_eref-eprint-73994.bib",
+      "bibtex_raw": "@article{ubt_eref73994,\n author = {Kinyera, Paddy Banya and Doevenspeck, Martin},\n issn = {1745-0101},\n journal = {Mobilities},\n number = {6},\n pages = {968–984},\n title = {Governing Petro-(im)mobilities: the making of right-of-way for Uganda's East African Crude Oil pipeline},\n url = {https://doi.org/10.1080/17450101.2023.2171804},\n volume = {18},\n year = {2023}\n}\n"
+    },
+    {
+      "id": "eref-81318",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Infrastructures of Migrant (Im)mobilities in the Borderland of Burkina Faso and Niger",
+      "year": 2023,
+      "quarter": 2,
+      "deposited_at": "2023-06-13T05:43:29+00:00",
+      "authors": [
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        },
+        {
+          "raw": "Donko, Kamal",
+          "normalized": "Donko, Kamal",
+          "person_id": "681b582340126ae8675c1c5a",
+          "person_name": "Donko, Kamal"
+        }
+      ],
+      "journal": "Society",
+      "volume": "60",
+      "pages": "310–319",
+      "doi": "10.1007/s12115-023-00856-7",
+      "issn": "1936-4725",
+      "keywords": [
+        "Migration",
+        "Infrastructure",
+        "(im)mobilities",
+        "West Africa"
+      ],
+      "language": "eng",
+      "url": "https://doi.org/10.1007/s12115-023-00856-7",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/81318/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/81318/BibTeX/ubt_eref-eprint-81318.bib",
+      "bibtex_raw": "@article{ubt_eref81318,\n author = {Doevenspeck, Martin and Donko, Kamal},\n issn = {1936-4725},\n journal = {Society},\n keyword = {Migration; Infrastructure; (im)mobilities; West Africa},\n pages = {310–319},\n title = {Infrastructures of Migrant (Im)mobilities in the Borderland of Burkina Faso and Niger},\n url = {https://nbn-resolving.org/urn:nbn:de:bvb:703-epub-7491-8},\n volume = {60},\n year = {2023}\n}\n"
+    },
+    {
+      "id": "eref-81281",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Introduction to Forum: (Im)mobilities, Security, and Identities in West Africa Borderlands",
+      "year": 2023,
+      "quarter": 2,
+      "deposited_at": "2023-06-09T03:18:26+00:00",
+      "authors": [
+        {
+          "raw": "Iwuoha, Victor",
+          "normalized": "Iwuoha, Victor",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Doevenspeck, Martin",
+          "normalized": "Doevenspeck, Martin",
+          "person_id": "66e30be03b69c7ab8b200e0a",
+          "person_name": "Doevenspeck, Martin"
+        }
+      ],
+      "journal": "Society",
+      "volume": "60",
+      "pages": "289–296",
+      "doi": "10.1007/s12115-023-00854-9",
+      "issn": "1936-4725",
+      "language": "eng",
+      "url": "https://doi.org/10.1007/s12115-023-00854-9",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/81281/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/81281/BibTeX/ubt_eref-eprint-81281.bib",
+      "bibtex_raw": "@article{ubt_eref81281,\n author = {Iwuoha, Victor and Doevenspeck, Martin},\n issn = {1936-4725},\n journal = {Society},\n pages = {289–296},\n title = {Introduction to Forum: (Im)mobilities, Security, and Identities in West Africa Borderlands},\n url = {https://eref.uni-bayreuth.de/id/eprint/81281/},\n volume = {60},\n year = {2023}\n}\n"
     },
     {
       "id": "eref-74236",
@@ -3884,6 +5134,36 @@
       "epub_url": "https://epub.uni-bayreuth.de/id/eprint/8784/",
       "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/88690/BibTeX/ubt_eref-eprint-88690.bib",
       "bibtex_raw": "@book{ubt_eref88690,\n address = {Conceição da Feira, Bahia},\n editor = {Valerie V. V. Gruber and Gilbert Shang Ndi},\n isbn = {978-65-84611-13-9},\n keyword = {Poesia; memória; vídeo-performance; música; arte-educação; transformação; diáspora africana; intercâmbio; Colômbia; Brasil; poetry; memoirs; arts; re-existence; cartográphies},\n publisher = {Andarilha Edições},\n title = {Todo Rio Resiste Mar : Cartografias de Memorias Afrolatinas},\n url = {https://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8784-5},\n year = {2023}\n}\n"
+    },
+    {
+      "id": "eref-81334",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Towards crude transformation : Scaling development in Uganda's Albertine graben",
+      "year": 2023,
+      "quarter": 2,
+      "deposited_at": "2023-06-14T06:07:20+00:00",
+      "authors": [
+        {
+          "raw": "Kinyera, Paddy Banya",
+          "normalized": "Kinyera, Paddy Banya",
+          "person_id": "66e30be03b69c7ab8b200e0b",
+          "person_name": "Kinyera, Paddy Banya"
+        }
+      ],
+      "journal": "The Extractive Industries and Society",
+      "volume": "15",
+      "doi": "10.1016/j.exis.2023.101280",
+      "issn": "2214-7918",
+      "language": "eng",
+      "url": "https://doi.org/10.1016/j.exis.2023.101280",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/81334/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/81334/BibTeX/ubt_eref-eprint-81334.bib",
+      "bibtex_raw": "@article{ubt_eref81334,\n author = {Kinyera, Paddy Banya},\n issn = {2214-7918},\n journal = {The Extractive Industries and Society},\n title = {Towards crude transformation : Scaling development in Uganda's Albertine graben},\n url = {https://eref.uni-bayreuth.de/id/eprint/81334/},\n volume = {15},\n year = {2023}\n}\n"
     },
     {
       "id": "eref-88689",
@@ -5455,7 +6735,7 @@
       "sources": [
         "eref"
       ],
-      "type": "review",
+      "type": "book_review",
       "raw_type": "review",
       "title": "Gathii, James Thuo (Ed.): The Performance of Africa's International Courts : Using Litigation for Political, Legal, and Social Change. Oxford University Press, 2020.",
       "year": 2021,
@@ -6039,6 +7319,38 @@
       "bibtex_raw": "@incollection{ubt_eref48040,\n address = {Köln},\n author = {Alber, Erdmute},\n booktitle = {The Multiplicity of Orders and Practices : A Tribute to Georg Klute},\n isbn = {978-3-89645-850-6},\n keyword = {Middle-Class; West-Africa; Benin; kinship and politics; household; kinship},\n pages = {29–50},\n publisher = {Köppe},\n series = {Topics in Interdisciplinary African Studies},\n title = {Heterogeneity and Heterarchy : Middle-Class Households in Benin},\n url = {https://eref.uni-bayreuth.de/id/eprint/48040/},\n volume = {50},\n year = {2019}\n}\n"
     },
     {
+      "id": "eref-47213",
+      "source": "eref",
+      "sources": [
+        "eref"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "Land, oil and expressions of citizenship in Uganda's Albertine graben",
+      "year": 2019,
+      "quarter": 1,
+      "deposited_at": "2019-02-19T11:32:04+00:00",
+      "authors": [
+        {
+          "raw": "Kinyera, Paddy Banya",
+          "normalized": "Kinyera, Paddy Banya",
+          "person_id": "66e30be03b69c7ab8b200e0b",
+          "person_name": "Kinyera, Paddy Banya"
+        }
+      ],
+      "journal": "The Extractive Industries and Society",
+      "volume": "6",
+      "issue": "1",
+      "pages": "110–119",
+      "doi": "10.1016/j.exis.2018.10.018",
+      "issn": "2214-7918",
+      "language": "eng",
+      "url": "https://doi.org/10.1016/j.exis.2018.10.018",
+      "eref_url": "https://eref.uni-bayreuth.de/id/eprint/47213/",
+      "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/47213/BibTeX/ubt_eref-eprint-47213.bib",
+      "bibtex_raw": "@article{ubt_eref47213,\n author = {Kinyera, Paddy Banya},\n issn = {2214-7918},\n journal = {The Extractive Industries and Society},\n number = {1},\n pages = {110–119},\n title = {Land, oil and expressions of citizenship in Uganda's Albertine graben},\n url = {https://eref.uni-bayreuth.de/id/eprint/47213/},\n volume = {6},\n year = {2019}\n}\n"
+    },
+    {
       "id": "eref-49699",
       "source": "eref",
       "sources": [
@@ -6120,6 +7432,60 @@
       "epub_url": "https://epub.uni-bayreuth.de/id/eprint/8647/",
       "bibtex_url": "https://epub.uni-bayreuth.de/cgi/export/eprint/8647/BibTeX/ubt_epub-eprint-8647.bib",
       "bibtex_raw": "@article{ubt_epub8647,\n author = {Elbahlawan, Eslam},\n issn = {2995-2212},\n journal = {The Journal of Social Encounters},\n keyword = {Sufism; Sufi Path; Islamic studies},\n month = {Mai},\n number = {1},\n pages = {43–50},\n title = {Review Essay: Ibn Khaldun on Sufism},\n url = {https://epub.uni-bayreuth.de/id/eprint/8647/},\n volume = {9},\n year = {2025}\n}\n"
+    },
+    {
+      "id": "epub-9337",
+      "source": "epub",
+      "sources": [
+        "epub"
+      ],
+      "type": "article",
+      "raw_type": "article",
+      "title": "School food politics in Africa : Two Nigerian school feeding programs in comparative perspective",
+      "year": 2025,
+      "quarter": 2,
+      "deposited_at": "2026-05-22T05:26:44+00:00",
+      "authors": [
+        {
+          "raw": "Dorlach, Tim",
+          "normalized": "Dorlach, Tim",
+          "person_id": "69e7a9190dcbd0dd8468080d",
+          "person_name": "Dorlach, Tim"
+        },
+        {
+          "raw": "Sule, Ugbedeojo",
+          "normalized": "Sule, Ugbedeojo",
+          "person_id": null,
+          "person_name": null
+        },
+        {
+          "raw": "Umukoro, Nathaniel",
+          "normalized": "Umukoro, Nathaniel",
+          "person_id": null,
+          "person_name": null
+        }
+      ],
+      "journal": "Global Social Policy",
+      "volume": "25",
+      "issue": "3",
+      "pages": "492–511",
+      "doi": "10.1177/14680181251387293",
+      "issn": "1741-2803",
+      "keywords": [
+        "Federalism",
+        "Nigeria",
+        "policy design",
+        "presidential ideology",
+        "school feeding",
+        "school food politics",
+        "technical assistance"
+      ],
+      "abstract": "Free school meals can be a transformative social policy instrument, especially in the Global South. Domestically sourced school feeding programs can improve children’s food security, augment household incomes, incentivize school attendance, and support local agricultural production. Scholars have so far paid only limited attention to the political causes and processes behind school feeding programs. To contribute to a better understanding of school food politics in Africa, we study the development of two national school feeding programs in Nigeria. We reconstruct and compare the development of the Obasanjo administration’s Home-Grown School Feeding and Health Programme, implemented from 2005 to 2008, and the Buhari administration’s National Home-Grown School Feeding Programme, implemented from 2016 to 2023. We argue that the relatively more successful implementation of the Buhari-era program was the result of a presidential ideology that was more supportive of social policy expansion, a policy design that was more conducive to state-level program implementation, and supportive technical assistance from the London-based Partnership for Child Development.",
+      "language": "eng",
+      "url": "https://doi.org/10.1177/14680181251387293",
+      "epub_url": "https://epub.uni-bayreuth.de/id/eprint/9337/",
+      "bibtex_url": "https://epub.uni-bayreuth.de/cgi/export/eprint/9337/BibTeX/ubt_epub-eprint-9337.bib",
+      "bibtex_raw": "@article{ubt_epub9337,\n author = {Dorlach, Tim and Sule, Ugbedeojo and Umukoro, Nathaniel},\n issn = {1741-2803},\n journal = {Global Social Policy},\n keyword = {Federalism, Nigeria; policy design; presidential ideology; school feeding; school food politics; technical assistance},\n number = {3},\n pages = {492–511},\n title = {School food politics in Africa : Two Nigerian school feeding programs in comparative perspective},\n url = {https://doi.org/10.1177/14680181251387293},\n volume = {25},\n year = {2025}\n}\n"
     },
     {
       "id": "epub-8063",
@@ -6242,7 +7608,7 @@
       "sources": [
         "epub"
       ],
-      "type": "thesis",
+      "type": "doctoral_thesis",
       "raw_type": "thesis",
       "title": "Development in Sub-Saharan Africa New Micro-Level Evidence on Education, Geography and Trade",
       "year": 2024,
