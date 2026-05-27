@@ -159,8 +159,9 @@ const TYPE_LABEL: Record<string, string> = {
 	working_paper: 'Working paper',
 	journal_issue: 'Journal issue',
 	book_review: 'Book review',
-	online: 'Online',
+	online_post: 'Online post',
 	patent: 'Patent',
+	research_data: 'Research data',
 	other: 'Other'
 };
 

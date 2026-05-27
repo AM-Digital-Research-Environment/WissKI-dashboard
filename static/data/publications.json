@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-27T07:31:04.719650+00:00",
+  "generated_at": "2026-05-27T08:22:09.447325+00:00",
   "sources": [
     {
       "name": "eref",
@@ -28,9 +28,9 @@
       "working_paper": 30,
       "conference": 26,
       "doctoral_thesis": 4,
-      "other": 1,
+      "research_data": 1,
       "book_review": 2,
-      "online": 1
+      "online_post": 1
     },
     "by_source": {
       "eref": 157,
@@ -1616,7 +1616,7 @@
       "url": "http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8631-7",
       "eref_url": "https://eref.uni-bayreuth.de/id/eprint/95087/",
       "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/95087/BibTeX/ubt_eref-eprint-95087.bib",
-      "bibtex_raw": "@unpublished{ubt_eref95087,\n address = {Bayreuth},\n author = {Mauluka, Gift},\n keyword = {Child Labour; Legal Frameworks; Children's Rights; Performative Analysis; Malawi; Integrated Childhood Perspective},\n note = {Unveröffentlicht},\n school = {ARRAY(0x587db91a0940)},\n title = {An integrated childhood perspective : Contextualising legal and non-legal approaches to tackle child labour in Malawi},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8631-7},\n year = {2025}\n}\n"
+      "bibtex_raw": "@unpublished{ubt_eref95087,\n address = {Bayreuth},\n author = {Mauluka, Gift},\n keyword = {Child Labour; Legal Frameworks; Children's Rights; Performative Analysis; Malawi; Integrated Childhood Perspective},\n note = {Unveröffentlicht},\n school = {ARRAY(0x587db9203320)},\n title = {An integrated childhood perspective : Contextualising legal and non-legal approaches to tackle child labour in Malawi},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8631-7},\n year = {2025}\n}\n"
     },
     {
       "id": "eref-96784",
@@ -2021,7 +2021,7 @@
       "eref_url": "https://eref.uni-bayreuth.de/id/eprint/95088/",
       "epub_url": "https://epub.uni-bayreuth.de/id/eprint/8627/",
       "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/95088/BibTeX/ubt_eref-eprint-95088.bib",
-      "bibtex_raw": "@unpublished{ubt_eref95088,\n address = {Bayreuth},\n author = {Akolgo, Isaac Abotebuno},\n keyword = {Ghana; Financial System; Debt; Monetary Policy; Financial Technology; Africa},\n note = {Unveröffentlicht},\n school = {ARRAY(0x587db91a0ac0)},\n title = {Money, Finance, and the Political Economy of Development in Ghana},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8627-4},\n year = {2025}\n}\n"
+      "bibtex_raw": "@unpublished{ubt_eref95088,\n address = {Bayreuth},\n author = {Akolgo, Isaac Abotebuno},\n keyword = {Ghana; Financial System; Debt; Monetary Policy; Financial Technology; Africa},\n note = {Unveröffentlicht},\n school = {ARRAY(0x587db92034a0)},\n title = {Money, Finance, and the Political Economy of Development in Ghana},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8627-4},\n year = {2025}\n}\n"
     },
     {
       "id": "eref-94455",
@@ -2059,7 +2059,7 @@
       "url": "http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8533-2",
       "eref_url": "https://eref.uni-bayreuth.de/id/eprint/94455/",
       "bibtex_url": "https://eref.uni-bayreuth.de/cgi/export/eprint/94455/BibTeX/ubt_eref-eprint-94455.bib",
-      "bibtex_raw": "@unpublished{ubt_eref94455,\n address = {Bayreuth},\n author = {Müller, Carsten},\n keyword = {Mobility; Political Mobilisation; Uganda; Kenya; Congo; public transport, power},\n note = {Unveröffentlicht},\n school = {ARRAY(0x587db91a0af0)},\n title = {Moving towards power? Mobilities and the Political Mobilization of Motorcyclists in Uganda Kenya and Eastern DRC},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8533-2},\n year = {2025}\n}\n"
+      "bibtex_raw": "@unpublished{ubt_eref94455,\n address = {Bayreuth},\n author = {Müller, Carsten},\n keyword = {Mobility; Political Mobilisation; Uganda; Kenya; Congo; public transport, power},\n note = {Unveröffentlicht},\n school = {ARRAY(0x587db92034d0)},\n title = {Moving towards power? Mobilities and the Political Mobilization of Motorcyclists in Uganda Kenya and Eastern DRC},\n url = {http://nbn-resolving.org/urn:nbn:de:bvb:703-epub-8533-2},\n year = {2025}\n}\n"
     },
     {
       "id": "eref-94677",
@@ -3539,8 +3539,8 @@
       "sources": [
         "eref"
       ],
-      "type": "other",
-      "raw_type": "other",
+      "type": "research_data",
+      "raw_type": "other:database",
       "title": "Major structural elements and appointment criteria to African Regional Courts with references to Treaty and protocol regulations : (as of January 2024)",
       "year": 2024,
       "quarter": 1,
@@ -7031,7 +7031,7 @@
       "sources": [
         "eref"
       ],
-      "type": "online",
+      "type": "online_post",
       "raw_type": "online",
       "title": "Swimming to Safety",
       "year": 2020,

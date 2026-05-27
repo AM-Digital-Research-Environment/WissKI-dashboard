@@ -78,10 +78,19 @@ EP3_TYPE_MAP = {
     "working_paper": "working_paper",
     "periodical_part": "journal_issue",
     "review": "book_review",
-    "online": "online",
+    "online": "online_post",
     "monograph": "report",
     "patent": "patent",
     "other": "other",
+}
+
+# When EP3 ``type=other``, ERef carries a sub-genre in ``<other_type>``. The
+# value is an internal vocabulary token — ``database`` is what ERef uses
+# for research datasets (German UI: "Sonstiges (Forschungsdaten)"). Map the
+# known tokens to first-class types so the dashboard surfaces them in their
+# own bucket instead of an undifferentiated "Other".
+OTHER_SUBTYPE_MAP = {
+    "database": "research_data",
 }
 
 # Fallback for the rare entry where EP3 XML is missing — keep the BibTeX
@@ -474,6 +483,15 @@ def parse_ep3_xml(xml_text: str) -> dict[str, dict[str, Any]]:
         if type_node is not None and type_node.text:
             record["type"] = type_node.text.strip().lower()
 
+        # ERef tucks the real sub-genre into ``<other_type>`` when the parent
+        # type is ``other`` (e.g. ``other_type=database`` for what the German
+        # UI shows as "Sonstiges (Forschungsdaten)" / Research data). We
+        # surface it so build_publications_for_source can promote it to a
+        # proper top-level type via OTHER_SUBTYPE_MAP.
+        other_type_node = ep.find("ep:other_type", EP3_NS)
+        if other_type_node is not None and other_type_node.text:
+            record["other_type"] = other_type_node.text.strip().lower()
+
         official = ep.find("ep:official_url", EP3_NS)
         if official is not None and official.text:
             record["official_url"] = official.text.strip()
@@ -677,6 +695,15 @@ def build_publications_for_source(
         if ep3_type:
             raw_type = ep3_type
             norm_type = EP3_TYPE_MAP.get(ep3_type, ep3_type)
+            # When EP3 says ``other`` and carries an ``<other_type>`` we
+            # recognize, promote the sub-genre to the canonical type so the
+            # record lands in its own bucket (e.g. ``database`` ->
+            # ``research_data``) rather than the catch-all "Other".
+            if ep3_type == "other":
+                other_sub = ep3_record.get("other_type")
+                if other_sub and other_sub in OTHER_SUBTYPE_MAP:
+                    norm_type = OTHER_SUBTYPE_MAP[other_sub]
+                    raw_type = f"other:{other_sub}"
         else:
             raw_type = bibtex_type
             norm_type = BIBTEX_TYPE_MAP.get(bibtex_type, bibtex_type)
