@@ -1,6 +1,13 @@
-"""Fetch the cluster's publications from **ERef Bayreuth** (project view) and
-**EPub Bayreuth** (Africa Multiple division view) and emit a normalized JSON
-file at ``static/data/publications.json`` for the dashboard frontend.
+"""Fetch the cluster's publications from **ERef Bayreuth** and **EPub
+Bayreuth** (both via the Africa Multiple division view, ID ``340050``) and
+emit a normalized JSON file at ``static/data/publications.json`` for the
+dashboard frontend.
+
+Both repositories expose a *projekt* taxonomy (cluster-explicit) and a
+*divisions* taxonomy (institutional unit). The divisions view is the
+inclusive one — depositors reliably tag the division but often skip the
+project tag, so projekt-view exports lose ~40% of records on ERef. We
+therefore harvest the divisions view on both sides.
 
 Both sources expose the same EPrints 3 export endpoints — BibTeX bulk export
 (canonical metadata), RSS feed (deposit dates → year/quarter buckets), and
@@ -114,9 +121,13 @@ BIBTEX_TYPE_MAP = {
 # Source configuration
 # --------------------------------------------------------------------------- #
 
-EREF_PROJEKT_ID = "EXC_2052=3A_Africa_Multiple=3A_Reconfiguring_African_Studies"
-EREF_EXPORT_BASE = "https://eref.uni-bayreuth.de/cgi/exportview/projekt"
-EPUB_DIVISION_ID = "340050"  # "Africa Multiple: Reconfiguring African Studies"
+# Both ERef and EPub categorize the cluster under division ``340050``
+# ("Africa Multiple: Reconfiguring African Studies"). We harvest the
+# divisions view rather than ERef's narrower ``projekt/EXC_2052=…`` view —
+# see the module docstring for why.
+EREF_DIVISION_ID = "340050"
+EREF_EXPORT_BASE = "https://eref.uni-bayreuth.de/cgi/exportview/divisions"
+EPUB_DIVISION_ID = "340050"
 EPUB_EXPORT_BASE = "https://epub.uni-bayreuth.de/cgi/exportview/divisions"
 
 
@@ -139,9 +150,9 @@ class SourceConfig:
 EREF_SOURCE = SourceConfig(
     name="eref",
     label="ERef Bayreuth",
-    bibtex_url=f"{EREF_EXPORT_BASE}/{EREF_PROJEKT_ID}/BibTeX/{EREF_PROJEKT_ID}.bib",
-    rss_url=f"{EREF_EXPORT_BASE}/{EREF_PROJEKT_ID}/RSS2/{EREF_PROJEKT_ID}.xml",
-    ep3_xml_url=f"{EREF_EXPORT_BASE}/{EREF_PROJEKT_ID}/XML/{EREF_PROJEKT_ID}.xml",
+    bibtex_url=f"{EREF_EXPORT_BASE}/{EREF_DIVISION_ID}/BibTeX/{EREF_DIVISION_ID}.bib",
+    rss_url=f"{EREF_EXPORT_BASE}/{EREF_DIVISION_ID}/RSS2/{EREF_DIVISION_ID}.xml",
+    ep3_xml_url=f"{EREF_EXPORT_BASE}/{EREF_DIVISION_ID}/XML/{EREF_DIVISION_ID}.xml",
     eprint_base="https://eref.uni-bayreuth.de/id/eprint",
     per_eprint_bibtex_template=(
         "https://eref.uni-bayreuth.de/cgi/export/eprint/{id}/BibTeX/ubt_eref-eprint-{id}.bib"
@@ -1126,10 +1137,7 @@ def main() -> int:
                 "label": EREF_SOURCE.label,
                 "bibtex_url": EREF_SOURCE.bibtex_url,
                 "rss_url": EREF_SOURCE.rss_url,
-                "view_url": (
-                    "https://eref.uni-bayreuth.de/view/projekt/"
-                    f"{EREF_PROJEKT_ID}.html"
-                ),
+                "view_url": f"https://eref.uni-bayreuth.de/view/divisions/{EREF_DIVISION_ID}.html",
                 "fetched_count": len(eref_pubs),
             },
             {
