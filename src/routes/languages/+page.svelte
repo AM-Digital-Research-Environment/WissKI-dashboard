@@ -18,9 +18,10 @@
 	import { languageName, normalizeLanguageCode } from '$lib/utils/languages';
 	import { createSearchFilter } from '$lib/utils/search';
 	import { extractItemYear } from '$lib/utils/transforms/dates';
-	import type { CollectionItem, StackedAreaDataPoint, HeatmapDataPoint } from '$lib/types';
+	import { buildTopCategoryTimeline, buildHeatmapData } from '$lib/utils/transforms';
+	import type { CollectionItem } from '$lib/types';
 	import { Languages, FileText } from '@lucide/svelte';
-	import { SvelteMap, SvelteSet } from 'svelte/reactivity';
+	import { SvelteMap } from 'svelte/reactivity';
 	import { EntityDashboardSection } from '$lib/components/dashboards';
 	import { createEntityDetailState } from '$lib/utils/loaders';
 
@@ -93,71 +94,26 @@
 			.map((l) => l.name)
 	);
 
-	let languageTimelineData = $derived.by((): StackedAreaDataPoint[] => {
-		const top = new SvelteSet(topLanguageNames);
-		const byYear = new SvelteMap<number, Record<string, number>>();
-		for (const item of $allCollections) {
-			const year = extractItemYear(item);
-			if (year == null) continue;
-			const codes = item.language || [];
-			if (codes.length === 0) continue;
-			const seen = new SvelteSet<string>();
-			for (const raw of codes) {
-				const name = languageName(normalizeLanguageCode(raw));
-				const bucket = top.has(name) ? name : 'Other';
-				if (seen.has(bucket)) continue;
-				seen.add(bucket);
-				let row = byYear.get(year);
-				if (!row) {
-					row = {};
-					byYear.set(year, row);
-				}
-				row[bucket] = (row[bucket] ?? 0) + 1;
-			}
-		}
-		return Array.from(byYear.entries())
-			.sort(([a], [b]) => a - b)
-			.map(([year, byCategory]) => ({ year, byCategory }));
-	});
+	let languageTimelineData = $derived(
+		buildTopCategoryTimeline($allCollections, {
+			getYear: extractItemYear,
+			getLabels: (item) =>
+				(item.language ?? []).map((raw) => languageName(normalizeLanguageCode(raw))),
+			topNames: topLanguageNames,
+			otherBucket: 'Other'
+		})
+	);
 
 	// Heatmap: language (y) × resource type (x). Capped to the top 10
 	// languages and 10 types so the cell labels stay legible.
-	let languageTypeHeatmap = $derived.by((): HeatmapDataPoint[] => {
-		const langTotals = new SvelteMap<string, number>();
-		const typeTotals = new SvelteMap<string, number>();
-		const cell = new SvelteMap<string, number>();
-		for (const item of $allCollections) {
-			const codes = item.language || [];
-			if (codes.length === 0) continue;
-			const rtype = item.typeOfResource || 'Unknown';
-			typeTotals.set(rtype, (typeTotals.get(rtype) ?? 0) + 1);
-			const seen = new SvelteSet<string>();
-			for (const raw of codes) {
-				const name = languageName(normalizeLanguageCode(raw));
-				if (seen.has(name)) continue;
-				seen.add(name);
-				langTotals.set(name, (langTotals.get(name) ?? 0) + 1);
-				const key = `${rtype}|${name}`;
-				cell.set(key, (cell.get(key) ?? 0) + 1);
-			}
-		}
-		const topLangs = Array.from(langTotals.entries())
-			.sort((a, b) => b[1] - a[1])
-			.slice(0, 10)
-			.map(([name]) => name);
-		const topTypes = Array.from(typeTotals.entries())
-			.sort((a, b) => b[1] - a[1])
-			.slice(0, 10)
-			.map(([name]) => name);
-		const result: HeatmapDataPoint[] = [];
-		for (const t of topTypes) {
-			for (const l of topLangs) {
-				const v = cell.get(`${t}|${l}`) ?? 0;
-				if (v > 0) result.push({ x: t, y: l, value: v });
-			}
-		}
-		return result;
-	});
+	let languageTypeHeatmap = $derived(
+		buildHeatmapData(
+			$allCollections,
+			(item) => item.typeOfResource || 'Unknown',
+			(item) => (item.language ?? []).map((raw) => languageName(normalizeLanguageCode(raw))),
+			{ maxX: 10, maxY: 10, dedupePerItem: true }
+		)
+	);
 
 	function selectLanguage(code: string) {
 		urlSelection.pushToUrl(code);

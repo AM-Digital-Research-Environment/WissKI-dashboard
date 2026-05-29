@@ -19,6 +19,14 @@ export {
 } from './zoteroExport';
 export { buildFacetOptions, type FacetOption, type FacetConfig } from './facets';
 export {
+	buildPublicationCoauthorNetwork,
+	buildTopAuthors,
+	buildTopVenues,
+	buildKeywordCoOccurrence,
+	type CoauthorNetworkOptions,
+	type KeywordCoOccurrenceOptions
+} from './analytics';
+export {
 	applyPublicationFilters,
 	hasActiveFilters,
 	type PublicationFilters

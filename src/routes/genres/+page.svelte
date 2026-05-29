@@ -2,8 +2,7 @@
 	import { StatCard, ChartCard, SEO } from '$lib/components/ui';
 	import { BarChart, EntityKnowledgeGraph, HeatmapChart } from '$lib/components/charts';
 	import { languageName, normalizeLanguageCode } from '$lib/utils/languages';
-	import { SvelteMap, SvelteSet } from 'svelte/reactivity';
-	import type { HeatmapDataPoint } from '$lib/types';
+	import { buildHeatmapData } from '$lib/utils/transforms';
 	import { EntityDashboardSection } from '$lib/components/dashboards';
 	import {
 		EntityCard,
@@ -75,44 +74,15 @@
 
 	let barData = $derived(categoryToChartData(genres, 20));
 
-	// Heatmap: top 12 genres × top 8 languages.
-	let genreLanguageHeatmap = $derived.by((): HeatmapDataPoint[] => {
-		const topGenres = new SvelteSet(genres.slice(0, 12).map((g) => g.name));
-		const langTotals = new SvelteMap<string, number>();
-		const cell = new SvelteMap<string, number>();
-		for (const item of $allCollections) {
-			const codes = item.language || [];
-			if (codes.length === 0) continue;
-			const itemGenres = getItemGenres(item).filter((g) => topGenres.has(g));
-			if (itemGenres.length === 0) continue;
-			const seenLangs = new SvelteSet<string>();
-			const seenGenres = new SvelteSet<string>();
-			for (const raw of codes) {
-				const lname = languageName(normalizeLanguageCode(raw));
-				if (seenLangs.has(lname)) continue;
-				seenLangs.add(lname);
-				langTotals.set(lname, (langTotals.get(lname) ?? 0) + 1);
-				for (const g of itemGenres) {
-					if (seenGenres.has(`${lname}|${g}`)) continue;
-					seenGenres.add(`${lname}|${g}`);
-					const key = `${lname}|${g}`;
-					cell.set(key, (cell.get(key) ?? 0) + 1);
-				}
-			}
-		}
-		const topLangs = Array.from(langTotals.entries())
-			.sort((a, b) => b[1] - a[1])
-			.slice(0, 8)
-			.map(([n]) => n);
-		const result: HeatmapDataPoint[] = [];
-		for (const l of topLangs) {
-			for (const g of topGenres) {
-				const v = cell.get(`${l}|${g}`) ?? 0;
-				if (v > 0) result.push({ x: l, y: g, value: v });
-			}
-		}
-		return result;
-	});
+	// Heatmap: top 12 genres (y) × top 8 languages (x), counting distinct items.
+	let genreLanguageHeatmap = $derived(
+		buildHeatmapData(
+			$allCollections,
+			(item) => (item.language ?? []).map((c) => languageName(normalizeLanguageCode(c))),
+			getItemGenres,
+			{ maxX: 8, maxY: 12, dedupePerItem: true }
+		)
+	);
 
 	function selectGenre(genre: string) {
 		urlSelection.pushToUrl(genre);

@@ -3,53 +3,82 @@ import type {
 	Project,
 	HeatmapDataPoint,
 	BeeswarmDataPoint,
-	GanttDataPoint
+	GanttDataPoint,
+	StackedAreaDataPoint
 } from '$lib/types';
 import { extractYear } from './dates';
 import { buildProjectMetaMap, countByProjectId } from './indexing';
 
+/** Options for {@link buildHeatmapData}. */
+export interface HeatmapBuildOptions {
+	/** Maximum number of x-axis categories (top N by count). Default 15. */
+	maxX?: number;
+	/** Maximum number of y-axis categories (top N by count). Default 10. */
+	maxY?: number;
+	/**
+	 * Count each (x, y) pair at most once per item, de-duplicating repeated
+	 * values within an item's multi-valued fields. With this on, axis rankings
+	 * reflect the number of *distinct items* in each category rather than raw
+	 * pair multiplicity — which is what "how many items have both X and Y"
+	 * almost always means. Default false (legacy multiplicity counting).
+	 */
+	dedupePerItem?: boolean;
+}
+
 /**
- * Build a heatmap matrix crossing two categorical dimensions from collection items.
+ * Build a heatmap matrix crossing two categorical dimensions from collection
+ * items. Data points are emitted in ranked order (top x × top y), so the
+ * chart's category axes — which are derived from data-point order when no
+ * explicit labels are supplied — read most-frequent-first.
  *
  * @param items - Collection items to process
  * @param xExtractor - Extracts x-axis categories from an item
  * @param yExtractor - Extracts y-axis categories from an item
- * @param maxX - Maximum number of x-axis categories (top N by total count)
- * @param maxY - Maximum number of y-axis categories (top N by total count)
+ * @param options - Limits and counting mode (see {@link HeatmapBuildOptions})
  */
 export function buildHeatmapData(
 	items: CollectionItem[],
 	xExtractor: (item: CollectionItem) => string | string[] | null | undefined,
 	yExtractor: (item: CollectionItem) => string | string[] | null | undefined,
-	maxX = 15,
-	maxY = 10
+	options: HeatmapBuildOptions = {}
 ): HeatmapDataPoint[] {
-	// Count totals per x and y to find top categories
+	const { maxX = 15, maxY = 10, dedupePerItem = false } = options;
+
 	const xCounts = new Map<string, number>();
 	const yCounts = new Map<string, number>();
 	const matrix = new Map<string, number>();
 
-	for (const item of items) {
-		const xRaw = xExtractor(item);
-		const yRaw = yExtractor(item);
-		if (!xRaw || !yRaw) continue;
+	const toList = (raw: string | string[] | null | undefined): string[] => {
+		if (!raw) return [];
+		const arr = Array.isArray(raw) ? raw : [raw];
+		const cleaned = arr.filter((v): v is string => !!v && v.trim().length > 0);
+		return dedupePerItem ? [...new Set(cleaned)] : cleaned;
+	};
 
-		const xs = Array.isArray(xRaw) ? xRaw : [xRaw];
-		const ys = Array.isArray(yRaw) ? yRaw : [yRaw];
+	for (const item of items) {
+		const xs = toList(xExtractor(item));
+		const ys = toList(yExtractor(item));
+		if (xs.length === 0 || ys.length === 0) continue;
+
+		if (dedupePerItem) {
+			// One increment per distinct value per item, independent of the
+			// other axis's cardinality.
+			for (const x of xs) xCounts.set(x, (xCounts.get(x) ?? 0) + 1);
+			for (const y of ys) yCounts.set(y, (yCounts.get(y) ?? 0) + 1);
+		}
 
 		for (const x of xs) {
-			if (!x?.trim()) continue;
 			for (const y of ys) {
-				if (!y?.trim()) continue;
-				xCounts.set(x, (xCounts.get(x) || 0) + 1);
-				yCounts.set(y, (yCounts.get(y) || 0) + 1);
+				if (!dedupePerItem) {
+					xCounts.set(x, (xCounts.get(x) ?? 0) + 1);
+					yCounts.set(y, (yCounts.get(y) ?? 0) + 1);
+				}
 				const key = `${x}||${y}`;
-				matrix.set(key, (matrix.get(key) || 0) + 1);
+				matrix.set(key, (matrix.get(key) ?? 0) + 1);
 			}
 		}
 	}
 
-	// Get top categories
 	const topX = [...xCounts.entries()]
 		.sort((a, b) => b[1] - a[1])
 		.slice(0, maxX)
@@ -59,19 +88,70 @@ export function buildHeatmapData(
 		.slice(0, maxY)
 		.map(([name]) => name);
 
-	const topXSet = new Set(topX);
-	const topYSet = new Set(topY);
-
-	// Build data points only for top categories
 	const result: HeatmapDataPoint[] = [];
-	for (const [key, value] of matrix) {
-		const [x, y] = key.split('||');
-		if (topXSet.has(x) && topYSet.has(y)) {
-			result.push({ x, y, value });
+	for (const x of topX) {
+		for (const y of topY) {
+			const value = matrix.get(`${x}||${y}`);
+			if (value) result.push({ x, y, value });
 		}
 	}
 
 	return result;
+}
+
+/** Options for {@link buildTopCategoryTimeline}. */
+export interface TopCategoryTimelineOptions<T> {
+	/** Year for an item, or null/undefined to skip it. */
+	getYear: (item: T) => number | null | undefined;
+	/** Category labels carried by an item (multi-valued; de-duped per item). */
+	getLabels: (item: T) => string[];
+	/** Pre-ranked category names that each get their own series. */
+	topNames: string[];
+	/**
+	 * When set, labels outside `topNames` fold into this bucket (e.g. "Other").
+	 * When omitted, non-top labels are dropped entirely.
+	 */
+	otherBucket?: string;
+}
+
+/**
+ * Build a stacked-area-over-time series: per year, the item count for each of
+ * the top categories. Each item contributes at most once per (year, bucket)
+ * so multi-valued fields never double-count. Extracted from the near-identical
+ * inline builders on the subjects, languages, and resource-types pages.
+ */
+export function buildTopCategoryTimeline<T>(
+	items: T[],
+	options: TopCategoryTimelineOptions<T>
+): StackedAreaDataPoint[] {
+	const { getYear, getLabels, topNames, otherBucket } = options;
+	const top = new Set(topNames);
+	const byYear = new Map<number, Record<string, number>>();
+
+	for (const item of items) {
+		const year = getYear(item);
+		if (year == null) continue;
+		const labels = getLabels(item);
+		if (labels.length === 0) continue;
+
+		const seen = new Set<string>();
+		for (const label of labels) {
+			if (!label) continue;
+			const bucket = top.has(label) ? label : (otherBucket ?? null);
+			if (bucket == null || seen.has(bucket)) continue;
+			seen.add(bucket);
+			let row = byYear.get(year);
+			if (!row) {
+				row = {};
+				byYear.set(year, row);
+			}
+			row[bucket] = (row[bucket] ?? 0) + 1;
+		}
+	}
+
+	return Array.from(byYear.entries())
+		.sort(([a], [b]) => a - b)
+		.map(([year, byCategory]) => ({ year, byCategory }));
 }
 
 /**

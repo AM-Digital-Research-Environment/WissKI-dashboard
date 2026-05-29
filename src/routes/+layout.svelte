@@ -57,6 +57,13 @@
 		? 'var(--layout-sidebar-width-icon)'
 		: 'var(--layout-sidebar-width)'}
 >
+	<a
+		href="#app-scroll"
+		class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-lg"
+	>
+		Skip to main content
+	</a>
+
 	<Sidebar
 		isOpen={sidebarOpen}
 		isCollapsed={sidebarCollapsed}
@@ -70,7 +77,7 @@
 			isSidebarCollapsed={sidebarCollapsed}
 		/>
 
-		<main id="app-scroll" class="flex-1 p-4 lg:p-6 overflow-auto">
+		<main id="app-scroll" tabindex="-1" class="flex-1 p-4 lg:p-6 overflow-auto">
 			{#if $loadError}
 				<div class="flex items-center justify-center h-64 animate-fade-in">
 					<div class="text-center max-w-md">

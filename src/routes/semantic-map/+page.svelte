@@ -258,10 +258,7 @@
 			</CardContent>
 		</Card>
 	{:else}
-		<div
-			class="grid gap-4 grid-cols-2 lg:grid-cols-4 animate-slide-in-up"
-			style="animation-delay: 50ms"
-		>
+		<div class="grid gap-4 grid-cols-2 lg:grid-cols-4 animate-slide-in-up delay-50">
 			<StatCard value={totalItems} label="Items in map" icon={FileText} />
 			<StatCard
 				value={projectCount}
@@ -287,7 +284,7 @@
 			/>
 		</div>
 
-		<div class="space-y-6 animate-slide-in-up" style="animation-delay: 100ms">
+		<div class="space-y-6 animate-slide-in-up delay-100">
 			<!-- Visualization spans the full width so dense clusters get the
 			     full pixel budget. The info card + similar-items list now
 			     render below the map instead of crowding it on the right. -->

@@ -152,8 +152,7 @@
 			currentCollection,
 			(item) => item.typeOfResource,
 			(item) => item.language?.map((l) => languageName(l)),
-			12,
-			10
+			{ maxX: 12, maxY: 10 }
 		);
 		return raw;
 	});

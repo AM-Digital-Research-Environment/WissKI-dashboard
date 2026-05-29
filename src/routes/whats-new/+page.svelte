@@ -154,10 +154,7 @@
 	</div>
 
 	<!-- Stat cards -->
-	<div
-		class="grid gap-4 grid-cols-2 lg:grid-cols-3 animate-slide-in-up"
-		style="animation-delay: 50ms"
-	>
+	<div class="grid gap-4 grid-cols-2 lg:grid-cols-3 animate-slide-in-up delay-50">
 		<StatCard
 			value={$projects.length}
 			label="Total Projects"
@@ -182,7 +179,7 @@
 
 	<!-- Items by resource type -->
 	{#if itemsByType.length > 0}
-		<div class="animate-slide-in-up" style="animation-delay: 100ms">
+		<div class="animate-slide-in-up delay-100">
 			<ChartCard title="New Items by Resource Type" subtitle="Breakdown of recently added items">
 				<BarChart data={itemsByType} />
 			</ChartCard>
@@ -190,7 +187,7 @@
 	{/if}
 
 	<!-- Projects with recently added items -->
-	<div class="animate-slide-in-up" style="animation-delay: 150ms">
+	<div class="animate-slide-in-up delay-150">
 		<h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
 			<Sparkles class="h-5 w-5 text-primary" />
 			Projects with Recently Added Items
@@ -252,7 +249,7 @@
 	</div>
 
 	<!-- Recently added research items -->
-	<div class="animate-slide-in-up" style="animation-delay: 200ms">
+	<div class="animate-slide-in-up delay-200">
 		<h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
 			<FileText class="h-5 w-5 text-primary" />
 			Recently Added Research Items

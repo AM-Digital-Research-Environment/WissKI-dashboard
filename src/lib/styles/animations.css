@@ -154,6 +154,9 @@
 	}
 
 	/* Staggered animation delays (kept minimal — avoid cascade chains that feel generic) */
+	.delay-50 {
+		animation-delay: 50ms;
+	}
 	.delay-75 {
 		animation-delay: 75ms;
 	}

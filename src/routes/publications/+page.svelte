@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
+	import { goto } from '$app/navigation';
 	import {
 		StatCard,
 		ChartCard,
@@ -11,7 +12,14 @@
 		Button,
 		SEO
 	} from '$lib/components/ui';
-	import { StackedTimeline, PieChart, WordCloud } from '$lib/components/charts';
+	import {
+		StackedTimeline,
+		PieChart,
+		WordCloud,
+		BarChart,
+		NetworkGraph,
+		ChordDiagram
+	} from '$lib/components/charts';
 	import type { StackedTimelineDataPoint } from '$lib/utils/transforms';
 	import { languageName } from '$lib/utils/languages';
 	import { publications, ensurePublications } from '$lib/stores/data';
@@ -19,6 +27,10 @@
 		PublicationCard,
 		applyPublicationFilters,
 		buildFacetOptions,
+		buildPublicationCoauthorNetwork,
+		buildTopAuthors,
+		buildTopVenues,
+		buildKeywordCoOccurrence,
 		downloadBibtexBulk,
 		downloadRisBulk,
 		hasActiveFilters,
@@ -146,6 +158,29 @@
 			.slice(0, 150)
 			.map(([key, count]) => ({ name: keywordRaw.display.get(key) ?? key, value: count }));
 	});
+
+	// Co-authorship network: cluster members (matched to a person profile) and
+	// external co-authors are colour-split; clicking a cluster member opens
+	// their person page.
+	let coauthorNetwork = $derived(buildPublicationCoauthorNetwork(allPubs));
+
+	// Rankings — clicking a bar drives the free-text search (which matches
+	// author names and journal titles) so the list below filters to match.
+	let topAuthorsData = $derived(buildTopAuthors(allPubs, 15));
+	let topVenuesData = $derived(buildTopVenues(allPubs, 15));
+
+	// Keyword co-occurrence chord: which keywords share a publication.
+	let keywordChordData = $derived(buildKeywordCoOccurrence(allPubs, { minOccurrences: 2 }));
+	let hasKeywordChord = $derived(
+		keywordChordData.names.length > 1 &&
+			keywordChordData.matrix.some((row) => row.some((v) => v > 0))
+	);
+
+	function openAuthor(id: string, category: number) {
+		// Category 0 = cluster member with a person profile; external co-authors
+		// (category 1) have no page to open.
+		if (category === 0) goto(`${base}/people?name=${encodeURIComponent(id)}`);
+	}
 
 	let activeFilters = $derived({
 		type: selectedType,
@@ -283,7 +318,40 @@
 			{/if}
 		</div>
 
-		<!-- Charts row 2: keyword cloud, full width so the long tail of
+		<!-- Charts row 2: most prolific authors + most frequent journals. -->
+		<div class="grid gap-6 lg:grid-cols-2">
+			{#if topAuthorsData.length > 0}
+				<ChartCard
+					title="Most prolific authors"
+					subtitle="Click a bar to filter the list below"
+					contentHeight="h-chart-lg"
+				>
+					<BarChart data={topAuthorsData} maxItems={15} onclick={(name) => (searchQuery = name)} />
+				</ChartCard>
+			{/if}
+			{#if topVenuesData.length > 0}
+				<ChartCard
+					title="Most frequent journals"
+					subtitle="Click a bar to filter the list below"
+					contentHeight="h-chart-lg"
+				>
+					<BarChart data={topVenuesData} maxItems={15} onclick={(name) => (searchQuery = name)} />
+				</ChartCard>
+			{/if}
+		</div>
+
+		<!-- Co-authorship network: who publishes with whom. -->
+		{#if coauthorNetwork.nodes.length > 0}
+			<ChartCard
+				title="Co-authorship network"
+				subtitle="Authors who share a publication are linked; node size reflects publication count. Click a cluster member to open their profile."
+				contentHeight="h-chart-xl"
+			>
+				<NetworkGraph data={coauthorNetwork} onclick={openAuthor} class="h-full w-full" />
+			</ChartCard>
+		{/if}
+
+		<!-- Charts row 3: keyword cloud, full width so the long tail of
 		     terms gets the room it needs to breathe. -->
 		{#if keywordCloudData.length > 0}
 			<ChartCard
@@ -292,6 +360,17 @@
 				contentHeight="h-chart-lg"
 			>
 				<WordCloud data={keywordCloudData} maxWords={200} onclick={selectKeyword} />
+			</ChartCard>
+		{/if}
+
+		<!-- Keyword co-occurrence: which terms appear together on a publication. -->
+		{#if hasKeywordChord}
+			<ChartCard
+				title="Keyword co-occurrence"
+				subtitle="Keywords that appear together on the same publication"
+				contentHeight="h-chart-xl"
+			>
+				<ChordDiagram data={keywordChordData} class="h-full w-full" />
 			</ChartCard>
 		{/if}
 

@@ -178,9 +178,11 @@
 				<nav>
 					{#each group.items as item (item.href)}
 						{@const Icon = item.icon}
+						{@const active = isActive(item.href)}
 						<a
 							href={item.href}
-							class={cn('sidebar-nav-item', isActive(item.href) && 'active')}
+							class={cn('sidebar-nav-item', active && 'active')}
+							aria-current={active ? 'page' : undefined}
 							onclick={handleNavClick}
 							title={isCollapsed ? item.label : undefined}
 						>

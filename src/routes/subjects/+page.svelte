@@ -7,8 +7,8 @@
 		PieChart
 	} from '$lib/components/charts';
 	import { extractItemYear } from '$lib/utils/transforms/dates';
-	import { SvelteMap, SvelteSet } from 'svelte/reactivity';
-	import type { StackedAreaDataPoint, PieChartDataPoint } from '$lib/types';
+	import { buildTopCategoryTimeline } from '$lib/utils/transforms';
+	import type { PieChartDataPoint } from '$lib/types';
 	import { EntityDashboardSection } from '$lib/components/dashboards';
 	import {
 		EntityCard,
@@ -70,33 +70,16 @@
 			.map((s) => s.name)
 	);
 
-	let subjectTrendsData = $derived.by((): StackedAreaDataPoint[] => {
-		if (subjectTrendsTopNames.length === 0) return [];
-		const top = new SvelteSet(subjectTrendsTopNames);
-		const byYear = new SvelteMap<number, Record<string, number>>();
-		for (const item of $allCollections) {
-			const year = extractItemYear(item);
-			if (year == null) continue;
-			const labels = (item.subject || [])
-				.map((s) => s?.authLabel || s?.origLabel)
-				.filter((s): s is string => !!s);
-			if (labels.length === 0) continue;
-			const seen = new SvelteSet<string>();
-			for (const label of labels) {
-				if (!top.has(label) || seen.has(label)) continue;
-				seen.add(label);
-				let row = byYear.get(year);
-				if (!row) {
-					row = {};
-					byYear.set(year, row);
-				}
-				row[label] = (row[label] ?? 0) + 1;
-			}
-		}
-		return Array.from(byYear.entries())
-			.sort(([a], [b]) => a - b)
-			.map(([year, byCategory]) => ({ year, byCategory }));
-	});
+	let subjectTrendsData = $derived(
+		buildTopCategoryTimeline($allCollections, {
+			getYear: extractItemYear,
+			getLabels: (item) =>
+				(item.subject ?? [])
+					.map((s) => s?.authLabel || s?.origLabel)
+					.filter((s): s is string => !!s),
+			topNames: subjectTrendsTopNames
+		})
+	);
 
 	// LCSH (controlled subjects) vs free-form tags split — answers "how
 	// much of the indexing comes from authority files vs manual tagging?".

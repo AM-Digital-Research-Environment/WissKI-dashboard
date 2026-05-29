@@ -35,8 +35,8 @@
 			defaultIcon: Info
 		},
 		warning: {
-			container: 'border-amber-500/30 bg-amber-500/5',
-			iconClass: 'text-amber-500',
+			container: 'border-warning/30 bg-warning/5',
+			iconClass: 'text-warning',
 			defaultIcon: AlertTriangle
 		},
 		success: {
