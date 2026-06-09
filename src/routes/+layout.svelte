@@ -3,8 +3,9 @@
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
 	import { base } from '$app/paths';
-	import { Sidebar, Header, Footer } from '$lib/components/layout';
+	import { Sidebar, Header, Footer, MigrationNotice } from '$lib/components/layout';
 	import { ScrollToTop } from '$lib/components/ui';
+	import { migrationConfig } from '$lib/config/migration';
 	import {
 		initializeData,
 		theme,
@@ -72,6 +73,23 @@
 	/>
 
 	<div class="flex-1 flex flex-col min-w-0">
+		<!--
+			Migration notice / redirect. Sits above the sticky header so it spans
+			the content area on desktop (the fixed sidebar keeps its own column)
+			and the full width on mobile (where the sidebar is hidden). All
+			behaviour is driven by src/lib/config/migration.ts.
+		-->
+		{#if migrationConfig.enabled && (migrationConfig.redirect.enabled || migrationConfig.banner.enabled)}
+			<MigrationNotice
+				targetUrl={migrationConfig.targetUrl}
+				siteName={migrationConfig.siteName}
+				dismissible={migrationConfig.banner.dismissible}
+				storageKey={migrationConfig.banner.storageKey}
+				redirect={migrationConfig.redirect.enabled}
+				redirectDelaySeconds={migrationConfig.redirect.delaySeconds}
+			/>
+		{/if}
+
 		<Header
 			onMenuClick={() => (sidebarOpen = !sidebarOpen)}
 			isSidebarCollapsed={sidebarCollapsed}

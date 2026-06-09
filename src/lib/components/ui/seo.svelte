@@ -1,6 +1,13 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
+	import { migrationConfig } from '$lib/config/migration';
+
+	// During the migration the authoritative canonical lives statically in
+	// app.html (pointing at the successor site, visible to every crawler). Skip
+	// the per-page self-canonical here so the two never conflict — two
+	// rel=canonical tags make Google ignore both. See src/lib/config/migration.ts.
+	const suppressCanonical = migrationConfig.enabled && migrationConfig.canonicalToNewSite;
 
 	// Canonical site name (used in `og:site_name`, the `<title>` suffix and
 	// the `WebSite` JSON-LD `name`). AMIRA is exposed as the short
@@ -191,7 +198,9 @@
 	{#if mergedKeywords.length > 0}
 		<meta name="keywords" content={mergedKeywords.join(', ')} />
 	{/if}
-	<link rel="canonical" href={canonicalUrl} />
+	{#if !suppressCanonical}
+		<link rel="canonical" href={canonicalUrl} />
+	{/if}
 
 	<!-- Open Graph -->
 	<meta property="og:type" content={type} />

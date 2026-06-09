@@ -24,6 +24,30 @@
 		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="format-detection" content="telephone=no" />
 		<meta name="google-site-verification" content="G6UcKXoXKJcLu3NneUY57WfnAK0NFXqEyvLmXFx0OvE" />
+
+		<!--
+			MIGRATION → Africa Multiple Research Data (Omeka S).
+			This dashboard is being retired. The canonical below consolidates
+			search-engine ranking onto the successor site for EVERY crawler
+			(including non-JS ones, which only ever see this file because the app
+			runs with ssr = false). It is paired with `canonicalToNewSite` in
+			src/lib/config/migration.ts, which suppresses the per-page
+			self-canonical in seo.svelte so the two never conflict (two
+			rel=canonical tags make Google ignore both).
+			To revert: remove this tag AND set canonicalToNewSite = false.
+		-->
+		<link rel="canonical" href="https://data.africamultiple.uni-bayreuth.de/s/amira" />
+		<!--
+			PHASE 2 CUTOVER (hard redirect). Uncomment to bounce every visitor —
+			including non-JS crawlers — to the new site at parse time, before the
+			app mounts. Do this together with `redirect.enabled = true` in
+			src/lib/config/migration.ts (the JS fallback). Until then the site
+			stays live with the dismissible migration banner.
+		-->
+		<!-- <meta
+			http-equiv="refresh"
+			content="0; url=https://data.africamultiple.uni-bayreuth.de/s/amira"
+		/> -->
 		<!--
 			Favicon link tags ordered for Google Search.
 			Google picks the highest-quality crawlable favicon and recommends a
